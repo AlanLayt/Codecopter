@@ -1,0 +1,19 @@
+{
+  "name": "codeucation",
+  "version": "1.0.0",
+  "description": "Work in progress version of educational code app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Code",
+    "Education"
+  ],
+  "author": "Alan Layt",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.0.3"
+  },
+  "devDependencies": {}
+}
