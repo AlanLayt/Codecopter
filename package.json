@@ -15,5 +15,13 @@
   "dependencies": {
     "colors": "^1.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlanLayt/Codeucation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AlanLayt/Codeucation/issues"
+  },
+  "homepage": "https://github.com/AlanLayt/Codeucation"
 }
