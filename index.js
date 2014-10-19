@@ -1,11 +1,11 @@
 var colors = require('colors');
-var db = require('mongodb');
+
 var server = require("./server");
 var router = require("./router");
 var requestHandlers = require("./requestHandlers");
+var db = require('./db');
 
-
-
+/*
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
@@ -16,6 +16,9 @@ MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected correctly to server");
 
+	findDocuments(db, function() {
+	  db.close();
+	});
   insertDocuments(db, function() {
   	updateDocument(db, function() {
       removeDocument(db, function() {
@@ -26,7 +29,7 @@ MongoClient.connect(url, function(err, db) {
     });
   });
 });
-
+*/
 
 
 var handle = {}
@@ -37,7 +40,7 @@ handle["/favicon.ico"] = requestHandlers.favico;
 
 
 //console.log(handle);
-server.start(router.route, handle);
+server.start(router.route, db, handle);
 
 
 
