@@ -1,26 +1,20 @@
 var fs = require("fs");
 
 function start(db,response) {
-	console.log("Request handler 'start' was called.");
+//	console.log("Initializing Test page.");
 
 	response.writeHead(200, {"Content-Type": "text/plain"});
     response.write("Hello World\r\r");
         
-    var docs = db.returnRecords(function(docs){
+    db.returnRecords(function(docs){
     	docs.forEach(function(t){
-    		console.log(t);
-				response.write(t.a + "\r");
+    		//console.log(t);
+			response.write(t.a + "\r");
     	});
-			response.end();
 
+		response.end();
     });
-    console.log(docs)
 
-}
-
-
-function upload(db,response) {
-	console.log("Request handler 'upload' was called.");
 }
 
 
@@ -40,7 +34,6 @@ function favico(db,response) {
 }
 
 exports.start = start;
-exports.upload = upload;
 exports.favico = favico;
 
 
