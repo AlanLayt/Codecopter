@@ -7,23 +7,33 @@ var mdb=null;
 
 
 
-function connect(connected) {
+function connect(connected, failed) {
 	var mongourl = 'mongodb://localhost:27017/codeucation';
 	var connected = connected;
 	var mdbt;
 
 	MongoClient.connect(mongourl, function(err, db) {
     mdb = db;
-		assert.equal(null, err);
-		console.log("MONGODB: Connection Successful.");
+    //console.log(err.name);
+    if(err!= null && err.name=="MongoError") 
+      failed(err);
+    else {
 
-		connected(db);
+  		//console.log(assert.equal(null, err));
+  		console.log("MONGODB: Connection Successful.");
+
+  		connected(db);
+
+      return true;
+    }
 
 	});
 
-	return MongoClient;
+  return false;
+//	return MongoClient;
 
 } 
+
 
 
 
@@ -38,7 +48,7 @@ function returnRecords(recordsFound) {
 var addUser = function(username, password, callback) {
   var collection = mdb.collection('users');
 
-  console.log(username)
+ // console.log(username)
 
   collection.insert([
     {"username" : username, "password" : password}
@@ -46,7 +56,7 @@ var addUser = function(username, password, callback) {
     assert.equal(err, null);
     assert.equal(1, result.result.n);
     assert.equal(1, result.ops.length);
-    console.log("User added.");
+    console.log('DATABASE: User ' + username + ' added.');
     callback(result, username);
   });
 }
@@ -57,7 +67,7 @@ var getUser = function(username, callback) {
   collection.find({ "username" : username }).toArray(function(err, user) {
     assert.equal(err, null);
     //assert.equal(1, docs.length);
-    console.log("DATABASE: user returned.");
+    console.log('DATABASE: user ' + user + ' returned.');
     callback(user);
   });    
 }

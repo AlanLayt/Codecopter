@@ -14,12 +14,16 @@ function start(route, db, handle) {
 	console.log("------- Startup --------");
 
 	db.connect(function(db){
-		http.createServer(onRequest).listen(80);
-		console.log("HTTP: Server Started.");
-		dbt = db;
+			http.createServer(onRequest).listen(80);
+			console.log("HTTP: Server Started.");
+			dbt = db;
 
-		console.log("------------------------");
-	});
+			console.log("------------------------");
+		},
+		function(err){
+			console.log("Mongo database not found on port 27017. Exiting.");
+			console.log("------------------------");
+		});
 
 
 }
