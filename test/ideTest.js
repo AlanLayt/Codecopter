@@ -1,17 +1,37 @@
-var http = require("http");
-var url = require("url");
-var dbt = null;
+var express = require('express')
+  , stylus = require('stylus')
+  , nib = require('nib')
+
+
+
+
+var app = express()
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .use(nib())
+}
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jade')
+app.use(express.logger('dev'))
+app.use(stylus.middleware(
+  { src: __dirname + '/public'
+  , compile: compile
+  }
+))
+app.use(express.static(__dirname + '/public'))
 
 
 
 
 
 
-var colors = require('colors');
-var db = require('../database');
 
 
 
+
+
+/*
 function onRequest(request, response) {
 	var pathname = url.parse(request.url).pathname;
 
@@ -34,3 +54,4 @@ db.connect(function(db){
 		console.log("Mongo database not found on port 27017. Exiting.");
 		console.log("------------------------");
 	});
+*/
