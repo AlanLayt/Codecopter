@@ -1,6 +1,6 @@
 
-  var socket = io('127.0.0.1',{ reconnection : false });
-
+  var socket = io(window.location.host,{ reconnection : false });
+console.debug(window.location.host)
 	var ide = function(){
 
 /*
