@@ -48,6 +48,7 @@ element.parentNode.removeChild(element);
 
 		var tb = document.getElementById('in');
 
+    tb.focus();
 
 		tb.addEventListener("keyup", function(e){
 			socket.emit('contentModified', { inf : tb.value });
@@ -58,14 +59,14 @@ element.parentNode.removeChild(element);
 		socket.on('contentUpdate', function (data) {
 			tb.value=data.inf;
 		});
- 
+
 		socket.on('disconnect', function () {
-			socket.disconnect(); 
+			socket.disconnect();
 			console.debug("Connection Lost. Reloading.");
 		 	location.reload();
 		});
 
-		var testfunc = function(){ 
+		var testfunc = function(){
 			console.debug("Change");
 		};
 
