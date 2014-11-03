@@ -40,6 +40,7 @@ http.listen(80, function(){
 io.on('connection', function (socket) {
   console.log('User Connected.');
 
+ 	socket.emit("contentUpdate",{ inf : GLOBAL.test });
   socket.on('contentModified', function (data) {
 		GLOBAL.test = data.inf;
   	socket.broadcast.emit("contentUpdate",{ inf : GLOBAL.test });

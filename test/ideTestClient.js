@@ -3,7 +3,7 @@
 
 	var ide = function(){
 
-
+/*
 tttt = function(tb,pos) {
         var $inputor, at_rect, end_range, format, html, mirror, start_range;
         $inputor = tb;
@@ -44,7 +44,7 @@ element.parentNode.removeChild(element);
       };
 
 
-
+*/
 
 		var tb = document.getElementById('in');
 
@@ -52,7 +52,7 @@ element.parentNode.removeChild(element);
 		tb.addEventListener("keyup", function(e){
 			socket.emit('contentModified', { inf : tb.value });
 			console.debug(tb.selectionStart);
-			console.debug(tttt(tb,3))
+			//console.debug(tttt(tb,3))
 		});
 
 		socket.on('contentUpdate', function (data) {
