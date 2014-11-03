@@ -1,5 +1,5 @@
 var jade = require('jade');
-var db = require('../database'); 
+var db = require('../database');
 var url = require("url");
 var fs = require("fs");
 
@@ -7,7 +7,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-GLOBAL.test = "";
+GLOBAL.test = "Type something here.";
 
 app.set('view engine', 'jade');
 
