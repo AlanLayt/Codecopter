@@ -1,13 +1,22 @@
-textarea {
+textarea#in {
 	width:50%;
 	height: 100%;
   outline: none;
 	background: none;
 	color: #fff;
+	float:left;
+	padding: 15px;
 }
 
-#display {
-	
+iframe#display {
+	float:right;
+	width:50%;
+
+}
+
+#in,#display {
+	margin:0;
+	padding: 0;
 }
 
 html, body {

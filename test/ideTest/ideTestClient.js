@@ -55,12 +55,14 @@ element.parentNode.removeChild(element);
 		tb.addEventListener("keyup", function(e){
 			socket.emit('contentModified', { inf : tb.value });
 			console.debug("SENDING UPDATE " + tb.selectionStart);
-      document.getElementById('display').contentWindow.location.reload();
+      document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(tb.value);
 			//console.debug(tttt(tb,3))
 		});
 
     socket.on('contentUpdate', function (data) {
+      console.debug("Update recieved from server");
       tb.value=data.inf;
+      document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(tb.value);
     });
 
 		socket.on('disconnect', function () {

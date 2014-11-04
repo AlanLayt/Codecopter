@@ -29,7 +29,7 @@ app.get('/demo.html', function(req, res){
 	res.set('Content-Type', 'text/html');
 	db.getSnippet("test", function(snippet){
 		if(snippet.length>0){
-			console.log("Preview initialized");
+		//	console.log("Preview initialized");
 			res.send(new Buffer(snippet[0].content));
 		}
 		else {
@@ -51,23 +51,17 @@ db.connect(function(){
 	//db.clearCol('code');
 
 	db.getSnippet("test", function(snippet){
-		//console.log(user)
 		if(snippet.length>0){
 			console.log("snippet " + snippet[0].title + " loaded.");
-		//	console.log(snippet[0])
-			//console.log(user.username);
 			GLOBAL.test = snippet[0].content;
-
-
-			init();
 		}
 		else {
 			db.addSnippet("test", "SNIPPETHERE", function(info,user){
 				console.log("snippet " + user + " added.");
 			});
-
-		//	init();
 		}
+
+		init();
 	});
 
 
@@ -86,7 +80,7 @@ var init = function(){
 		socket.emit("connectionConfirmed");
 //		io.sockets.socket(socket.id).emit("init");
 
-	 	socket.send("contentUpdate",{ inf : GLOBAL.test });
+	 	socket.emit("contentUpdate",{ inf : GLOBAL.test });
 	  socket.on('contentModified', function (data) {
 			GLOBAL.test = data.inf;
 	//		console.log(GLOBAL.test)

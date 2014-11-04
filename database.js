@@ -90,7 +90,7 @@ var addSnippet = function(title, content, callback) {
     assert.equal(err, null);
     assert.equal(1, result.result.n);
     assert.equal(1, result.ops.length);
-    console.log("DATABASE: Snippet added.");
+  //  console.log("DATABASE: Snippet added.");
     callback(result, title);
   });
 }
@@ -102,7 +102,7 @@ var getSnippet = function(title, callback) {
 		assert.equal(err, null);
 		//assert.equal(1, docs.length);
 	//	console.log(snippet)
-		console.log("DATABASE: snippet returned.");
+	//	console.log("DATABASE: snippet returned.");
 		callback(snippet);
 	});
 }
