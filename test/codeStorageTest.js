@@ -6,7 +6,7 @@ var db = require("../database.js");
 
 db.connect(function(){
 	console.log("Connected.");
-	
+
 	//db.clearCol('code');
 
 	db.getSnippet("test", function(user){
@@ -17,26 +17,9 @@ db.connect(function(){
 			//console.log(user.username);
 		}
 		else {
-			db.addSnippet("test", "\
-\
-\
-				var addSnippet = function(title, content, callback) {\
-  var collection = mdb.collection('code');\
-\
- // console.log(username)\
-\
-  collection.insert([\
-    {\"title\" : title, \"content\" : content}\
-  ], function(err, result) {\
-    assert.equal(err, null);\
-    assert.equal(1, result.result.n);\
-    assert.equal(1, result.ops.length);\
-    console.log(\"Snippet added.\");\
-    callback(result, title);\
-  });\
-}", function(info,user){
+			db.addSnippet("test", "SNIPPETHERE", function(info,user){
 				console.log("snippet " + user + " added.");
 			});
-		} 
+		}
 	});
 });

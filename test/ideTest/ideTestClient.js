@@ -1,6 +1,6 @@
 
   var socket = io(window.location.host,{ reconnection : false });
-console.debug(window.location.host)
+  console.debug(window.location.host);
 	var ide = function(){
 
 /*
@@ -46,19 +46,22 @@ element.parentNode.removeChild(element);
 
 */
 
+
+
 		var tb = document.getElementById('in');
 
     tb.focus();
 
 		tb.addEventListener("keyup", function(e){
 			socket.emit('contentModified', { inf : tb.value });
-			console.debug(tb.selectionStart);
+			console.debug("SENDING UPDATE " + tb.selectionStart);
+      document.getElementById('display').contentWindow.location.reload();
 			//console.debug(tttt(tb,3))
 		});
 
-		socket.on('contentUpdate', function (data) {
-			tb.value=data.inf;
-		});
+    socket.on('contentUpdate', function (data) {
+      tb.value=data.inf;
+    });
 
 		socket.on('disconnect', function () {
 			socket.disconnect();
@@ -66,16 +69,13 @@ element.parentNode.removeChild(element);
 		 	location.reload();
 		});
 
-		var testfunc = function(){
-			console.debug("Change");
-		};
-
-		tb.onChange = testfunc;
-
 	}
 
 
 
   document.addEventListener("DOMContentLoaded", function(event) {
-	  ide();
+      socket.on('connectionConfirmed', function (data) {
+        console.debug("Connected");
+        ide();
+      });
 	});

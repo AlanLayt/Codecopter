@@ -1,0 +1,17 @@
+textarea {
+	width:50%;
+	height: 100%;
+  outline: none;
+	background: none;
+	color: #fff;
+}
+
+#display {
+	
+}
+
+html, body {
+	margin:0;
+	padding:0;
+	background: #1D1F21;
+}

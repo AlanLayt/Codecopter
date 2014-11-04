@@ -15,7 +15,7 @@ function connect(connected, failed) {
 	MongoClient.connect(mongourl, function(err, db) {
     mdb = db;
     //console.log(err.name);
-    if(err!= null && err.name=="MongoError") 
+    if(err!= null && err.name=="MongoError")
       failed(err);
     else {
 
@@ -32,7 +32,7 @@ function connect(connected, failed) {
   return false;
 //	return MongoClient;
 
-} 
+}
 
 
 
@@ -67,9 +67,9 @@ var getUser = function(username, callback) {
   collection.find({ "username" : username }).toArray(function(err, user) {
     assert.equal(err, null);
     //assert.equal(1, docs.length);
-    console.log('DATABASE: user ' + user + ' returned.');
+    //console.log('DATABASE: user ' + user + ' returned.');
     callback(user);
-  });    
+  });
 }
 
 
@@ -90,20 +90,36 @@ var addSnippet = function(title, content, callback) {
     assert.equal(err, null);
     assert.equal(1, result.result.n);
     assert.equal(1, result.ops.length);
-    console.log("Snippet added.");
+    console.log("DATABASE: Snippet added.");
     callback(result, title);
   });
 }
 
 
 var getSnippet = function(title, callback) {
-  var collection = mdb.collection('code');
-  collection.find({ "title" : title }).toArray(function(err, user) {
-    assert.equal(err, null);
-    //assert.equal(1, docs.length);
-    console.log("DATABASE: snippet returned.");
-    callback(user);
-  });    
+	var collection = mdb.collection('code');
+	collection.find({ "title" : title }).toArray(function(err, snippet) {
+		assert.equal(err, null);
+		//assert.equal(1, docs.length);
+	//	console.log(snippet)
+		console.log("DATABASE: snippet returned.");
+		callback(snippet);
+	});
+}
+
+var updateSnippet = function(title, content, callback) {
+
+	var collection = mdb.collection('code');
+	collection.update({ "title" : title },{$set: {"content" : content }},{},
+		function(err,snippet,content){
+		console.log("DATABASE: snippet " + snippet + " updated.");
+		callback(err,snippet);
+	});
+
+/*.toArray(function(err, user) {
+		assert.equal(err, null);
+		//assert.equal(1, docs.length);
+	});*/
 }
 
 
@@ -132,13 +148,16 @@ var clearCol = function(col) {
 
 exports.addSnippet = addSnippet;
 exports.getSnippet = getSnippet;
-exports.clearCol = clearCol;
+exports.updateSnippet = updateSnippet;
+
 exports.getUser = getUser;
 exports.addUser = addUser;
+
 exports.returnRecords = returnRecords;
 exports.connect = connect;
 
 
+exports.clearCol = clearCol;
 
 
 
@@ -155,7 +174,7 @@ var findDocuments = function(db, callback) {
     console.log("DATABASE: Records returned.");
   //  console.dir(docs)
     callback(docs);
-  });      
+  });
 }
 
 
@@ -200,7 +219,7 @@ var updateDocument = function(db, callback) {
     assert.equal(1, result.result.n);
     console.log("Updated the document with the field a equal to 2");
     callback(result);
-  });  
+  });
 }
 
 var removeDocument = function(db, callback) {
@@ -212,5 +231,5 @@ var removeDocument = function(db, callback) {
     assert.equal(1, result.result.n);
     console.log("Removed the document with the field a equal to 3");
     callback(result);
-  });    
+  });
 }
