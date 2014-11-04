@@ -2,22 +2,40 @@ var socket = io(window.location.host,{ reconnection : false });
 console.debug(window.location.host);
 
 
+var Preview = function(element){
+  this.foo = "bar";
+  this.el = document.getElementById(element);
 
+  var get = function(){
+    return this.foo;
+  }
+
+  var update = function(val){
+    this.el.src = "data:text/html;charset=utf-8,"+escape(val);
+  }
+
+  this.get = get;
+  this.update = update;
+}
 
 var ide = function(){
+  var preview = new Preview('display');
+  console.debug(preview.get());
+
   var lastUpdate = false;
-  // trigger extension
   ace.require("ace/ext/language_tools");
   var editor = ace.edit("editor");
   editor.session.setMode("ace/mode/html");
   editor.setTheme("ace/theme/monokai");
-  // enable autocompletion and snippets
+
   editor.setOptions({
       enableBasicAutocompletion: true,
       enableSnippets: true,
       enableLiveAutocompletion: false
   });
-  document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+
+  //document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+  preview.update(editor.getValue());
 
 	editor.on("change", function(e){
     var content = editor.getValue();
@@ -41,7 +59,8 @@ var ide = function(){
           break;
       }
   //		console.debug("Pushing update to server");
-      document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+  //    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+      preview.update(editor.getValue());
     }
   //  else
   //    console.debug("Duplicate stopped from firing");
@@ -49,10 +68,12 @@ var ide = function(){
 
   socket.on('insert', function (data) {
     lastUpdate = data;
-    editor.session.getDocument().insert(data.range.start,data.text);
+    // Removed .getDocument() from before insert. May have broken things?
+    editor.session.insert(data.range.start,data.text);
 
 //    console.debug("Update recieved from server");
-    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+    //document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+    preview.update(editor.getValue());
   });
 
 
@@ -61,7 +82,8 @@ var ide = function(){
     lastUpdate = data;
     editor.session.getDocument().remove(data.range);
 //    console.debug("removing text");
-    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+//    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
+    preview.update(editor.getValue());
   });
 
 	socket.on('disconnect', function () {
@@ -77,7 +99,7 @@ var ide = function(){
 document.addEventListener("DOMContentLoaded", function(event) {
     socket.on('connectionConfirmed', function (data) {
       document.getElementById("editor").textContent = data.content;
-      console.debug(data)
+  //    console.debug(data)
       console.debug("Connected");
       ide();
     });
