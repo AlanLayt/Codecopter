@@ -5,23 +5,63 @@ console.debug(window.location.host);
 var Preview = function(element){
   this.foo = "bar";
   this.el = document.getElementById(element);
+  this.cntnt = "";
+  this.ut = 0;
+  this.tickStep = 100;
+  this.updateTimeout = 300;
 
   var get = function(){
     return this.foo;
   }
 
   var update = function(val){
-    this.el.src = "data:text/html;charset=utf-8,"+escape(val);
+    this.cntnt = val;
   }
+  var refresh = function(){
+    this.el.src = "data:text/html;charset=utf-8,"+escape(this.cntnt);
+  }
+
+  var tickStart = function(callback){
+    tick(this,callback);
+  }
+
+  var tick = function(ts,callback){
+    ts.ut+=ts.tickStep;
+    if(ts.ut>ts.updateTimeout){
+      ts.ut=0;
+      callback();
+      ts.refresh();
+    }
+  //  console.debug("Tick" + ts.ut);
+    this.ticker = setTimeout(tick,ts.tickStep,ts,callback);
+  }
+  var delay = function(){
+    this.ut=0;
+  }
+
 
   this.get = get;
   this.update = update;
+  this.tickStart = tickStart;
+  this.delay = delay;
+  this.refresh = refresh;
 }
+
+
+
+
+
+
 
 var ide = function(){
   var preview = new Preview('display');
   console.debug(preview.get());
+  preview.tickStart(function(){
+  //  console.debug("Refresh");
+  });
 
+
+  // Ace Initialization
   var lastUpdate = false;
   ace.require("ace/ext/language_tools");
   var editor = ace.edit("editor");
@@ -34,14 +74,19 @@ var ide = function(){
       enableLiveAutocompletion: false
   });
 
-  //document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
   preview.update(editor.getValue());
+
+
+
+
+
+
+
+  // Editor events
 
 	editor.on("change", function(e){
     var content = editor.getValue();
 
-//    console.debug(lastUpdate);
-  //  console.debug(e);
     if( lastUpdate===false
         || (e.data.text != lastUpdate.text
         || e.data.range.start.column != lastUpdate.range.start.column
@@ -58,31 +103,28 @@ var ide = function(){
           socket.emit('remove', data);
           break;
       }
-  //		console.debug("Pushing update to server");
-  //    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
       preview.update(editor.getValue());
+      preview.delay();
     }
-  //  else
-  //    console.debug("Duplicate stopped from firing");
 	});
+
+
+
+
+
+
+  // Socket events
 
   socket.on('insert', function (data) {
     lastUpdate = data;
     // Removed .getDocument() from before insert. May have broken things?
     editor.session.insert(data.range.start,data.text);
-
-//    console.debug("Update recieved from server");
-    //document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
     preview.update(editor.getValue());
   });
-
-
 
   socket.on('remove', function (data) {
     lastUpdate = data;
     editor.session.getDocument().remove(data.range);
-//    console.debug("removing text");
-//    document.getElementById('display').src = "data:text/html;charset=utf-8,"+escape(editor.getValue());
     preview.update(editor.getValue());
   });
 
@@ -99,7 +141,6 @@ var ide = function(){
 document.addEventListener("DOMContentLoaded", function(event) {
     socket.on('connectionConfirmed', function (data) {
       document.getElementById("editor").textContent = data.content;
-  //    console.debug(data)
       console.debug("Connected");
       ide();
     });

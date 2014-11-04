@@ -53,6 +53,7 @@ var socketInit = function(db,callback){
 
 		socket.on('remove', function (data) {
 			socket.broadcast.emit("remove",data);
+			GLOBAL.test = data.full;
 		});
 
 		socket.on('insert', function (data) {
