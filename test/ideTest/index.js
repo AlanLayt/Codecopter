@@ -14,8 +14,17 @@ app.set('views', __dirname + '/views');
 
 app.get('/', function(req, res){
 	res.render('ideTest', {
-	 	pretty: true
+		pretty: true
 	});
+});
+
+app.get('/ace*', function(req, res){
+//	console.log("test");
+//	console.log(req.params[0]);
+		res.sendFile(__dirname + '/ace/' + req.params[0]);
+	/*res.render('ideTest', {
+		pretty: true
+	});*/
 });
 
 app.get('/ideTest.css', function(req, res){
