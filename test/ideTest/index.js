@@ -86,15 +86,20 @@ var init = function(){
 	io.on('connection', function (socket) {
 	  console.log('User Connected.');
 
-		socket.emit("connectionConfirmed");
+		socket.emit("connectionConfirmed",{content : GLOBAL.test});
 //		io.sockets.socket(socket.id).emit("init");
 
 	 	socket.emit("contentUpdate",{ inf : GLOBAL.test });
-	  socket.on('contentModified', function (data) {
-			GLOBAL.test = data.inf;
-	//		console.log(GLOBAL.test)
-		//	console.log(socket);
-	  	socket.broadcast.emit("contentUpdate",{ inf : GLOBAL.test });
+
+		socket.on('remove', function (data) {
+			console.log(data);
+			socket.broadcast.emit("remove",data);
+		});
+
+		socket.on('insert', function (data) {
+			console.log(data);
+			socket.broadcast.emit("insert",data);
+			GLOBAL.test = data.full;
 
 
 			db.updateSnippet("test", GLOBAL.test, function(info,snippet,content){
