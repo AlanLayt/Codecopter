@@ -9,6 +9,7 @@ var Preview = function(element){
   this.ut = 0;
   this.tickStep = 100;
   this.updateTimeout = 300;
+  this.running = true;
 
   var get = function(){
     return this.foo;
@@ -27,7 +28,8 @@ var Preview = function(element){
 
   var tick = function(ts,callback){
     ts.ut+=ts.tickStep;
-    if(ts.ut>ts.updateTimeout){
+    if(ts.ut>ts.updateTimeout && ts.running){
+      ts.running = false;
       ts.ut=0;
       callback();
       ts.refresh();
@@ -37,6 +39,7 @@ var Preview = function(element){
   }
   var delay = function(){
     this.ut=0;
+    this.running = true;
   }
 
 
