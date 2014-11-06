@@ -1,5 +1,6 @@
-var socket = io(window.location.host,{ reconnection : false });
 console.debug(window.location.host);
+var socket = io(window.location.host,{ reconnection : false });
+
 
 
 var Preview = function(element){

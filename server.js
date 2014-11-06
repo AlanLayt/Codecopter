@@ -19,6 +19,9 @@ var start = function(route, db) {
 		http.listen(80, function(){
 			console.log('HTTP Server Started (Port 80)');
 
+
+
+			 // res.send("tagId is set to " + req.param("tagId"));
 				database.getSnippet("test", function(snippet){
 					if(snippet.length>0){
 						console.log("Snippet '" + snippet[0].title + "' loaded.");
@@ -29,11 +32,11 @@ var start = function(route, db) {
 							console.log("Snippet '" + snippet + "' added.");
 						});
 					}
-
 					socketInit(database,function(){
 						finalizeInit();
 					});
 				});
+
 
 		});
 
@@ -46,6 +49,7 @@ var start = function(route, db) {
 }
 
 var socketInit = function(db,callback){
+	console.log("Socket Initializing.");
 	io.on('connection', function (socket) {
 		console.log('User Connected. (' + socket.id + ')');
 

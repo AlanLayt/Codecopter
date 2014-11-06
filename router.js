@@ -4,8 +4,19 @@ var url = require("url");
 function route(app) {
 	app.get('/', function(req, res){
 		res.render('IDE', {
-			pretty: true
+			pretty: true,
+			loc : req.headers.host
 		});
+	});
+
+	app.get('/c/*', function(req, res){
+		//	res.sendFile(__dirname + '/js/lib/ace/' + req.params[0]);
+		console.log(req.params[0]);
+		GLOBAL.loaded = req.params[0];
+			res.render('IDE', {
+				pretty: true,
+				loc : req.headers.host
+			});
 	});
 
 	app.get('/ide/style.css', function(req, res){
