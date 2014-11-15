@@ -1,1 +1,0 @@
-supervisor --watch ../ ../index.js 

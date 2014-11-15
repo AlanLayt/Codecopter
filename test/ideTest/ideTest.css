@@ -1,11 +1,13 @@
 textarea#in {
 	width:50%;
 	height: 100%;
+	float:left;
+
   outline: none;
 	background: none;
 	color: #fff;
-	float:left;
 	padding: 15px;
+  resize: none;
 }
 
 iframe#display {
@@ -23,4 +25,12 @@ html, body {
 	margin:0;
 	padding:0;
 	background: #1D1F21;
+}
+
+
+#editor {
+	width:50%;
+	height: 100%;
+	float:left;
+	margin:0;
 }

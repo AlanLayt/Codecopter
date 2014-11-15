@@ -1,3 +1,6 @@
+var url = require("url");
+
+
 function route(db, handle, pathname, response) {
 	//console.log("About to route a request for " + pathname);
 	//console.log(handle);

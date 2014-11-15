@@ -1,11 +1,12 @@
 var fs = require("fs");
 
+
 function start(db,response) {
 //	console.log("Initializing Test page.");
 
 	response.writeHead(200, {"Content-Type": "text/plain"});
     response.write("Hello World\r\r");
-        
+
     db.returnRecords(function(docs){
     	docs.forEach(function(t){
     		//console.log(t);
@@ -35,10 +36,3 @@ function favico(db,response) {
 
 exports.start = start;
 exports.favico = favico;
-
-
-
-
-
-
-

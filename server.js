@@ -1,33 +1,45 @@
-var http = require("http");
-var url = require("url");
-var dbt = null;
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var jade = require('jade');
 
-function start(route, db, handle) {
+app.set('view engine', 'jade');
+app.set('views', __dirname + '/views');
 
+GLOBAL.test = "LoadFailed.";
 
-	function onRequest(request, response) {
-		var pathname = url.parse(request.url).pathname;
-
-		route(db, handle, pathname, response);
-	}
+var start = function(route, db, handle) {
+	var database = db;
+	//route(app);
+		route(db, handle, response);
 
 	console.log("------- Startup --------");
 
 	db.connect(function(db){
-			http.createServer(onRequest).listen(80);
-			console.log("HTTP: Server Started.");
-			dbt = db;
 
-			console.log("------------------------");
+		http.listen(80, function(){
+			console.log('HTTP Server Started (Port 80)');
+
+			socketInit(database,function(){
+				finalizeInit();
+			});
+		});
+
 		},
 		function(err){
 			console.log("Mongo database not found on port 27017. Exiting.");
-			console.log("------------------------");
+			finalizeInit();
 		});
-
 
 }
 
+var socketInit = function(db,callback){
+	callback();
+}
+
+var finalizeInit = function(){
+	console.log("------------------------");
+}
 
 
 

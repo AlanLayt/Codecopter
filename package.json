@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.0.3",
+    "colours": "^0.6.0-2",
     "express": "^4.10.0",
     "jade": "^1.7.0",
     "logger": "0.0.1",
