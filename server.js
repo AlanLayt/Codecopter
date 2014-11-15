@@ -8,9 +8,10 @@ app.set('views', __dirname + '/views');
 
 GLOBAL.test = "LoadFailed.";
 
-var start = function(route, db) {
+var start = function(route, db, handle) {
 	var database = db;
-	route(app);
+	//route(app);
+		route(db, handle, response);
 
 	console.log("------- Startup --------");
 
@@ -19,25 +20,9 @@ var start = function(route, db) {
 		http.listen(80, function(){
 			console.log('HTTP Server Started (Port 80)');
 
-
-
-			 // res.send("tagId is set to " + req.param("tagId"));
-				database.getSnippet("test", function(snippet){
-					if(snippet.length>0){
-						console.log("Snippet '" + snippet[0].title + "' loaded.");
-						GLOBAL.test = snippet[0].content;
-					}
-					else {
-						database.addSnippet("test", "SNIPPETHERE", function(info,snippet){
-							console.log("Snippet '" + snippet + "' added.");
-						});
-					}
-					socketInit(database,function(){
-						finalizeInit();
-					});
-				});
-
-
+			socketInit(database,function(){
+				finalizeInit();
+			});
 		});
 
 		},
@@ -49,32 +34,6 @@ var start = function(route, db) {
 }
 
 var socketInit = function(db,callback){
-	console.log("Socket Initializing.");
-	io.on('connection', function (socket) {
-		console.log('User Connected. (' + socket.id + ')');
-
-		socket.emit("connectionConfirmed",{content : GLOBAL.test});
-
-		socket.on('remove', function (data) {
-			socket.broadcast.emit("remove",data);
-			GLOBAL.test = data.full;
-		});
-
-		socket.on('insert', function (data) {
-			socket.broadcast.emit("insert",data);
-			GLOBAL.test = data.full;
-
-			db.updateSnippet("test", GLOBAL.test, function(info,snippet,content){
-				console.log("Snippet updated.");
-			});
-		});
-		socket.on('disconnect', function () {
-			console.log('Connection lost. (' + socket.id + ')');
-		});
-
-	});
-
-
 	callback();
 }
 
