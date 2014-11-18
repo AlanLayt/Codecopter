@@ -1,17 +1,32 @@
+var app,io,db;
+var url = require('url');
 
+var init = function(mapp,mio,mdb){
+  app = mapp,
+  io = mio,
+  db = mdb;
 
-var setEvents = function(){
-  console.log("Initializing IDE Events.");
+  start();
+  console.log('IDE: Initialized');
+}
 
-
-  console.log("Socket Initializing.");
-
+var start = function(){
   
   io.on('connection', function (socket) {
     console.log('User Connected. (' + socket.id + ')');
 
+
+
     socket.emit("connectionConfirmed",{content : GLOBAL.test});
 
+    // Handles request for whole snippet and sends resulting snippet
+    socket.on('requestSnip', function (data) {
+      db.getSnippet(data.snid,function(snippet){
+        socket.emit("loadSnip",{snippet : snippet[0]});
+      });
+    });
+
+    // Handles remove request and brodcasts to other connected clients
     socket.on('remove', function (data) {
       socket.broadcast.emit("remove",data);
       GLOBAL.test = data.full;
@@ -31,8 +46,11 @@ var setEvents = function(){
 
   });
 
+  console.log("SOCKET: IDE Sockets Initialized.");
+  return this;
 }
 
 
 
-exports.setEvents = setEvents;
+exports.start = start;
+exports.init = init;

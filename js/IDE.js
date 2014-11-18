@@ -132,19 +132,26 @@ var ide = function(){
     preview.update(editor.getValue());
   });
 
-	socket.on('disconnect', function () {
-		socket.disconnect();
-		console.debug("Connection Lost. Reloading.");
-	 	location.reload();
-	});
+  socket.on('disconnect', function () {
+    socket.disconnect();
+    console.debug("Connection Lost. Reloading.");
+    location.reload();
+  });
+
+  socket.on('loadSnip', function (data) {
+    // document.getElementById("editor").textContent = data.content;
+  //  console.log(data.snippet.content)
+    editor.setValue(data.snippet.content);
+  });
 
 }
 
 
 
 document.addEventListener("DOMContentLoaded", function(event) {
+    var snid = document.getElementById('editor').getAttribute('snid');
     socket.on('connectionConfirmed', function (data) {
-      document.getElementById("editor").textContent = data.content;
+      socket.emit('requestSnip', {snid : snid});
       console.debug("Connected");
       ide();
     });

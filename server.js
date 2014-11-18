@@ -6,21 +6,19 @@ var jade = require('jade');
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
-GLOBAL.test = "LoadFailed.";
 
-var start = function(route, db, handle) {
-	var database = db;
-	//route(app);
-		route(db, handle, response);
 
+
+// Start http server,MongoDB, sockets and initialize routing or fail gracefully
+var start = function(route, db, handlers) {
 	console.log("------- Startup --------");
 
-	db.connect(function(db){
-
+	db.connect(function(dbm){
 		http.listen(80, function(){
-			console.log('HTTP Server Started (Port 80)');
+			console.log('HTTP: Server Started (Port 80)');
 
-			socketInit(database,function(){
+			handleInit(handlers,db,function(){
+				route(app, db, handlers);
 				finalizeInit();
 			});
 		});
@@ -29,14 +27,21 @@ var start = function(route, db, handle) {
 		function(err){
 			console.log("Mongo database not found on port 27017. Exiting.");
 			finalizeInit();
-		});
+		}
+	);
 
 }
 
-var socketInit = function(db,callback){
+// Depricated Method, contained socket.io events,
+// Retained to handle user-related events later
+var handleInit = function(handlers,db,callback){
+	Object.keys(handlers).forEach(function(key){
+		handlers[key].init(app,io,db);
+	})
 	callback();
 }
 
+// Final output for startup
 var finalizeInit = function(){
 	console.log("------------------------");
 }

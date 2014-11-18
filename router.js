@@ -1,18 +1,31 @@
 var url = require("url");
 
 
-function route(db, handle, pathname, response) {
-	//console.log("About to route a request for " + pathname);
-	//console.log(handle);
-	if (typeof handle[pathname] === 'function') {
-		handle[pathname](db,response);
-	} else {
-		console.log("No request handler found for " + pathname);
-		response.writeHead(404, {"Content-Type": "text/plain"});
-		response.write("404 Not found");
-		response.end();
+function route(app, db, handlers) {
+	//console.log(db);
 
-	}
+//	console.log(handlers.ide);
+
+	app.get('/', function(req, res){
+	  res.render('ide', { loc: req.headers.host });
+	});
+	app.get('/c/:snid', function(req, res){
+		var snid = req.param("snid");
+		res.render('ide', { loc : req.headers.host, snid : snid });
+	});
+	app.get('/ide/core.js', function(req, res){
+    	res.sendFile(__dirname + '/js/IDE.js'); 
+	});
+	app.get('/ide/style.css', function(req, res){
+    	res.sendFile(__dirname + '/css/IDE.css'); 
+	});
+
+
+	app.get('/ace/*', function(req, res){
+    	res.sendFile( __dirname + '/js/lib/ace/' + req.params[0]); 
+	});
+
+	console.log("ROUTER: Started.");
 }
 
 
