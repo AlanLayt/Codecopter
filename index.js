@@ -3,7 +3,8 @@ var router = require("./router");
 var db = require('./database');
 
 var handlers = {
-		ide : require('./ideHandler')
+		ide : require('./ideHandler'),
+		gallery : require('./galleryHandler')
 	};
 
 

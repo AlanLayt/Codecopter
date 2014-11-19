@@ -14,8 +14,16 @@ html
 
 
 	body
+		div#header
+			a(href='http://#{loc}')
+				div.section < Home
+
 		//textarea#in
-		iframe#display(height='100%' frameborder=0 scrolling='no')
+		iframe#display(frameborder=0 scrolling='no')
 
 
-		pre#editor(snid='#{snid}')
+		pre#editor(snid='#{snid}').
+			#{snippet}
+
+
+		div#cursorHold

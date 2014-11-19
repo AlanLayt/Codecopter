@@ -3,52 +3,110 @@ var url = require("url");
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var mdb=null;
+var db=null;
+var connection = {
+  address : 'localhost',
+  port : 27017,
+  database : 'codeucation'
+}
 
 
-
-
+// Initializes connection to database or runs failure callback
 function connect(connected, failed) {
-	var mongourl = 'mongodb://localhost:27017/codeucation';
+	var mongourl = 'mongodb://'+connection.address+':'+connection.port+'/'+connection.database;
 	var connected = connected;
 	var mdbt;
 
-	MongoClient.connect(mongourl, function(err, db) {
-    mdb = db;
-    //console.log(err.name);
+	MongoClient.connect(mongourl, function(err, mdb) {
     if(err!= null && err.name=="MongoError")
-      failed(err);
+      failed(err,connection);
     else {
-
-  		//console.log(assert.equal(null, err));
-  		console.log("MONGODB: Connection Successful.");
-
-  		connected(db);
-
+      // Sets module mdb to database object
+      db = mdb;
+      connected(db,connection);
       return true;
     }
 
 	});
 
   return false;
-//	return MongoClient;
-
 }
+
+
+
+
+
+
+
+var addSnippet = function(title, content, callback) {
+  var collection = db.collection('code');
+
+  collection.insert([
+    {"title" : title, "content" : content}
+  ], function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    assert.equal(1, result.ops.length);
+    callback(result, title);
+  });
+}
+
+
+var getSnippet = function(title, callback) {
+  var collection = db.collection('code');
+
+  collection.find({ "title" : title }).toArray(function(err, snippet) {
+    assert.equal(err, null);
+    callback(snippet);
+  });
+}
+
+var getAllSnippets = function(callback) {
+  var collection = db.collection('code');
+
+  collection.find().toArray(function(err, snippet) {
+    assert.equal(err, null);
+    callback(snippet);
+  });
+}
+
+var updateSnippet = function(title, content, callback) {
+	var collection = db.collection('code');
+  var title = title;
+
+	collection.update(
+    { "title" : title },
+    {$set: {"content" : content }},
+    {},
+		function(err){
+  		callback(err,content,title);
+  	}
+  );
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 function returnRecords(recordsFound) {
-		return findDocuments(mdb, function(docs) {
-   			recordsFound(docs);
-			return docs;
-		});
+    return findDocuments(db, function(docs) {
+        recordsFound(docs);
+      return docs;
+    });
 }
 
 
 var addUser = function(username, password, callback) {
-  var collection = mdb.collection('users');
-
- // console.log(username)
+  var collection = db.collection('users');
 
   collection.insert([
     {"username" : username, "password" : password}
@@ -63,7 +121,7 @@ var addUser = function(username, password, callback) {
 
 
 var getUser = function(username, callback) {
-  var collection = mdb.collection('users');
+  var collection = db.collection('users');
   collection.find({ "username" : username }).toArray(function(err, user) {
     assert.equal(err, null);
     //assert.equal(1, docs.length);
@@ -79,67 +137,8 @@ var getUser = function(username, callback) {
 
 
 
-var addSnippet = function(title, content, callback) {
-  var collection = mdb.collection('code');
-
- // console.log(username)
-
-  collection.insert([
-    {"title" : title, "content" : content}
-  ], function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    assert.equal(1, result.ops.length);
-  //  console.log("DATABASE: Snippet added.");
-    callback(result, title);
-  });
-}
-
-
-var getSnippet = function(title, callback) {
-	var collection = mdb.collection('code');
-	collection.find({ "title" : title }).toArray(function(err, snippet) {
-		assert.equal(err, null);
-		//assert.equal(1, docs.length);
-	//	console.log(snippet)
-	//	console.log("DATABASE: snippet returned.");
-		callback(snippet);
-	});
-}
-
-var updateSnippet = function(title, content, callback) {
-
-	var collection = mdb.collection('code');
-	collection.update({ "title" : title },{$set: {"content" : content }},{},
-		function(err,snippet,content){
-		console.log("DATABASE: snippet " + snippet + " updated.");
-		callback(err,snippet);
-	});
-
-/*.toArray(function(err, user) {
-		assert.equal(err, null);
-		//assert.equal(1, docs.length);
-	});*/
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var clearCol = function(col) {
-  mdb.collection(col,function(err, collection){
+  db.collection(col,function(err, collection){
       collection.remove({},function(err, removed){
       });
   });
@@ -149,6 +148,7 @@ var clearCol = function(col) {
 exports.addSnippet = addSnippet;
 exports.getSnippet = getSnippet;
 exports.updateSnippet = updateSnippet;
+exports.getAllSnippets = getAllSnippets;
 
 exports.getUser = getUser;
 exports.addUser = addUser;

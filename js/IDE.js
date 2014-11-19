@@ -1,6 +1,6 @@
 console.debug(window.location.host);
 var socket = io(window.location.host,{ reconnection : false });
-
+var cursors = Array();
 
 
 var Preview = function(element){
@@ -57,7 +57,7 @@ var Preview = function(element){
 
 
 
-var ide = function(){
+var ide = function(snid){
   var preview = new Preview('display');
   console.debug(preview.get());
   preview.tickStart(function(){
@@ -81,9 +81,52 @@ var ide = function(){
   preview.update(editor.getValue());
 
 
+  console.debug(editor.selection);
+  editor.selection.on('changeCursor',function(){
+    var pos = editor.selection.getCursor();
+    pos.snid = snid;
+    socket.emit('cursorMove',pos);
+    console.debug(editor.renderer.textToScreenCoordinates(pos.row,pos.column));
+    console.debug(editor.selection.getCursor());//textToScreenCoordinates
+  });
 
+  socket.on('cursorMove', function (data) {
+    var curhold = document.getElementById("cursorHold");
+    curhold.innerHTML = '';
+    var pos = editor.renderer.textToScreenCoordinates(data.row,data.column);
+    console.debug("Incoming cursor:");
+    console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
+    var colours = Array('B8006D','FF774C','3DA7D5');
 
+    if(data.socketid in cursors){
+      cursors[data.socketid].row = data.row;
+      cursors[data.socketid].column = data.column;
+    }
+    else {
+      cursors[data.socketid] = data;
+      cursors[data.socketid].colour = colours[Math.floor(Math.random()*3)];
+    }
 
+  console.debug(cursors)
+    Object.keys(cursors).forEach(function(key){
+      var pos = editor.renderer.textToScreenCoordinates(cursors[key].row,cursors[key].column);
+      var obj = document.createElement('div');
+      obj.id = "::img";
+      obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff;';
+
+      curhold.appendChild(obj);
+    });
+  });
+
+document.addEventListener("keydown", function(e) {
+  if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+    e.preventDefault();
+    console.debug('Saving.');
+
+    socket.emit('save', { snid : snid, content : editor.getValue() });
+
+  }
+}, false);
 
 
   // Editor events
@@ -98,6 +141,7 @@ var ide = function(){
 
       var data = e.data;
       data.full = editor.getValue();
+      data.snid = snid;
 
       switch(e.data.action){
         case 'insertText':
@@ -153,6 +197,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     socket.on('connectionConfirmed', function (data) {
       socket.emit('requestSnip', {snid : snid});
       console.debug("Connected");
-      ide();
+      ide(snid);
     });
 });
