@@ -59,6 +59,9 @@ var Preview = function(element){
 
 var ide = function(snid){
   var preview = new Preview('display');
+  var caretBlink = false;
+
+
   console.debug(preview.get());
   preview.tickStart(function(){
   //  console.debug("Refresh");
@@ -81,21 +84,38 @@ var ide = function(snid){
   preview.update(editor.getValue());
 
 
-  console.debug(editor.selection);
+
+
+
+
+
+ // Caret stuff
+
+ var blinkProc = function(){
+   caretBlink = caretBlink?false:true;
+   var blinkTimer = window.setTimeout(blinkProc,800);
+   Object.keys(cursors).forEach(function(key){
+     cursors[key].el.style.display = caretBlink?'block':'none';
+   });
+ }
+ blinkProc();
+
+
+  //console.debug(editor.selection);
   editor.selection.on('changeCursor',function(){
     var pos = editor.selection.getCursor();
     pos.snid = snid;
     socket.emit('cursorMove',pos);
-    console.debug(editor.renderer.textToScreenCoordinates(pos.row,pos.column));
-    console.debug(editor.selection.getCursor());//textToScreenCoordinates
+    //console.debug(editor.renderer.textToScreenCoordinates(pos.row,pos.column));
+    //console.debug(editor.selection.getCursor());//textToScreenCoordinates
   });
 
   socket.on('cursorMove', function (data) {
     var curhold = document.getElementById("cursorHold");
     curhold.innerHTML = '';
     var pos = editor.renderer.textToScreenCoordinates(data.row,data.column);
-    console.debug("Incoming cursor:");
-    console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
+    //console.debug("Incoming cursor:");
+    //console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
     var colours = Array('B8006D','FF774C','3DA7D5');
 
     if(data.socketid in cursors){
@@ -107,13 +127,13 @@ var ide = function(snid){
       cursors[data.socketid].colour = colours[Math.floor(Math.random()*3)];
     }
 
-  console.debug(cursors)
+//  console.debug(cursors)
     Object.keys(cursors).forEach(function(key){
       var pos = editor.renderer.textToScreenCoordinates(cursors[key].row,cursors[key].column);
       var obj = document.createElement('div');
       obj.id = "::img";
-      obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff;';
-
+      obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff; display:'+(caretBlink?'block':'none')+';';
+      cursors[key].el = obj;
       curhold.appendChild(obj);
     });
   });
@@ -179,7 +199,7 @@ document.addEventListener("keydown", function(e) {
   socket.on('disconnect', function () {
     socket.disconnect();
     console.debug("Connection Lost. Reloading.");
-    location.reload();
+    var test = window.setTimeout(function(){location.reload()},1000);
   });
 
   socket.on('loadSnip', function (data) {

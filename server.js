@@ -15,7 +15,7 @@ var start = function(route, db, handlers) {
 
 	db.connect(function(dbm,srv){
 		console.log('MONGO: Database found. (Port %d)', srv.port);
-		http.listen(80, function(){
+		http.listen(88, function(){
 			console.log('HTTP: Server Started. (Port 80)');
 
 			handleInit(handlers,db,function(){

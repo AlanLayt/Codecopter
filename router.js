@@ -14,25 +14,25 @@ function route(app, db, handlers) {
 		var snid = req.param("snid");
 
 		handlers.ide.getSnippet(snid,function(snippet){
-		
+
 			res.render('ide', { loc : req.headers.host, snid : snid, snippet : snippet, pretty : true });
 		});
 	});
 	app.get('/ide/core.js', function(req, res){
-    	res.sendFile(__dirname + '/js/IDE.js'); 
+    	res.sendFile(__dirname + '/js/IDE.js');
 	});
 	app.get('/ide/style.css', function(req, res){
-    	res.sendFile(__dirname + '/css/IDE.css'); 
+    	res.sendFile(__dirname + '/css/IDE.css');
 	});
 
 
 
 
 	app.get('/ace/*', function(req, res){
-    	res.sendFile( __dirname + '/js/lib/ace/' + req.params[0]); 
+    	res.sendFile( __dirname + '/js/lib/ace/' + req.params[0]);
 	});
 	app.get('/lib/*', function(req, res){
-    	res.sendFile( __dirname + '/js/lib/' + req.params[0]); 
+    	res.sendFile( __dirname + '/js/lib/' + req.params[0]);
 	});
 
 
@@ -46,6 +46,9 @@ function route(app, db, handlers) {
 
 
 
+	app.get('/favicon.ico', function(req, res){
+		res.sendFile(__dirname + '/img/icon.png');
+	});
 
 
 
@@ -56,11 +59,11 @@ function route(app, db, handlers) {
 		});
 	});
 	app.get('/gallery/style.css', function(req, res){
-    	res.sendFile(__dirname + '/css/gallery.css'); 
+    	res.sendFile(__dirname + '/css/gallery.css');
 	});
 
 	app.get('/img/:img', function(req, res){
-    	res.sendFile(__dirname + '/img/' + req.param("img")); 
+    	res.sendFile(__dirname + '/img/' + req.param("img"));
 	});
 
 
