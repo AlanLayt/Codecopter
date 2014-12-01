@@ -13,7 +13,7 @@ var init = function(mapp,mio,mdb){
 }
 
 var start = function(){
-  
+
   io.on('connection', function (socket) {
 
     console.log('User Connected. (%s)', socket.id);
@@ -76,7 +76,7 @@ var start = function(){
     socket.on('cursorMove', function (data) {
       data.socketid = socket.id;
       socket.broadcast.to(data.snid).emit("cursorMove",data);
-      console.log('cursormove');
+      //console.log('cursormove');
     });
 
   });
@@ -92,7 +92,7 @@ var userCount = function(){
 var getSnippet = function(snid,callback){
   if(snid in loaded)
     callback(loaded[snid]);
-  else 
+  else
     db.getSnippet(snid,function(snippet){
       var snp = '';
       if(snippet.length>0)
