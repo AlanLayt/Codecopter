@@ -1,0 +1,29 @@
+html
+	head
+		title Test IDE
+
+
+		link(rel='stylesheet', href='http://#{loc}/ide/style.css')
+		link(rel='icon', href='http://#{loc}/favicon.ico')
+
+		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
+		script(rel='text/javascript', src='http://#{loc}/ace/ace.js')
+		script(rel='text/javascript', src='http://#{loc}/ace/ext-language_tools.js')
+
+		script(rel='text/javascript', src='http://#{loc}/ide/core.js')
+
+
+	body
+		div#header
+			a(href='http://#{loc}')
+				div.section < Back
+
+		//textarea#in
+		iframe#display(frameborder=0 scrolling='no')
+
+
+		pre#editor(snid='#{snid}').
+			#{snippet}
+
+
+		div#cursorHold
