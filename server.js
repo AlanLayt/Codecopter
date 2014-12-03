@@ -8,15 +8,15 @@ app.set('views', __dirname + '/views');
 
 
 
-
+ 
 // Start http server,MongoDB, sockets and initialize routing or fail gracefully
 var start = function(route, db, handlers) {
 	console.log("------- Startup --------");
 
 	db.connect(function(dbm,srv){
 		console.log('MONGO: Database found. (Port %d)', srv.port);
-		http.listen(88, function(){
-			console.log('HTTP: Server Started. (Port 80)');
+		http.listen(7777, function(){
+			console.log('HTTP: Server Started. (Port 7777)');
 
 			handleInit(handlers,db,function(){
 				route(app, db, handlers);
@@ -24,12 +24,13 @@ var start = function(route, db, handlers) {
 			});
 		});
 
-		},
-		function(err,srv){
-			console.error('ERR: Mongo database not found on port %d. Exiting.', srv.port);
-			finalizeInit();
-		}
-	);
+	},
+	function(err,srv){
+		console.error('ERR: Mongo database not found on %s:%d. Exiting.',srv.address, srv.port);
+		console.error(err);
+		console.error('----');
+		finalizeInit();
+	});
 
 }
 

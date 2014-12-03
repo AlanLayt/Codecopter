@@ -1,82 +1,51 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400);
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #272822; }
 
 div#header {
-	font-family: 'Source Sans Pro', sans-serif;
-	font-weight: 100;
-	background:rgba();
-	overflow: auto;
-	border-bottom: 1px solid rgba(255,255,255,0.2);
-	height: 35px;
-}
-div#header .section {
-	padding: 5px 10px 5px 10px;
-	float:left;
-}
-div#header a {
-	color: rgba(255,255,255,0.7);
-	text-decoration: none;
-}
-div#header a:Hover {
-	color: rgba(255,255,255,1);
-}
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 100;
+  overflow: auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  height: 35px; }
+  div#header .section {
+    padding: 5px 10px 5px 10px;
+    float: left; }
+  div#header a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none; }
+  div#header :Hover {
+    color: white; }
 
-textarea#in {
-	width:50%;
-	height: 100%;
-	float:left;
-
-  outline: none;
-	background: none;
-	color: #fff;
-	padding: 15px;
-  resize: none;
-}
-
-iframe#display {
-	float:right;
-	width:50%;
-	height: calc(100% - 36px);
-
-}
-
-#in,#display {
-	margin:0;
-	padding: 0;
-}
-
-html, body {
-	margin:0;
-	padding:0;
-	height: 100%;
-	background: #1D1F21;
-}
-
-
-#editor {
-	width:50%;
-	height: calc(100% - 36px);
-	float:left;
-	margin:0;
-}
-
+div#holder {
+  width: 100%;
+  height: calc(100% - 36px);
+  display: flex; }
+  div#holder #display, div#holder #editor {
+    flex: 1;
+    height: 100%;
+    margin: 0;
+    padding: 0; }
+  div#holder #editor {
+    border-right: 1px dashed rgba(255, 255, 255, 0.5); }
 
 ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
+  width: 7px;
+  height: 7px; }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 7px;
-}
+  -webkit-border-radius: 10px;
+  border-radius: 7px; }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 7px;
-    background: rgba(255,255,255,0.4);
-}
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.4); }
+
 ::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(255,255,255,0.2);
-}
+  background: rgba(255, 255, 255, 0.2); }

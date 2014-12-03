@@ -1,0 +1,70 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400);
+
+html, body {
+  margin:0;
+  padding:0;
+  height: 100%;
+  background: #272822;
+}
+
+div#header {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 100;
+  overflow: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  height: 35px;
+  .section {
+    padding: 5px 10px 5px 10px;
+    float:left;
+  }
+  a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+  }:Hover {
+    color: rgba(255,255,255,1);
+  }
+}
+
+
+div#holder {
+  width: 100%;
+  height: calc(100% - 36px);
+  display:flex;
+  #display, #editor {
+    flex: 1;
+    height: 100%;
+    margin:0;
+    padding: 0;
+  }
+
+  #editor {
+    border-right: 1px dashed rgba(255,255,255,0.5);
+  }
+}
+
+
+
+
+
+
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.4);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255,255,255,0.2);
+}

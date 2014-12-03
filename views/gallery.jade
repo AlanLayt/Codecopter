@@ -7,10 +7,14 @@ html
 		link(rel='icon', href='http://#{loc}/favicon.ico')
 
 		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
+		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
 
 
 	body
 		h1 Codeucation
+		form(id='newSnippet' action='/c/' method='post')
+			input(name='title' type='text')
+			input(type='submit' value='Create')
 
 		div#holder
 			-each item in items

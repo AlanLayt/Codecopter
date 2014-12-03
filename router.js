@@ -1,4 +1,7 @@
 var url = require("url");
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 function route(app, db, handlers) {
@@ -24,7 +27,13 @@ function route(app, db, handlers) {
 	app.get('/ide/style.css', function(req, res){
     	res.sendFile(__dirname + '/css/IDE.css');
 	});
-
+	app.post('/c/', urlencodedParser, function(req, res) {
+		var title = req.body.title;//.param('title');
+		//console.log(title.body);
+		console.log('request %s recieved.', title);
+		res.redirect('/c/' + title);
+	//	console.log("post received: %s %s", username, password);
+	});
 
 
 

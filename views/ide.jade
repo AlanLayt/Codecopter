@@ -11,6 +11,7 @@ html
 		script(rel='text/javascript', src='http://#{loc}/ace/ext-language_tools.js')
 
 		script(rel='text/javascript', src='http://#{loc}/ide/core.js')
+		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
 
 
 	body
@@ -18,12 +19,10 @@ html
 			a(href='http://#{loc}')
 				div.section < Back
 
-		//textarea#in
-		iframe#display(frameborder=0 scrolling='no')
-
-
-		pre#editor(snid='#{snid}').
-			#{snippet}
+		div#holder
+			pre#editor(snid='#{snid}').
+				#{snippet}
+			iframe#display(frameborder=0 scrolling='no')
 
 
 		div#cursorHold
