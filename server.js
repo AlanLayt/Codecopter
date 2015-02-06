@@ -3,20 +3,22 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jade = require('jade');
 
+var httpPort = 7777;
+
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
 
 
- 
 // Start http server,MongoDB, sockets and initialize routing or fail gracefully
 var start = function(route, db, handlers) {
 	console.log("------- Startup --------");
 
 	db.connect(function(dbm,srv){
 		console.log('MONGO: Database found. (Port %d)', srv.port);
-		http.listen(7777, function(){
-			console.log('HTTP: Server Started. (Port 7777)');
+		http.listen(httpPort, function(err){
+
+			console.log('HTTP: Server Started. (Port %d)', httpPort);
 
 			handleInit(handlers,db,function(){
 				route(app, db, handlers);

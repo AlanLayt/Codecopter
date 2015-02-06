@@ -16,6 +16,7 @@
     "body-parser": "^1.10.0",
     "express": "^4.10.0",
     "jade": "^1.7.0",
+    "livereload": "^0.3.6",
     "logger": "0.0.1",
     "mongodb": "~2.0",
     "socket.io": "^1.1.0",
