@@ -2,13 +2,22 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #1D1F21;
+  background: #fff;
   font-family: 'Source Sans Pro', sans-serif;
-  background: url('../img/bg.jpg') no-repeat center center fixed;
-  background-size: cover; }
+  background-size: cover;
+  -webkit-font-smoothing: antialiased; }
+
+div#header {
+  max-width: 950px;
+  margin: 0 auto;
+  overflow: auto; }
+  div#header .headSec {
+    float: left; }
+  div#header .createNew {
+    float: right; }
 
 h1 {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.8);
   font-weight: 100;
   margin: 10px; }
 
@@ -19,7 +28,7 @@ form#newSnippet {
   form#newSnippet input {
     padding: 0.8em;
     background: #fff;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     display: block;
     float: left;
     position: relative; }
@@ -27,6 +36,15 @@ form#newSnippet {
     border-radius: 0.2em 0 0 0.2em; }
   form#newSnippet :last-of-type {
     border-radius: 0 0.2em 0.2em 0; }
+
+#menu {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0 0 100px 0; }
+  #menu .section svg {
+    fill: #000;
+    width: 20px; }
 
 #footer {
   position: fixed;
@@ -43,9 +61,9 @@ form#newSnippet {
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     font-weight: 100; }
   #footer .section svg {
-    width: 10px;
-    margin: 0 4px -1px 3px; }
-  #footer .section svg path {
+    height: 20px;
+    width: 20px;
+    margin: 0 4px -1px 3px;
     fill: rgba(255, 255, 255, 0.5); }
 
 #holder {
@@ -55,7 +73,9 @@ form#newSnippet {
   flex-flow: row wrap;
   justify-content: space-around;
   align-items: center;
-  align-content: space-around; }
+  align-content: space-around;
+  max-width: 950px;
+  margin: 0 auto; }
   #holder a {
     flex: 1;
     min-width: 300px;

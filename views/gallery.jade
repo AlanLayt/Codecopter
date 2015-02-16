@@ -11,10 +11,18 @@ html
 
 
 	body
-		h1 CodeLight
-		form(id='newSnippet' action='/c/' method='post')
-			input(name='title' type='text')
-			input(type='submit' value='Create')
+		div#header
+			div.headSec
+				h1 CodeLight
+			div.headSec.createNew
+				form(id='newSnippet' action='/c/' method='post')
+					input(name='title' type='text')
+					input(type='submit' value='Create')
+
+		div#menu
+			div.section
+				svg(class="icon shape-new")
+					use(xlink:href="icons.svg#shape-new")
 
 		div#holder
 			-each item in items
@@ -25,7 +33,6 @@ html
 
 		div#footer
 			div.section
-				svg#Layer_1(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', version='1.1', x='0px', y='0px', viewbox='0 0 75 100', style='enable-background: new 0 0 75 100;', xml:space='preserve')
-					path(d='M37.5,50C16.797,50,0,66.797,0,87.5C0,94.409,5.591,100,12.5,100h50c6.909,0,12.5-5.591,12.5-12.5  C75,66.797,58.203,50,37.5,50z')
-					path(d='M56.25,18.75c0,10.352-8.398,18.75-18.75,18.75s-18.75-8.398-18.75-18.75S27.148,0,37.5,0  S56.25,8.398,56.25,18.75z')
+				svg(class="icon shape-user")
+					use(xlink:href="icons.svg#shape-user")
 				| #{userCount}

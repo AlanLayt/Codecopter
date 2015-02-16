@@ -25,7 +25,10 @@ function route(app, db, handlers) {
     	res.sendFile(__dirname + '/js/IDE.js');
 	});
 	app.get('/ide/style.css', function(req, res){
-    	res.sendFile(__dirname + '/css/IDE.css');
+			res.sendFile(__dirname + '/css/IDE.css');
+	});
+	app.get('/icons.svg', function(req, res){
+			res.sendFile(__dirname + '/css/svg-defs.svg');
 	});
 	app.post('/c/', urlencodedParser, function(req, res) {
 		var title = req.body.title;//.param('title');
