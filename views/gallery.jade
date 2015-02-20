@@ -16,8 +16,10 @@ html
 				h1 CodeLight
 			div.headSec.createNew
 				form(id='newSnippet' action='/c/' method='post')
-					input(name='title' type='text')
-					input(type='submit' value='Create')
+					input(name='title' type='text' placeholder='New Snippet')
+				div.createButton
+					svg(class="icon newButton")
+						use(xlink:href="icons.svg#shape-new")
 
 		div#menu
 			div.section

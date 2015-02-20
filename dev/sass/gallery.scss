@@ -19,6 +19,26 @@ div#header {
   }
   .createNew {
     float:right;
+    position:relative;
+    margin: 10px;
+    #newSnippet {
+      margin:0;
+    }
+  }
+  .createButton {
+    position:absolute;
+    top:4;
+    right:5;
+    .newButton {
+      fill:#ccc;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .createNew:Hover {
+    .newButton {
+      fill:#333;
+    }
   }
 }
 
@@ -50,11 +70,15 @@ form#newSnippet {
   position: absolute;
   left:0;
   bottom:0;
-  padding: 0 0 100px 0;
+  padding: 0;
+  height:100%;
+  background:#000;
   .section{
+    padding: 10px;
     svg {
-      fill:#000;
-      width: 20px;
+      fill:#fff;
+      width: 30px;
+      height: 30px
     }
   }
 }

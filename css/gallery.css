@@ -14,7 +14,21 @@ div#header {
   div#header .headSec {
     float: left; }
   div#header .createNew {
-    float: right; }
+    float: right;
+    position: relative;
+    margin: 10px; }
+    div#header .createNew #newSnippet {
+      margin: 0; }
+  div#header .createButton {
+    position: absolute;
+    top: 4;
+    right: 5; }
+    div#header .createButton .newButton {
+      fill: #ccc;
+      width: 30px;
+      height: 30px; }
+  div#header .createNew:Hover .newButton {
+    fill: #333; }
 
 h1 {
   color: rgba(0, 0, 0, 0.8);
@@ -41,10 +55,15 @@ form#newSnippet {
   position: absolute;
   left: 0;
   bottom: 0;
-  padding: 0 0 100px 0; }
-  #menu .section svg {
-    fill: #000;
-    width: 20px; }
+  padding: 0;
+  height: 100%;
+  background: #000; }
+  #menu .section {
+    padding: 10px; }
+    #menu .section svg {
+      fill: #fff;
+      width: 30px;
+      height: 30px; }
 
 #footer {
   position: fixed;
