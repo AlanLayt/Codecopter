@@ -66,8 +66,18 @@ function route(app, db, handlers) {
 
 
 	app.get('/:var(r)?', function(req, res){
+		var authDetails = handlers.auth.get(req, res);
+		console.log(authDetails.logged?authDetails.twitterAuth.profile_image_url:'')
 		db.getAllSnippets(function(snippets){
-	  		res.render('gallery', { loc: req.headers.host, items : snippets, pretty : true, userCount : handlers.ide.userCount() });
+	  		res.render('gallery', {
+					loc: req.headers.host,
+					items : snippets,
+					pretty : true,
+					userCount : handlers.ide.userCount(),
+					logged : authDetails.logged,
+					username : authDetails.logged?authDetails.username:'',
+					userImage : authDetails.logged?authDetails.twitterAuth.profile_image_url:''
+				});
 		});
 	});
 	app.get('/gallery/style.css', function(req, res){
@@ -80,6 +90,15 @@ function route(app, db, handlers) {
 
 
 
+	app.get('/auth', function(req, res){
+		handlers.auth.check(req, res);
+	});
+	app.get('/auth/callback', function(req, res){
+		handlers.auth.callback(req, res);
+	});
+	app.get('/auth/logout', function(req, res){
+		handlers.auth.logout(req, res);
+	});
 
 	app.get('/CLEAR', function(req, res){
     	db.clearCol('code');

@@ -4,7 +4,8 @@ var db = require('./database');
 
 var handlers = {
 		ide : require('./ideHandler'),
-		gallery : require('./galleryHandler')
+		gallery : require('./galleryHandler'),
+		auth : require('./twitterAuth')
 	};
 
 

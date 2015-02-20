@@ -9,7 +9,7 @@ var connection = {
   port : 27017,
   database : 'codeucation'
 }
- 
+
 
 // Initializes connection to database or runs failure callback
 function connect(connected, failed) {
@@ -41,8 +41,12 @@ function connect(connected, failed) {
 var addSnippet = function(title, content, callback) {
   var collection = db.collection('code');
 
-  collection.insert([
-    {"title" : title, "content" : content}
+  collection.insert([{
+    "title" : title,
+    "content" : content,
+    "posted" : new Date(),
+    "updated" : new Date()
+  }
   ], function(err, result) {
     assert.equal(err, null);
     assert.equal(1, result.result.n);
@@ -64,7 +68,7 @@ var getSnippet = function(title, callback) {
 var getAllSnippets = function(callback) {
   var collection = db.collection('code');
 
-  collection.find().toArray(function(err, snippet) {
+  collection.find().sort({updated: -1}).toArray(function(err, snippet) {
     assert.equal(err, null);
     callback(snippet);
   });
@@ -74,9 +78,15 @@ var updateSnippet = function(title, content, callback) {
 	var collection = db.collection('code');
   var title = title;
 
+  console.log(new Date());
 	collection.update(
     { "title" : title },
-    {$set: {"content" : content }},
+    {
+      $set: {
+        "content" : content,
+        "updated" : new Date()
+      }
+    },
     {},
 		function(err){
   		callback(err,content,title);

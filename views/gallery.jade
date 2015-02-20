@@ -2,42 +2,51 @@ html
 	head
 		title CodeLight Development Environment
 
-
 		link(rel='stylesheet', href='http://#{loc}/gallery/style.css')
 		link(rel='icon', href='http://#{loc}/favicon.ico')
 
 		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
 		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
 
-
 	body
 		div#header
 			div.headSec
 				h1 CodeLight
 			div.headSec.right
-				svg(class="icon")
-					use(xlink:href="icons.svg#shape-user2")
+				if logged
+					div.userInfo
+						img.userImage(src="#{userImage}")
+						span.userName #{username}
+				else
+					a(href="/auth")
+						svg.icon
+							use(xlink:href="icons.svg#shape-user2")
+
 			div.headSec.right
-				svg(class="icon")
+				svg.icon
 					use(xlink:href="icons.svg#shape-new")
 			//-
 				div.headSec.createNew
-					form(id='newSnippet' action='/c/' method='post')
+					form#newSnippet(action='/c/' method='post')
 						input(name='title' type='text' placeholder='New Snippet')
 					div.createButton
-						svg(class="icon newButton")
+						svg.icon.newButton
 							use(xlink:href="icons.svg#shape-new")
 
 
 		div#holder
 			-each item in items
 				a(href='http://#{loc}/c/#{item.title}')
-					div.container.thumb
-						iframe(src='http://#{loc}/s/#{item.title}')
-						div.caption= item.title
+					div.container
+						div.thumb
+							iframe(src='http://#{loc}/s/#{item.title}')
+						div.info
+							div.title= item.title
+							div.username Username
+							div.caption A bit of a caption here about the current item. Have a character limit?
 
 		div#footer
 			div.section
-				svg(class="icon shape-user")
+				svg.icon.shape-user
 					use(xlink:href="icons.svg#shape-user")
 				| #{userCount}

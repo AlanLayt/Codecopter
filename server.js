@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jade = require('jade');
+var session = require('cookie-session');
 
 var httpPort = 7777;
 
@@ -40,7 +41,7 @@ var start = function(route, db, handlers) {
 // Retained to handle user-related events later
 var handleInit = function(handlers,db,callback){
 	Object.keys(handlers).forEach(function(key){
-		handlers[key].init(app,io,db);
+		handlers[key].init(app,io,db,session);
 	})
 	callback();
 }

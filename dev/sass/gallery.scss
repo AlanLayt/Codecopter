@@ -28,11 +28,29 @@ div#header {
     position:relative;
     margin: 0 10px 0 10px;
     height: 60px;
-    vertical-align: middle;
+    display: inline-flex;
+    .userInfo {
+      vertical-align: middle;
+      margin: auto 5px;
+      > * {;
+        vertical-align: middle;
+      }
+      .userName{
+        padding-left:5px;
+      }
+    }
+    .userImage {
+      width:30px;
+      height: 30px;
+      border-radius:30px;
+    }
     .icon {
-      width: 100%;
+      transition: fill 0.3s ease;
       width: 30px;
       height: 100%;
+    }
+    .icon:Hover {
+      fill: #666;
     }
   }
   .createNew {
@@ -125,15 +143,13 @@ form#newSnippet {
     flex: 1;
     min-width: 300px;
     max-width: 700px;
+    text-decoration: none;
+    color: #333;
   }
 }
 
 .container {
-  background-color:rgba(255,255,255,0.9);
-  padding: 5px 10px 5px 10px;
-  // float:left;
-  margin: 15px;
-  overflow:hidden;
+  padding: 15px;
   iframe {
     position:absolute;
     top:-10%;
@@ -146,14 +162,10 @@ form#newSnippet {
     border: none;
     padding:0;
   }
-  .caption {
+  .title {
     -webkit-font-smoothing: antialiased;
-    background: rgba(0,0,0,0.5);
-    position:absolute;
-    bottom: 0;
-    right:0;
-    left:0;
-    color: rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.2);
+    color: rgba(0,0,0,0.8);
     padding: 5px 10px 5px 10px;
     font-weight:100;
   }
@@ -163,6 +175,10 @@ form#newSnippet {
   height: 200px;
   position:relative;
   background: #272822;
+  padding: 5px 10px 5px 10px;
+  // float:left;
+  overflow:hidden;
+//  border: 1px solid #333;
 }
 
 

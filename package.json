@@ -14,10 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.10.0",
+    "cookie-session": "^1.1.0",
     "express": "^4.10.0",
     "jade": "^1.7.0",
     "logger": "0.0.1",
     "mongodb": "~2.0",
+    "oath": "^1.0.0",
+    "oauth": "^0.9.12",
     "socket.io": "^1.1.0",
     "url": "^0.10.1"
   },
