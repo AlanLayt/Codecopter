@@ -16,7 +16,6 @@
     "body-parser": "^1.10.0",
     "express": "^4.10.0",
     "jade": "^1.7.0",
-    "livereload": "^0.3.6",
     "logger": "0.0.1",
     "mongodb": "~2.0",
     "socket.io": "^1.1.0",
@@ -25,8 +24,9 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass": "^0.16.1",
-    "grunt-svgstore": "^0.5.0"
+    "grunt-sass": "^0.18.0",
+    "grunt-svgstore": "^0.5.0",
+    "livereload": "^0.3.6"
   },
   "repository": {
     "type": "git",

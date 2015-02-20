@@ -9,7 +9,7 @@ var connection = {
   port : 27017,
   database : 'codeucation'
 }
-
+ 
 
 // Initializes connection to database or runs failure callback
 function connect(connected, failed) {

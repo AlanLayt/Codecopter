@@ -5,30 +5,49 @@ html, body {
   padding:0;
   background: #fff;
   font-family: 'Source Sans Pro', sans-serif;
-//  background: url('../img/bg.jpg')  no-repeat center center fixed;
   background-size:cover;
   -webkit-font-smoothing: antialiased;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  fill: #ccc;
 }
 
 div#header {
   max-width:950px;
   margin: 0 auto;
   overflow: auto;
+  //border-bottom: 2px solid rgba(0,0,0,0.2);
   .headSec {
     float:left;
+  }
+  .right {
+    float:right;
+    position:relative;
+    margin: 0 10px 0 10px;
+    height: 60px;
+    vertical-align: middle;
+    .icon {
+      width: 100%;
+      width: 30px;
+      height: 100%;
+    }
   }
   .createNew {
     float:right;
     position:relative;
     margin: 10px;
+    height: 34px;
     #newSnippet {
       margin:0;
     }
   }
   .createButton {
     position:absolute;
-    top:4;
-    right:5;
+    top:2;
+    right:2;
     .newButton {
       fill:#ccc;
       width: 30px;
@@ -66,22 +85,6 @@ form#newSnippet {
   }
 }
 
-#menu {
-  position: absolute;
-  left:0;
-  bottom:0;
-  padding: 0;
-  height:100%;
-  background:#000;
-  .section{
-    padding: 10px;
-    svg {
-      fill:#fff;
-      width: 30px;
-      height: 30px
-    }
-  }
-}
 
 #footer{
   position:fixed;
@@ -117,7 +120,7 @@ form#newSnippet {
   align-items: center;
   align-content: space-around;
   max-width: 950px;
-  margin: 0 auto;
+  margin: 0 auto 50px auto;
   a {
     flex: 1;
     min-width: 300px;

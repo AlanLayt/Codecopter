@@ -7,22 +7,38 @@ html, body {
   background-size: cover;
   -webkit-font-smoothing: antialiased; }
 
+.icon {
+  width: 30px;
+  height: 30px;
+  fill: #ccc; }
+
 div#header {
   max-width: 950px;
   margin: 0 auto;
   overflow: auto; }
   div#header .headSec {
     float: left; }
+  div#header .right {
+    float: right;
+    position: relative;
+    margin: 0 10px 0 10px;
+    height: 60px;
+    vertical-align: middle; }
+    div#header .right .icon {
+      width: 100%;
+      width: 30px;
+      height: 100%; }
   div#header .createNew {
     float: right;
     position: relative;
-    margin: 10px; }
+    margin: 10px;
+    height: 34px; }
     div#header .createNew #newSnippet {
       margin: 0; }
   div#header .createButton {
     position: absolute;
-    top: 4;
-    right: 5; }
+    top: 2;
+    right: 2; }
     div#header .createButton .newButton {
       fill: #ccc;
       width: 30px;
@@ -50,20 +66,6 @@ form#newSnippet {
     border-radius: 0.2em 0 0 0.2em; }
   form#newSnippet :last-of-type {
     border-radius: 0 0.2em 0.2em 0; }
-
-#menu {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 0;
-  height: 100%;
-  background: #000; }
-  #menu .section {
-    padding: 10px; }
-    #menu .section svg {
-      fill: #fff;
-      width: 30px;
-      height: 30px; }
 
 #footer {
   position: fixed;
@@ -94,7 +96,7 @@ form#newSnippet {
   align-items: center;
   align-content: space-around;
   max-width: 950px;
-  margin: 0 auto; }
+  margin: 0 auto 50px auto; }
   #holder a {
     flex: 1;
     min-width: 300px;
