@@ -1,6 +1,7 @@
 var server = require("./server");
 var router = require("./router");
-var db = require('./database');
+var db = require('./database/database');
+var config = require('./config/config')
 
 var handlers = {
 		ide : require('./ideHandler'),
@@ -9,4 +10,5 @@ var handlers = {
 	};
 
 
-server.start(router.route, db, handlers);
+console.log(config)
+server.start(config, router.route, db, handlers);

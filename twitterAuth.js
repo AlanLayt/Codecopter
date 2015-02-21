@@ -11,7 +11,27 @@ var init = function(mapp,mio,mdb,sess){
 	db = mdb;
 	session = sess;
 	start();
-	console.log('IDE: Initialized');
+	console.log('AUTH: Initialized');
+}
+
+var start = function(){
+	app.use(session({
+		keys : ['test']
+	}));
+}
+
+
+
+function consumer(){
+	return new OAuth(
+		"https://api.twitter.com/oauth/request_token",
+		"https://api.twitter.com/oauth/access_token",
+		"mw6PxiPT3pwUVS4X79DipfUVs",
+		"JZE3yiF0Ibg6LpWV7UBARKBb8ZRGhIVoTh74HMgLs9yjzzZr8V",
+		"1.0A",
+		'http://' + app.connection.address + /*':' + app.connection.httpPort +*/ '/auth/callback',
+		"HMAC-SHA1"
+	);
 }
 
 var logout = function(req, res){
@@ -31,13 +51,9 @@ var get = function(req, res){
 
 }
 
-var check = function(req, res){
-	//console.log(req
+var login = function(req, res){
 	if(req.session.twitterScreenName){
-		//console.log(req.session.twitterScreenName);
 		var uname = req.session.twitterScreenName;
-		//req.session.twitterScreenName = undefined;
-		//res.send('You are signed in: ' + uname);
 		return {logged:true,username:uname};
 	}
 	else
@@ -53,11 +69,6 @@ var check = function(req, res){
 }
 
 var callback = function(req, res){
-	console.log("------------- User Auth Details -------------");
-	console.log("Request Token:        "+req.session.oauthRequestToken);
-	console.log("Request Token Secret: "+req.session.oauthRequestTokenSecret);
-	console.log("oAuth Verifier:       "+req.query.oauth_verifier);
-	console.log("---------------------------------------------");
 	consumer().getOAuthAccessToken(
 		req.session.oauthRequestToken,
 		req.session.oauthRequestTokenSecret,
@@ -81,9 +92,6 @@ var callback = function(req, res){
 						res.statusCode = 302;
 						res.setHeader("Location", "/");
 						res.end();
-						//console.log(JSON.parse(data).screen_name);
-						//res.send('You are signed in: ' + req.session.twitterScreenName);
-						//console.log(data);
 					}
 				});
 			}
@@ -91,33 +99,11 @@ var callback = function(req, res){
 
 }
 
-var start = function(){
-	console.log("--- auth init");
-	//console.log("Connected.");
-
-	app.use(session({
-		keys : ['test']
-	}));
-}
-
-
-
-function consumer(){
-	return new OAuth(
-		"https://api.twitter.com/oauth/request_token",
-		"https://api.twitter.com/oauth/access_token",
-		"mw6PxiPT3pwUVS4X79DipfUVs",
-		"JZE3yiF0Ibg6LpWV7UBARKBb8ZRGhIVoTh74HMgLs9yjzzZr8V",
-		"1.0A",
-		"http://127.0.0.1:7777/auth/callback",
-		"HMAC-SHA1"
-	);
-}
 
 
 exports.init = init;
 exports.start = start;
-exports.check = check;
+exports.login = login;
 exports.get = get;
 exports.logout = logout;
 exports.callback = callback;

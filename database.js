@@ -4,16 +4,11 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var mdb=null;
 var db=null;
-var connection = {
-  address : 'localhost',
-  port : 27017,
-  database : 'codeucation'
-}
 
 
 // Initializes connection to database or runs failure callback
-function connect(connected, failed) {
-	var mongourl = 'mongodb://'+connection.address+':'+connection.port+'/'+connection.database;
+function connect(connection, connected, failed) {
+	var mongourl = 'mongodb://'+connection.address+':'+connection.dbPort+'/'+connection.database;
 	var connected = connected;
 	var mdbt;
 
@@ -33,7 +28,18 @@ function connect(connected, failed) {
 }
 
 
+var snippets = function(){
 
+	var count = function(title, callback) {
+	  var collection = db.collection('code');
+
+	  collection.count(function(err, snippet) {
+	    assert.equal(err, count);
+	    callback(count);
+	  });
+	}
+	
+}
 
 
 
@@ -64,6 +70,7 @@ var getSnippet = function(title, callback) {
     callback(snippet);
   });
 }
+
 
 var getAllSnippets = function(callback) {
   var collection = db.collection('code');

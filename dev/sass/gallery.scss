@@ -9,28 +9,24 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-.icon {
-  width: 30px;
-  height: 30px;
-  fill: #ccc;
-}
 
+// ================== Header ==================
 div#header {
   max-width:950px;
   margin: 0 auto;
   overflow: auto;
-  //border-bottom: 2px solid rgba(0,0,0,0.2);
-  .headSec {
-    float:left;
+
+  h1{
+    color:rgba(0,0,0,0.8);
+    font-weight:100;
+    margin: 0px;
   }
-  .right {
-    float:right;
-    position:relative;
+
+  .headSec {
     margin: 0 10px 0 10px;
     height: 60px;
     display: inline-flex;
     .userInfo {
-      vertical-align: middle;
       margin: auto 5px;
       > * {;
         vertical-align: middle;
@@ -40,22 +36,27 @@ div#header {
       }
     }
     .userImage {
-      width:30px;
+      width: 30px;
       height: 30px;
-      border-radius:30px;
+      border-radius: 30px;
     }
     .icon {
       transition: fill 0.3s ease;
       width: 30px;
       height: 100%;
-    }
-    .icon:Hover {
-      fill: #666;
+      fill: #ccc;
+      &:Hover {
+        fill: #666;
+      }
     }
   }
-  .createNew {
+  .right {
     float:right;
-    position:relative;
+  }
+  .left {
+    float:left;
+  }
+  .createNew {
     margin: 10px;
     height: 34px;
     #newSnippet {
@@ -79,11 +80,14 @@ div#header {
   }
 }
 
-h1{
-  color:rgba(0,0,0,0.8);
-  font-weight:100;
-  margin: 10px;
-}
+
+
+
+
+
+
+
+
 
 form#newSnippet {
   margin: 0 1em 0 1em;
@@ -104,30 +108,15 @@ form#newSnippet {
 }
 
 
-#footer{
-  position:fixed;
-  left:0;
-  bottom:0;
-  right:0;
-  background:rgba(0,0,0,0.2);
-  -webkit-filter: blur(px);
-  .section {
-    margin: 15px;
-    padding-left: 15px;
-    float:right;
-    color:rgba(255,255,255,0.5);
-    border-left: 1px solid rgba(255,255,255,0.2);
-    font-weight: 100;
-  }
-  .icon {
-  }
-  .section svg {
-    height: 20px;
-    width:20px;
-    margin: 0 4px -1px 3px;
-    fill:rgba(255,255,255,0.5);
-  }
-}
+
+
+
+
+
+
+
+
+
 
 #holder {
   display: flex;
@@ -183,6 +172,38 @@ form#newSnippet {
 
 
 
+
+
+
+
+
+
+
+
+#footer{
+  position:fixed;
+  left:0;
+  bottom:0;
+  right:0;
+  background:rgba(0,0,0,0.2);
+  -webkit-filter: blur(px);
+  .section {
+    margin: 15px;
+    padding-left: 15px;
+    float:right;
+    color:rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.2);
+    font-weight: 100;
+  }
+  .icon {
+  }
+  .section svg {
+    height: 20px;
+    width:20px;
+    margin: 0 4px -1px 3px;
+    fill:rgba(255,255,255,0.5);
+  }
+}
 
 
 

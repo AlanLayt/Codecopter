@@ -4,7 +4,6 @@ var io = require('socket.io')(http);
 var jade = require('jade');
 var session = require('cookie-session');
 
-var httpPort = 7777;
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
@@ -12,14 +11,15 @@ app.set('views', __dirname + '/views');
 
 
 // Start http server,MongoDB, sockets and initialize routing or fail gracefully
-var start = function(route, db, handlers) {
+var start = function(connection, route, db, handlers) {
 	console.log("------- Startup --------");
+	app.connection = connection;
 
-	db.connect(function(dbm,srv){
-		console.log('MONGO: Database found. (Port %d)', srv.port);
-		http.listen(httpPort, function(err){
+	db.connect(connection, function(dbm,srv){
+		console.log('MONGO: Database found. (Port %d)', srv.dbPort);
+		http.listen(srv.httpPort, function(err){
 
-			console.log('HTTP: Server Started. (Port %d)', httpPort);
+			console.log('HTTP: Server Started. (Port %d)', srv.httpPort);
 
 			handleInit(handlers,db,function(){
 				route(app, db, handlers);
@@ -29,7 +29,7 @@ var start = function(route, db, handlers) {
 
 	},
 	function(err,srv){
-		console.error('ERR: Mongo database not found on %s:%d. Exiting.',srv.address, srv.port);
+		console.error('ERR: Mongo database not found on %s:%d. Exiting.',srv.address, srv.dbPort);
 		console.error(err);
 		console.error('----');
 		finalizeInit();

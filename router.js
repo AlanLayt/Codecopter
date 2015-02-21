@@ -13,8 +13,13 @@ function route(app, db, handlers) {
 
 
 
+	app.get('/new', function(req, res){
+		handlers.ide.newSnippet(function(id){
+			res.redirect('/c/' + id);
+		});
+	});
 	app.get('/c/:snid', function(req, res){
-		var snid = req.param("snid");
+		var snid = req.params["snid"];
 
 		handlers.ide.getSnippet(snid,function(snippet){
 
@@ -31,11 +36,9 @@ function route(app, db, handlers) {
 			res.sendFile(__dirname + '/css/svg-defs.svg');
 	});
 	app.post('/c/', urlencodedParser, function(req, res) {
-		var title = req.body.title;//.param('title');
-		//console.log(title.body);
+		var title = req.body.title;
 		console.log('request %s recieved.', title);
 		res.redirect('/c/' + title);
-	//	console.log("post received: %s %s", username, password);
 	});
 
 
@@ -49,7 +52,7 @@ function route(app, db, handlers) {
 
 
 	app.get('/s/:snid', function(req, res){
-		var snid = req.param("snid");
+		var snid = req.params["snid"];
 
 		handlers.ide.getSnippet(snid,function(snippet){
 			res.send(snippet);
@@ -67,8 +70,8 @@ function route(app, db, handlers) {
 
 	app.get('/:var(r)?', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
-		console.log(authDetails.logged?authDetails.twitterAuth.profile_image_url:'')
-		db.getAllSnippets(function(snippets){
+		//console.log(authDetails.logged?authDetails.twitterAuth.profile_image_url:'')
+		db.snippets.listAll(function(snippets){
 	  		res.render('gallery', {
 					loc: req.headers.host,
 					items : snippets,
@@ -91,7 +94,7 @@ function route(app, db, handlers) {
 
 
 	app.get('/auth', function(req, res){
-		handlers.auth.check(req, res);
+		handlers.auth.login(req, res);
 	});
 	app.get('/auth/callback', function(req, res){
 		handlers.auth.callback(req, res);
@@ -101,7 +104,7 @@ function route(app, db, handlers) {
 	});
 
 	app.get('/CLEAR', function(req, res){
-    	db.clearCol('code');
+    db.clearCol('code');
 		res.send("Clearing Collection");
 		console.log("CLEARING DATABASE.");
 	});

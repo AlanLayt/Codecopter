@@ -7,43 +7,40 @@ html, body {
   background-size: cover;
   -webkit-font-smoothing: antialiased; }
 
-.icon {
-  width: 30px;
-  height: 30px;
-  fill: #ccc; }
-
 div#header {
   max-width: 950px;
   margin: 0 auto;
   overflow: auto; }
+  div#header h1 {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 100;
+    margin: 0px; }
   div#header .headSec {
-    float: left; }
-  div#header .right {
-    float: right;
-    position: relative;
     margin: 0 10px 0 10px;
     height: 60px;
     display: inline-flex; }
-    div#header .right .userInfo {
-      vertical-align: middle;
+    div#header .headSec .userInfo {
       margin: auto 5px; }
-      div#header .right .userInfo > * {
+      div#header .headSec .userInfo > * {
         vertical-align: middle; }
-      div#header .right .userInfo .userName {
+      div#header .headSec .userInfo .userName {
         padding-left: 5px; }
-    div#header .right .userImage {
+    div#header .headSec .userImage {
       width: 30px;
       height: 30px;
       border-radius: 30px; }
-    div#header .right .icon {
+    div#header .headSec .icon {
       transition: fill 0.3s ease;
       width: 30px;
-      height: 100%; }
-    div#header .right .icon:Hover {
-      fill: #666; }
+      height: 100%;
+      fill: #ccc; }
+      div#header .headSec .icon:Hover {
+        fill: #666; }
+  div#header .right {
+    float: right; }
+  div#header .left {
+    float: left; }
   div#header .createNew {
-    float: right;
-    position: relative;
     margin: 10px;
     height: 34px; }
     div#header .createNew #newSnippet {
@@ -58,11 +55,6 @@ div#header {
       height: 30px; }
   div#header .createNew:Hover .newButton {
     fill: #333; }
-
-h1 {
-  color: rgba(0, 0, 0, 0.8);
-  font-weight: 100;
-  margin: 10px; }
 
 form#newSnippet {
   margin: 0 1em 0 1em;
@@ -79,26 +71,6 @@ form#newSnippet {
     border-radius: 0.2em 0 0 0.2em; }
   form#newSnippet :last-of-type {
     border-radius: 0 0.2em 0.2em 0; }
-
-#footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.2);
-  -webkit-filter: blur(px); }
-  #footer .section {
-    margin: 15px;
-    padding-left: 15px;
-    float: right;
-    color: rgba(255, 255, 255, 0.5);
-    border-left: 1px solid rgba(255, 255, 255, 0.2);
-    font-weight: 100; }
-  #footer .section svg {
-    height: 20px;
-    width: 20px;
-    margin: 0 4px -1px 3px;
-    fill: rgba(255, 255, 255, 0.5); }
 
 #holder {
   display: flex;
@@ -144,6 +116,26 @@ form#newSnippet {
   background: #272822;
   padding: 5px 10px 5px 10px;
   overflow: hidden; }
+
+#footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-filter: blur(px); }
+  #footer .section {
+    margin: 15px;
+    padding-left: 15px;
+    float: right;
+    color: rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 100; }
+  #footer .section svg {
+    height: 20px;
+    width: 20px;
+    margin: 0 4px -1px 3px;
+    fill: rgba(255, 255, 255, 0.5); }
 
 ::-webkit-scrollbar {
   width: 7px; }

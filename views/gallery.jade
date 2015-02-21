@@ -10,21 +10,23 @@ html
 
 	body
 		div#header
-			div.headSec
+			div.headSec.left
 				h1 CodeLight
-			div.headSec.right
-				if logged
+			if logged
+				div.headSec.right
 					div.userInfo
 						img.userImage(src="#{userImage}")
 						span.userName #{username}
-				else
+				div.headSec.right
+					a(href="/new")
+						svg.icon
+							use(xlink:href="icons.svg#shape-new")
+			else
+				div.headSec.right
 					a(href="/auth")
 						svg.icon
 							use(xlink:href="icons.svg#shape-user2")
 
-			div.headSec.right
-				svg.icon
-					use(xlink:href="icons.svg#shape-new")
 			//-
 				div.headSec.createNew
 					form#newSnippet(action='/c/' method='post')
@@ -39,7 +41,7 @@ html
 				a(href='http://#{loc}/c/#{item.title}')
 					div.container
 						div.thumb
-							iframe(src='http://#{loc}/s/#{item.title}')
+							iframe(src='http://#{loc}/s/#{item.title}' tabindex='-1')
 						div.info
 							div.title= item.title
 							div.username Username
