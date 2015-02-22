@@ -6,18 +6,20 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 function route(app, db, handlers) {
 
-	/*app.get('/', function(req, res){
-	  res.render('ide', { loc: req.headers.host });
-	});*/
-
-
-
-
-	app.get('/new', function(req, res){
-		handlers.ide.newSnippet(function(id){
-			res.redirect('/c/' + id);
+		app.get('/new', function(req, res){
+			handlers.ide.newSnippet(function(id){
+				res.redirect('/c/' + id);
+			});
 		});
-	});
+		app.get('/delete/:snid', function(req, res){
+			var snid = req.params["snid"];
+
+			handlers.ide.deleteSnippet(snid,function(id){
+				res.redirect('/');
+			});
+		});
+
+
 	app.get('/c/:snid', function(req, res){
 		var snid = req.params["snid"];
 
@@ -70,7 +72,6 @@ function route(app, db, handlers) {
 
 	app.get('/:var(r)?', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
-		//console.log(authDetails.logged?authDetails.twitterAuth.profile_image_url:'')
 		db.snippets.listAll(function(snippets){
 	  		res.render('gallery', {
 					loc: req.headers.host,
@@ -108,6 +109,7 @@ function route(app, db, handlers) {
 		res.send("Clearing Collection");
 		console.log("CLEARING DATABASE.");
 	});
+
 
 
 	app.get('*', function(req, res){

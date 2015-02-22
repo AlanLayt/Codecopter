@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jade = require('jade');
-var session = require('cookie-session');
+var session = require('express-session');
 
 
 app.set('view engine', 'jade');

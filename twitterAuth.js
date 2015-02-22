@@ -16,7 +16,9 @@ var init = function(mapp,mio,mdb,sess){
 
 var start = function(){
 	app.use(session({
-		keys : ['test']
+		resave : true,
+		saveUninitialized : true,
+		secret : 'test'
 	}));
 }
 
@@ -29,7 +31,7 @@ function consumer(){
 		"mw6PxiPT3pwUVS4X79DipfUVs",
 		"JZE3yiF0Ibg6LpWV7UBARKBb8ZRGhIVoTh74HMgLs9yjzzZr8V",
 		"1.0A",
-		'http://' + app.connection.address + /*':' + app.connection.httpPort +*/ '/auth/callback',
+		'http://' + app.connection.address + ':' + app.connection.httpPort + '/auth/callback',
 		"HMAC-SHA1"
 	);
 }
@@ -89,6 +91,8 @@ var callback = function(req, res){
 					} else {
 						req.session.twitterScreenName = JSON.parse(data).screen_name;
 						req.session.twitterAuth = JSON.parse(data);
+						req.session.save()
+						console.log(JSON.stringify(req.session));
 						res.statusCode = 302;
 						res.setHeader("Location", "/");
 						res.end();

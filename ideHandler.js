@@ -92,12 +92,20 @@ var newSnippet = function(callback){
 			var hashids = new Hashids("Twoflower"),
 		  id = hashids.encode(count,Date.now());
 
-      db.snippets.add(id,'',function(){
+      db.snippets.add(id,'',function(id){
         console.log('IDE: New snippet, %s, added.', id);
+        callback(id);
       });
 
-      callback(id);
 		});
+}
+
+var deleteSnippet = function(id,callback){
+    db.snippets.delete(id,function(id){
+      console.log('IDE: Snippet, %s, deleted.', id);
+      callback(id);
+    });
+
 }
 
 var getSnippet = function(snid,callback){
@@ -117,5 +125,6 @@ var getSnippet = function(snid,callback){
 exports.start = start;
 exports.init = init;
 exports.getSnippet = getSnippet;
+exports.deleteSnippet = deleteSnippet;
 exports.newSnippet = newSnippet;
 exports.userCount = userCount;

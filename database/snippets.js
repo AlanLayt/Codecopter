@@ -32,10 +32,10 @@ module.exports = {
 	},
 
 
-	delete : function(title, callback) {
-	  col.remove({ 'title' : title }, function(err, result) {
-	    console.log("Removed the document with the field a equal to 3");
-	    callback(result);
+	delete : function(id, callback) {
+	  col.remove({ 'title' : id }, function(err, result) {
+	    console.log("Snippet removed: %s", id);
+	    callback(id);
 	  });
 	},
 
@@ -51,7 +51,7 @@ module.exports = {
 		  //  assert.equal(err, null);
 		  //  assert.equal(1, result.result.n);
 		  //  assert.equal(1, result.ops.length);
-		    callback(result, title);
+		    callback(title);
 		  });
 	},
 
