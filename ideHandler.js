@@ -122,7 +122,12 @@ var getSnippet = function(snid,callback){
 }
 
 
+var stopTimeouts = function(){
+  return 'test';
+}
+
 exports.start = start;
+exports.stopTimeouts = stopTimeouts;
 exports.init = init;
 exports.getSnippet = getSnippet;
 exports.deleteSnippet = deleteSnippet;

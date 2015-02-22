@@ -2,6 +2,7 @@ var url = require("url");
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var fs = require('fs');
 
 
 function route(app, db, handlers) {
@@ -27,6 +28,9 @@ function route(app, db, handlers) {
 
 			res.render('ide', { loc : req.headers.host, snid : snid, snippet : snippet, pretty : true });
 		});
+	});
+	app.get('/stopTimeouts.js', function(req, res){
+    	res.sendFile(__dirname + '/js/stopTimeouts.js');
 	});
 	app.get('/ide/core.js', function(req, res){
     	res.sendFile(__dirname + '/js/IDE.js');
@@ -57,7 +61,11 @@ function route(app, db, handlers) {
 		var snid = req.params["snid"];
 
 		handlers.ide.getSnippet(snid,function(snippet){
-			res.send(snippet);
+    //  fs.readFile(__dirname + '/js/stopTimeouts.js', 'utf8', function(err, text){
+    //      res.send(text);
+    //  });
+			res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet);
+			//res.send(;
 		});
 	});
 
