@@ -2,30 +2,53 @@ html
 	head
 		title CodeLight Development Environment
 
-
 		link(rel='stylesheet', href='http://#{loc}/gallery/style.css')
 		link(rel='icon', href='http://#{loc}/favicon.ico')
 
 		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
 		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
 
-
 	body
-		h1 CodeLight
-		form(id='newSnippet' action='/c/' method='post')
-			input(name='title' type='text')
-			input(type='submit' value='Create')
+		div#header
+			div.headSec.left
+				h1 CodeLight
+			if logged
+				div.headSec.right
+					div.userInfo
+						img.userImage(src="#{userImage}")
+						span.userName #{username}
+				div.headSec.right
+					a(href="/new")
+						svg.icon
+							use(xlink:href="icons.svg#shape-new")
+			else
+				div.headSec.right
+					a(href="/auth")
+						svg.icon
+							use(xlink:href="icons.svg#shape-user2")
+
+			//-
+				div.headSec.createNew
+					form#newSnippet(action='/c/' method='post')
+						input(name='title' type='text' placeholder='New Snippet')
+					div.createButton
+						svg.icon.newButton
+							use(xlink:href="icons.svg#shape-new")
+
 
 		div#holder
 			-each item in items
 				a(href='http://#{loc}/c/#{item.title}')
-					div.container.thumb
-						iframe(src='http://#{loc}/s/#{item.title}')
-						div.caption= item.title
+					div.container
+						div.thumb
+							iframe(src='http://#{loc}/s/#{item.title}' tabindex='-1')
+						div.info
+							div.title= item.title
+							div.username Username
+							div.caption A bit of a caption here about the current item. Have a character limit?
 
 		div#footer
 			div.section
-				svg#Layer_1(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', version='1.1', x='0px', y='0px', viewbox='0 0 75 100', style='enable-background: new 0 0 75 100;', xml:space='preserve')
-					path(d='M37.5,50C16.797,50,0,66.797,0,87.5C0,94.409,5.591,100,12.5,100h50c6.909,0,12.5-5.591,12.5-12.5  C75,66.797,58.203,50,37.5,50z')
-					path(d='M56.25,18.75c0,10.352-8.398,18.75-18.75,18.75s-18.75-8.398-18.75-18.75S27.148,0,37.5,0  S56.25,8.398,56.25,18.75z')
+				svg.icon.shape-user
+					use(xlink:href="icons.svg#shape-user")
 				| #{userCount}

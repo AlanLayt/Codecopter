@@ -2,37 +2,49 @@ var url = require("url");
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var fs = require('fs');
 
 
 function route(app, db, handlers) {
 
-	/*app.get('/', function(req, res){
-	  res.render('ide', { loc: req.headers.host });
-	});*/
+		app.get('/new', function(req, res){
+			handlers.ide.newSnippet(function(id){
+				res.redirect('/c/' + id);
+			});
+		});
+		app.get('/delete/:snid', function(req, res){
+			var snid = req.params["snid"];
 
-
+			handlers.ide.deleteSnippet(snid,function(id){
+				res.redirect('/');
+			});
+		});
 
 
 	app.get('/c/:snid', function(req, res){
-		var snid = req.param("snid");
+		var snid = req.params["snid"];
 
 		handlers.ide.getSnippet(snid,function(snippet){
 
 			res.render('ide', { loc : req.headers.host, snid : snid, snippet : snippet, pretty : true });
 		});
 	});
+	app.get('/stopTimeouts.js', function(req, res){
+    	res.sendFile(__dirname + '/js/stopTimeouts.js');
+	});
 	app.get('/ide/core.js', function(req, res){
     	res.sendFile(__dirname + '/js/IDE.js');
 	});
 	app.get('/ide/style.css', function(req, res){
-    	res.sendFile(__dirname + '/css/IDE.css');
+			res.sendFile(__dirname + '/css/IDE.css');
+	});
+	app.get('/icons.svg', function(req, res){
+			res.sendFile(__dirname + '/css/svg-defs.svg');
 	});
 	app.post('/c/', urlencodedParser, function(req, res) {
-		var title = req.body.title;//.param('title');
-		//console.log(title.body);
+		var title = req.body.title;
 		console.log('request %s recieved.', title);
 		res.redirect('/c/' + title);
-	//	console.log("post received: %s %s", username, password);
 	});
 
 
@@ -46,10 +58,14 @@ function route(app, db, handlers) {
 
 
 	app.get('/s/:snid', function(req, res){
-		var snid = req.param("snid");
+		var snid = req.params["snid"];
 
 		handlers.ide.getSnippet(snid,function(snippet){
-			res.send(snippet);
+    //  fs.readFile(__dirname + '/js/stopTimeouts.js', 'utf8', function(err, text){
+    //      res.send(text);
+    //  });
+			res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet);
+			//res.send(;
 		});
 	});
 
@@ -63,8 +79,17 @@ function route(app, db, handlers) {
 
 
 	app.get('/:var(r)?', function(req, res){
-		db.getAllSnippets(function(snippets){
-	  		res.render('gallery', { loc: req.headers.host, items : snippets, pretty : true, userCount : handlers.ide.userCount() });
+		var authDetails = handlers.auth.get(req, res);
+		db.snippets.listAll(function(snippets){
+	  		res.render('gallery', {
+					loc: req.headers.host,
+					items : snippets,
+					pretty : true,
+					userCount : handlers.ide.userCount(),
+					logged : authDetails.logged,
+					username : authDetails.logged?authDetails.username:'',
+					userImage : authDetails.logged?authDetails.twitterAuth.profile_image_url:''
+				});
 		});
 	});
 	app.get('/gallery/style.css', function(req, res){
@@ -77,12 +102,22 @@ function route(app, db, handlers) {
 
 
 
+	app.get('/auth', function(req, res){
+		handlers.auth.login(req, res);
+	});
+	app.get('/auth/callback', function(req, res){
+		handlers.auth.callback(req, res);
+	});
+	app.get('/auth/logout', function(req, res){
+		handlers.auth.logout(req, res);
+	});
 
 	app.get('/CLEAR', function(req, res){
-    	db.clearCol('code');
+    db.clearCol('code');
 		res.send("Clearing Collection");
 		console.log("CLEARING DATABASE.");
 	});
+
 
 
 	app.get('*', function(req, res){

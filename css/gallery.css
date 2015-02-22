@@ -2,15 +2,59 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #1D1F21;
+  background: #fff;
   font-family: 'Source Sans Pro', sans-serif;
-  background: url('../img/bg.jpg') no-repeat center center fixed;
-  background-size: cover; }
+  background-size: cover;
+  -webkit-font-smoothing: antialiased; }
 
-h1 {
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 100;
-  margin: 10px; }
+div#header {
+  max-width: 950px;
+  margin: 0 auto;
+  overflow: auto; }
+  div#header h1 {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 100;
+    margin: 0px; }
+  div#header .headSec {
+    margin: 0 10px 0 10px;
+    height: 60px;
+    display: inline-flex; }
+    div#header .headSec .userInfo {
+      margin: auto 5px; }
+      div#header .headSec .userInfo > * {
+        vertical-align: middle; }
+      div#header .headSec .userInfo .userName {
+        padding-left: 5px; }
+    div#header .headSec .userImage {
+      width: 30px;
+      height: 30px;
+      border-radius: 30px; }
+    div#header .headSec .icon {
+      transition: fill 0.3s ease;
+      width: 30px;
+      height: 100%;
+      fill: #ccc; }
+      div#header .headSec .icon:Hover {
+        fill: #666; }
+  div#header .right {
+    float: right; }
+  div#header .left {
+    float: left; }
+  div#header .createNew {
+    margin: 10px;
+    height: 34px; }
+    div#header .createNew #newSnippet {
+      margin: 0; }
+  div#header .createButton {
+    position: absolute;
+    top: 2;
+    right: 2; }
+    div#header .createButton .newButton {
+      fill: #ccc;
+      width: 30px;
+      height: 30px; }
+  div#header .createNew:Hover .newButton {
+    fill: #333; }
 
 form#newSnippet {
   margin: 0 1em 0 1em;
@@ -19,7 +63,7 @@ form#newSnippet {
   form#newSnippet input {
     padding: 0.8em;
     background: #fff;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     display: block;
     float: left;
     position: relative; }
@@ -27,6 +71,51 @@ form#newSnippet {
     border-radius: 0.2em 0 0 0.2em; }
   form#newSnippet :last-of-type {
     border-radius: 0 0.2em 0.2em 0; }
+
+#holder {
+  display: flex;
+  flex: 3 0px;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around;
+  max-width: 950px;
+  margin: 0 auto 50px auto; }
+  #holder a {
+    flex: 1;
+    min-width: 300px;
+    max-width: 700px;
+    text-decoration: none;
+    color: #333; }
+
+.container {
+  padding: 15px; }
+  .container iframe {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    right: 0;
+    bottom: 0;
+    width: 120%;
+    height: 120%;
+    pointer-events: none;
+    border: none;
+    padding: 0; }
+  .container .title {
+    -webkit-font-smoothing: antialiased;
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px 5px 10px;
+    font-weight: 100; }
+
+.thumb {
+  background-size: cover;
+  height: 200px;
+  position: relative;
+  background: #272822;
+  padding: 5px 10px 5px 10px;
+  overflow: hidden; }
 
 #footer {
   position: fixed;
@@ -43,56 +132,10 @@ form#newSnippet {
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     font-weight: 100; }
   #footer .section svg {
-    width: 10px;
-    margin: 0 4px -1px 3px; }
-  #footer .section svg path {
+    height: 20px;
+    width: 20px;
+    margin: 0 4px -1px 3px;
     fill: rgba(255, 255, 255, 0.5); }
-
-#holder {
-  display: flex;
-  flex: 3 0px;
-  flex-direction: row;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: space-around; }
-  #holder a {
-    flex: 1;
-    min-width: 300px;
-    max-width: 700px; }
-
-.container {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 5px 10px 5px 10px;
-  margin: 15px;
-  overflow: hidden; }
-  .container iframe {
-    position: absolute;
-    top: -10%;
-    left: -10%;
-    right: 0;
-    bottom: 0;
-    width: 120%;
-    height: 120%;
-    pointer-events: none;
-    border: none;
-    padding: 0; }
-  .container .caption {
-    -webkit-font-smoothing: antialiased;
-    background: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    color: rgba(255, 255, 255, 0.8);
-    padding: 5px 10px 5px 10px;
-    font-weight: 100; }
-
-.thumb {
-  background-size: cover;
-  height: 200px;
-  position: relative;
-  background: #272822; }
 
 ::-webkit-scrollbar {
   width: 7px; }

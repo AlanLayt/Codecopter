@@ -1,5 +1,6 @@
 var app,io,db;
 var url = require('url');
+var Hashids = require('Hashids');
 var loaded = Array();
 var clientNum = 0;
 
@@ -33,12 +34,9 @@ var start = function(){
         console.log('Snippet already loaded.');
       }
       else {
-        db.getSnippet(data.snid,function(snippet){
+        db.snippets.get(data.snid,function(snippet){
           if(snippet.length<1){
-            db.addSnippet(data.snid,'',function(){
-              console.log('IDE: New snippet, %s, added.', data.snid);
-            });
-            loaded[data.snid] = '';
+            console.log('ERR: SNIPPET NOT FOUND');
           } else {
             loaded[data.snid] = snippet[0].content;
           }
@@ -56,7 +54,7 @@ var start = function(){
 
     socket.on('save', function (data) {
     //  console.log(data)
-      db.updateSnippet(data.snid, loaded[data.snid], function(info,content,title){
+      db.snippets.update(data.snid, loaded[data.snid], function(info,content,title){
         console.log('Snippet %s updated.', data.snid);
       });
     });
@@ -89,11 +87,32 @@ var userCount = function(){
   return clientNum;//io.clients().length;
 }
 
+var newSnippet = function(callback){
+		db.snippets.count(function(count){
+			var hashids = new Hashids("Twoflower"),
+		  id = hashids.encode(count,Date.now());
+
+      db.snippets.add(id,'',function(id){
+        console.log('IDE: New snippet, %s, added.', id);
+        callback(id);
+      });
+
+		});
+}
+
+var deleteSnippet = function(id,callback){
+    db.snippets.delete(id,function(id){
+      console.log('IDE: Snippet, %s, deleted.', id);
+      callback(id);
+    });
+
+}
+
 var getSnippet = function(snid,callback){
   if(snid in loaded)
     callback(loaded[snid]);
   else
-    db.getSnippet(snid,function(snippet){
+    db.snippets.get(snid,function(snippet){
       var snp = '';
       if(snippet.length>0)
         snp = snippet[0].content;
@@ -103,7 +122,14 @@ var getSnippet = function(snid,callback){
 }
 
 
+var stopTimeouts = function(){
+  return 'test';
+}
+
 exports.start = start;
+exports.stopTimeouts = stopTimeouts;
 exports.init = init;
 exports.getSnippet = getSnippet;
+exports.deleteSnippet = deleteSnippet;
+exports.newSnippet = newSnippet;
 exports.userCount = userCount;
