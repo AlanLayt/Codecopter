@@ -89,7 +89,6 @@ function route(app, db, handlers) {
 	app.get('/:var(r)?', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
 		db.snippets.listAll(function(snippets){
-			console.log(JSON.stringify(snippets))
 	  		res.render('gallery', {
 					loc: req.headers.host,
 					items : snippets,
