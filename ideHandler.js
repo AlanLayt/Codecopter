@@ -38,7 +38,7 @@ var start = function(){
           if(snippet.length<1){
             console.log('ERR: SNIPPET NOT FOUND');
           } else {
-            loaded[data.snid] = snippet[0].content;
+            loaded[data.snid] = snippet.content;
           }
         });
       }
@@ -54,7 +54,7 @@ var start = function(){
 
     socket.on('save', function (data) {
     //  console.log(data)
-      db.snippets.update(data.snid, loaded[data.snid], function(info,content,title){
+      db.snippets.update(data.snid, loaded[data.snid], {title : data.title, desc : data.desc}, function(info,content,title){
         console.log('Snippet %s updated.', data.snid);
       });
     });
@@ -113,11 +113,7 @@ var getSnippet = function(snid,callback){
     callback(loaded[snid]);
   else
     db.snippets.get(snid,function(snippet){
-      var snp = '';
-      if(snippet.length>0)
-        snp = snippet[0].content;
-
-      callback(snp);
+      callback(snippet.content);
     });
 }
 

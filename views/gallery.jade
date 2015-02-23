@@ -27,25 +27,17 @@ html
 						svg.icon
 							use(xlink:href="icons.svg#shape-user2")
 
-			//-
-				div.headSec.createNew
-					form#newSnippet(action='/c/' method='post')
-						input(name='title' type='text' placeholder='New Snippet')
-					div.createButton
-						svg.icon.newButton
-							use(xlink:href="icons.svg#shape-new")
-
 
 		div#holder
 			-each item in items
-				a(href='http://#{loc}/c/#{item.title}')
+				a(href='http://#{loc}/c/#{item.id}')
 					div.container
 						div.thumb
-							iframe(src='http://#{loc}/s/#{item.title}' tabindex='-1')
+							iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
 						div.info
 							div.title= item.title
 							div.username Username
-							div.caption A bit of a caption here about the current item. Have a character limit?
+							div.caption= item.desc
 
 		div#footer
 			div.section

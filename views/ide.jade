@@ -20,6 +20,12 @@ html
 				div.section < Back
 			a(href='http://#{loc}/delete/#{snid}')
 				div.section Delete
+				
+			form#details
+				input(type='text' placeholder='Title' name='title' value='#{title}')
+				input(type='text' placeholder='Description' name='desc' value='#{desc}')
+				//input(type='text' placeholder='Something else')
+				
 
 		div#holder
 			pre#editor(snid='#{snid}').

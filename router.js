@@ -24,9 +24,17 @@ function route(app, db, handlers) {
 	app.get('/c/:snid', function(req, res){
 		var snid = req.params["snid"];
 
-		handlers.ide.getSnippet(snid,function(snippet){
+		db.snippets.get(snid,function(snippet){
+			console.log(JSON.stringify(snippet))
+			res.render('ide', {
+				loc : req.headers.host,
+				snid : snid,
+				title : snippet.title,
+				desc : snippet.description,
+				snippet : snippet.content,
+				pretty : true,
+			});
 
-			res.render('ide', { loc : req.headers.host, snid : snid, snippet : snippet, pretty : true });
 		});
 	});
 	app.get('/stopTimeouts.js', function(req, res){
@@ -81,6 +89,7 @@ function route(app, db, handlers) {
 	app.get('/:var(r)?', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
 		db.snippets.listAll(function(snippets){
+			console.log(JSON.stringify(snippets))
 	  		res.render('gallery', {
 					loc: req.headers.host,
 					items : snippets,
@@ -112,10 +121,9 @@ function route(app, db, handlers) {
 		handlers.auth.logout(req, res);
 	});
 
-	app.get('/CLEAR', function(req, res){
-    db.clearCol('code');
-		res.send("Clearing Collection");
-		console.log("CLEARING DATABASE.");
+	app.get('/admin/purge', function(req, res){
+    db.snippets.purge();
+		res.redirect('/');
 	});
 
 

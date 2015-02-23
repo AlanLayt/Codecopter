@@ -10,67 +10,73 @@ module.exports = {
 
 	count : function(callback) {
 	  col.count(function(err, count) {
-	    //assert.equal(err, count);
 	    callback(count);
 	  });
 	},
 
 
 	listAll : function(callback) {
-	  col.find().sort({updated: -1}).toArray(function(err, snippet) {
-	  //  assert.equal(err, null);
-	    callback(snippet);
+	  var s = [];
+		col.find().sort({updated: -1}).toArray(function(err, snippets) {
+			snippets.forEach(function(snip){
+				s.push({
+					id : snip.snid,
+					title : snip.title,
+					desc : snip.description
+				});
+			})
+	    callback(s);
 	  });
 	},
 
 
-	get : function(title, callback) {
-	  col.find({ "title" : title }).toArray(function(err, snippet) {
-	    //assert.equal(err, null);
-	    callback(snippet);
+	get : function(id, callback) {
+	  col.find({ "snid" : id }).toArray(function(err, snippet) {
+	    callback(snippet[0]);
 	  });
 	},
 
 
 	delete : function(id, callback) {
-	  col.remove({ 'title' : id }, function(err, result) {
+	  col.remove({ 'snid' : id }, function(err, result) {
 	    console.log("Snippet removed: %s", id);
 	    callback(id);
 	  });
 	},
 
 
-	add : function(title, content, callback) {
+	add : function(id, content, callback) {
 		  col.insert([{
-		    "title" : title,
+		    "snid" : id,
+				'title' : '',
+				'description' : '',
 		    "content" : content,
 		    "posted" : new Date(),
 		    "updated" : new Date()
 		  }
 		  ], function(err, result) {
-		  //  assert.equal(err, null);
-		  //  assert.equal(1, result.result.n);
-		  //  assert.equal(1, result.ops.length);
-		    callback(title);
+		    callback(id);
 		  });
 	},
 
 
-	update : function(title, content, callback) {
-	  var title = title;
+	update : function(id, content, details, callback) {
+	  var id = id;
 
-	  console.log(new Date());
+	  console.log(details.title);
 		col.update(
-	    { "title" : title },
+	    { 'snid' : id },
 	    {
 	      $set: {
-	        "content" : content,
-	        "updated" : new Date()
+	        'content' : content,
+	        'updated' : new Date(),
+					'title' : details.title,
+					'description' : details.desc
 	      }
 	    },
 	    {},
 			function(err){
-	  		callback(err,content,title);
+	  		callback(err,content,id);
 	  	}
 	  );
 	},
@@ -79,9 +85,7 @@ module.exports = {
 
 
 	purge : function(){
-		db.collection(col,function(err, collection){
-	      collection.remove({},function(err, removed){
-	      });
-	  });
+    col.remove({},function(err, removed){
+    });
 	}
 }

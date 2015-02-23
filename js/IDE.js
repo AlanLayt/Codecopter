@@ -143,7 +143,10 @@ document.addEventListener("keydown", function(e) {
     e.preventDefault();
     console.debug('Saving.');
 
-    socket.emit('save', { snid : snid, content : editor.getValue() });
+    var details = document.getElementById("details");
+
+    console.debug(details.desc.value);
+    socket.emit('save', { snid : snid, content : editor.getValue(), title : details.title.value, desc : details.desc.value });
 
   }
 }, false);
