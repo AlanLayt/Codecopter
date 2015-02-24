@@ -1,6 +1,28 @@
 var db = null;
 var collectionName = "code";
 
+
+
+
+
+var formatSnippet = function(snippets){
+	var s = [];
+	snippets.forEach(function(snip){
+		s.push({
+			id : snip.snid,
+			title : snip.title,
+			desc : snip.description,
+			content : snip.content
+		});
+	//	console.log(s);
+	});
+	//console.log(s);
+	return s;
+};
+
+
+
+
 module.exports = {
 	init : function(database){
 		db = database;
@@ -32,7 +54,7 @@ module.exports = {
 
 	get : function(id, callback) {
 	  col.find({ "snid" : id }).toArray(function(err, snippet) {
-	    callback(snippet[0]);
+	    callback(formatSnippet(snippet)[0]);
 	  });
 	},
 

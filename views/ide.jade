@@ -15,22 +15,23 @@ html
 
 
 	body
-		div#header
-			a(href='http://#{loc}')
-				div.section < Back
-			a(href='http://#{loc}/delete/#{snid}')
-				div.section Delete
+		div.ide
+			div#header
+				div.section
+					a(href='http://#{loc}')
+						svg.icon
+							use(xlink:href="http://#{loc}/icons.svg#shape-back") < Back
+					a(href='http://#{loc}/delete/#{snid}') Delete
 				
-			form#details
-				input(type='text' placeholder='Title' name='title' value='#{title}')
-				input(type='text' placeholder='Description' name='desc' value='#{desc}')
-				//input(type='text' placeholder='Something else')
+				div.section
+					form#details
+						input(type='text' placeholder='Title' name='title' value='#{title}')
+						input(type='text' placeholder='Description' name='desc' value='#{desc}')
 				
+			div#holder
+				pre#editor(snid='#{snid}').
+					#{snippet}
+				iframe#display(frameborder=0 scrolling='no')
 
-		div#holder
-			pre#editor(snid='#{snid}').
-				#{snippet}
-			iframe#display(frameborder=0 scrolling='no')
 
-
-		div#cursorHold
+			div#cursorHold

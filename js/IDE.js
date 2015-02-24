@@ -73,7 +73,7 @@ var ide = function(snid){
   ace.require("ace/ext/language_tools");
   var editor = ace.edit("editor");
   editor.session.setMode("ace/mode/html");
-  editor.setTheme("ace/theme/monokai");
+  editor.setTheme("ace/theme/dreamweaver");
 
   editor.setOptions({
       enableBasicAutocompletion: true,

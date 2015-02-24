@@ -25,12 +25,11 @@ function route(app, db, handlers) {
 		var snid = req.params["snid"];
 
 		db.snippets.get(snid,function(snippet){
-			console.log(JSON.stringify(snippet))
 			res.render('ide', {
 				loc : req.headers.host,
 				snid : snid,
 				title : snippet.title,
-				desc : snippet.description,
+				desc : snippet.desc,
 				snippet : snippet.content,
 				pretty : true,
 			});

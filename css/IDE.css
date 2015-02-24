@@ -2,34 +2,99 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  background: #272822; }
+  height: 100%; }
 
-div#header {
+.IDEStruct #header, .ideCSSMode #header, .ide #header, .ideDark #header {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 100;
   overflow: auto;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
-  div#header .section {
+  display: flex;
+  flex: 3 0px;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: space-around; }
+  .IDEStruct #header a, .ideCSSMode #header a, .ide #header a, .ideDark #header a {
+    padding: 5px 10px 5px 10px; }
+  .IDEStruct #header #details, .ideCSSMode #header #details, .ide #header #details, .ideDark #header #details {
+    margin: 0; }
+  .IDEStruct #header .section, .ideCSSMode #header .section, .ide #header .section, .ideDark #header .section {
+    flex: 0.5;
     padding: 5px 10px 5px 10px;
-    float: left; }
-  div#header a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none; }
-  div#header :Hover {
-    color: white; }
-
-div#holder {
+    vertical-align: middle; }
+.IDEStruct #holder, .ideCSSMode #holder, .ide #holder, .ideDark #holder {
   width: 100%;
   height: calc(100% - 36px);
   display: flex; }
-  div#holder #display, div#holder #editor {
+  .IDEStruct #holder #display, .ideCSSMode #holder #display, .ide #holder #display, .ideDark #holder #display, .IDEStruct #holder #editor, .ideCSSMode #holder #editor, .ide #holder #editor, .ideDark #holder #editor {
     flex: 1;
     height: 100%;
     margin: 0;
     padding: 0; }
-  div#holder #editor {
-    border-right: 1px dashed rgba(255, 255, 255, 0.5); }
+
+.ideCSSMode #header {
+  background: #fff; }
+  .ideCSSMode #header #details input {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px; }
+  .ideCSSMode #header a {
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none; }
+  .ideCSSMode #header :Hover {
+    color: black; }
+.ideCSSMode #holder {
+  position: relative;
+  display: block;
+  height: calc(100% - 48px); }
+  .ideCSSMode #holder #editor {
+    border-right: 1px dashed rgba(255, 255, 255, 0.5);
+    border-right: 1px dashed rgba(0, 0, 0, 0.5);
+    display: block;
+    width: 50%;
+    flex: none; }
+  .ideCSSMode #holder #display {
+    pointer-events: none;
+    height: calc(100% - 80px);
+    position: absolute;
+    top: 40;
+    right: 0;
+    bottom: 40;
+    width: 70%; }
+
+.ide #header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  background: #fff; }
+  .ide #header .icon {
+    transition: fill 0.3s ease;
+    width: 30px;
+    height: 30px;
+    fill: #ccc; }
+    .ide #header .icon:Hover {
+      fill: #666; }
+  .ide #header #details input {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px; }
+  .ide #header a {
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none; }
+  .ide #header :Hover {
+    color: black; }
+.ide #holder #editor {
+  border-right: 1px dashed rgba(255, 255, 255, 0.5);
+  border-right: 1px dashed rgba(0, 0, 0, 0.5); }
+
+.ideDark #header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: #fff; }
+  .ideDark #header a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none; }
+  .ideDark #header :Hover {
+    color: white; }
+.ideDark #holder #editor {
+  border-right: 1px dashed rgba(255, 255, 255, 0.5);
+  border-right: 1px dashed rgba(0, 0, 0, 0.5); }
 
 ::-webkit-scrollbar {
   width: 7px;

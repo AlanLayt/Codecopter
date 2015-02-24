@@ -4,47 +4,166 @@ html, body {
   margin:0;
   padding:0;
   height: 100%;
-  background: #272822;
 }
 
-div#header {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 100;
-  overflow: auto;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  //height: 35px;
-  .section {
-    padding: 5px 10px 5px 10px;
-    float:left;
+.IDEStruct {
+  #header {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 100;
+    overflow: auto;
+
+    display: flex;
+    flex: 3 0px;
+    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-around;
+
+    a {
+      padding: 5px 10px 5px 10px;
+    }
+    #details {
+      margin: 0;
+    }
+    .section {
+      flex:0.5;
+      padding: 5px 10px 5px 10px;
+      vertical-align:middle;
+    }
+    .right {
+    }
   }
-  a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-  }:Hover {
-    color: rgba(255,255,255,1);
+
+
+  #holder {
+    width: 100%;
+    height: calc(100% - 36px);
+    display:flex;
+    #display, #editor {
+      flex: 1;
+      height: 100%;
+      margin:0;
+      padding: 0;
+    }
+
+    #editor {
+    }
   }
 }
 
 
-div#holder {
-  width: 100%;
-  height: calc(100% - 36px);
-  display:flex;
-  #display, #editor {
-    flex: 1;
-    height: 100%;
-    margin:0;
-    padding: 0;
+
+
+
+
+.ideCSSMode {
+  @extend .IDEStruct;
+
+  #header {
+    //border-bottom: 1px solid rgba(0,0,0,0.3);
+    background: #fff;
+
+
+    #details {
+      input {
+        border: 1px solid rgba(0,0,0,0.1);
+        padding: 10px;
+      }
+    }
+
+    a {
+      color: rgba(0,0,0,0.7);
+      text-decoration: none;
+    }:Hover {
+      color: rgba(0,0,0,1);
+    }
   }
 
-  #editor {
-    border-right: 1px dashed rgba(255,255,255,0.5);
+  #holder {
+    position:relative;
+    display:block;
+    height: calc(100% - 48px);
+    #editor {
+      border-right: 1px dashed rgba(255,255,255,0.5);
+      border-right: 1px dashed rgba(0,0,0,0.5);
+      display:block;
+      width:50%;
+      flex:none;
+    }
+    #display {
+      pointer-events:none;
+      height: calc(100% - 80px);
+      //border: 5px solid red;
+      position:absolute;
+      top:40;
+      right:0;
+      bottom:40;
+      width: 70%;
+    }
   }
 }
+.ide {
+  @extend .IDEStruct;
 
+  #header {
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    background: #fff;
 
+    .icon {
+      transition: fill 0.3s ease;
+      width: 30px;
+      height: 30px;
+      fill: #ccc;
+      &:Hover {
+        fill: #666;
+      }
+    }
 
+    #details {
+      input {
+        border: 1px solid rgba(0,0,0,0.1);
+        padding: 10px;
+      }
+    }
 
+    a {
+      color: rgba(0,0,0,0.7);
+      text-decoration: none;
+    }:Hover {
+      color: rgba(0,0,0,1);
+    }
+  }
+
+  #holder {
+    #editor {
+      border-right: 1px dashed rgba(255,255,255,0.5);
+      border-right: 1px dashed rgba(0,0,0,0.5);
+    }
+  }
+}
+.ideDark {
+  @extend .IDEStruct;
+
+  #header {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    background: #fff;
+
+    a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+    }:Hover {
+      color: rgba(255,255,255,1);
+    }
+  }
+
+  #holder {
+    #editor {
+      border-right: 1px dashed rgba(255,255,255,0.5);
+      border-right: 1px dashed rgba(0,0,0,0.5);
+    }
+  }
+}
 
 
 

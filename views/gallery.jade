@@ -20,12 +20,12 @@ html
 				div.headSec.right
 					a(href="/new")
 						svg.icon
-							use(xlink:href="icons.svg#shape-new")
+							use(xlink:href="http://#{loc}/icons.svg#shape-new")
 			else
 				div.headSec.right
 					a(href="/auth")
 						svg.icon
-							use(xlink:href="icons.svg#shape-user2")
+							use(xlink:href="http://#{loc}/icons.svg#shape-user2")
 
 
 		div#holder
@@ -39,8 +39,9 @@ html
 							div.username Username
 							div.caption= item.desc
 
-		div#footer
+	//-	div#footer
 			div.section
 				svg.icon.shape-user
-					use(xlink:href="icons.svg#shape-user")
+					use(xlink:href="http://#{loc}/icons.svg#shape-user")
 				| #{userCount}
+				-//
