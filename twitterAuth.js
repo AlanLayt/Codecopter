@@ -31,7 +31,7 @@ function consumer(){
 		"mw6PxiPT3pwUVS4X79DipfUVs",
 		"JZE3yiF0Ibg6LpWV7UBARKBb8ZRGhIVoTh74HMgLs9yjzzZr8V",
 		"1.0A",
-		'http://' + app.connection.address + ':' + app.connection.httpPort + '/auth/callback',
+		'http://' + app.connection.host + ':' + app.connection.httpPort + '/auth/callback',
 		"HMAC-SHA1"
 	);
 }
