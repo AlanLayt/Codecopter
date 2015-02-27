@@ -1,7 +1,7 @@
 
 module.exports = {
-	address : '127.0.0.1',
+	address : '178.62.94.44',
 	dbPort : 27017,
-	httpPort : 8888,
+	httpPort : 80,
 	database : 'codeucation'
 }
