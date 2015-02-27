@@ -65,18 +65,26 @@ div#header {
   -webkit-border-radius: 10px;
   border-radius: 7px; }
 
+::-webkit-scrollbar-thumb:horizontal {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  height: 2px; }
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 10px;
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.4); }
+  background: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.2); }
 
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.2); }
 
 .IDESTRUCT, .ide {
   width: 100%;
-  height: calc(100% - 36px);
+  height: calc(100% - 60px);
   display: flex; }
   .IDESTRUCT #display, .ide #display, .IDESTRUCT #editor, .ide #editor {
     flex: 1;

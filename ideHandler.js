@@ -1,6 +1,6 @@
 var app,io,db;
 var url = require('url');
-var Hashids = require('Hashids');
+var Hashids = require('hashids');
 var loaded = Array();
 var clientNum = 0;
 
