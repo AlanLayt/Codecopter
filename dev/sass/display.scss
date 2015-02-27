@@ -19,17 +19,12 @@
   }
 }
 
-.container {
+.preview {
   padding: 15px;
+  flex:1;
   iframe {
-    position:absolute;
-    top:-10%;
-    left:-10%;
-    right:0;
-    bottom:0;
-    width: 120%;
-    height: 120%;
-    pointer-events: none;
+    width: 100%;
+    height: 30em;
     border: none;
     padding:0;
   }
@@ -85,29 +80,4 @@
     margin: 0 4px -1px 3px;
     fill:rgba(255,255,255,0.5);
   }
-}
-
-
-
-
-
-
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-  background: rgba(255,255,255,0.4);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(255,255,255,0.2);
 }

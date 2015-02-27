@@ -8,7 +8,7 @@ var fs = require('fs');
 function route(app, db, handlers) {
 
 		app.get('/new', function(req, res){
-			handlers.ide.newSnippet(function(id){
+			handlers.ide.newSnippet(req,function(id){
 				res.redirect('/c/' + id);
 			});
 		});
@@ -41,9 +41,6 @@ function route(app, db, handlers) {
 	});
 	app.get('/ide/core.js', function(req, res){
     	res.sendFile(__dirname + '/js/IDE.js');
-	});
-	app.get('/ide/style.css', function(req, res){
-			res.sendFile(__dirname + '/css/IDE.css');
 	});
 	app.get('/icons.svg', function(req, res){
 			res.sendFile(__dirname + '/css/svg-defs.svg');
@@ -99,9 +96,24 @@ function route(app, db, handlers) {
 				});
 		});
 	});
+
+
+	// CSS Rules
+	app.get('/css/:styleSheet.css', function(req, res){
+			var styleSheet = req.params["styleSheet"];
+			res.sendFile(__dirname + '/css/' + styleSheet + '.css');
+	});
+	app.get('/ide/style.css', function(req, res){
+			res.sendFile(__dirname + '/css/IDE.css');
+	});
 	app.get('/gallery/style.css', function(req, res){
     	res.sendFile(__dirname + '/css/gallery.css');
 	});
+
+
+
+
+
 
 	app.get('/img/:img', function(req, res){
     	res.sendFile(__dirname + '/img/' + req.param("img"));
@@ -124,6 +136,23 @@ function route(app, db, handlers) {
 		res.redirect('/');
 	});
 
+
+	app.get('/:uname/:snid', function(req, res){
+		var snid = req.params["snid"];
+		var authDetails = handlers.auth.get(req, res);
+
+		db.snippets.get(snid,function(snippet){
+			res.render('display', {
+				loc : req.headers.host,
+				snid : snid,
+				snippet : snippet,
+				logged : authDetails.logged,
+				username : authDetails.logged?authDetails.username:'',
+				userImage : authDetails.logged?authDetails.twitterAuth.profile_image_url:'',
+				poster : snippet.userinfo
+			});
+		});
+	});
 
 
 	app.get('*', function(req, res){

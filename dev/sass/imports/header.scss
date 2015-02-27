@@ -1,0 +1,107 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400);
+
+html, body {
+  margin:0;
+  padding:0;
+  background: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+  background-size:cover;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+// ================== Header ==================
+div#header {
+  max-width:950px;
+  margin: 0 auto;
+  overflow: auto;
+  display: flex;
+
+  h1{
+    color:rgba(0,0,0,0.8);
+    font-weight:100;
+    margin: auto;
+    display: inline-block;
+    a {
+      text-decoration:none;
+    }
+  }
+
+  .section {
+    height: 60px;
+    display: inline-flex;
+    > * {;
+      vertical-align: middle;
+    }
+    .userInfo {
+      margin: auto 5px;
+      > * {;
+        vertical-align: middle;
+      }
+      .userName{
+        padding-left:5px;
+      }
+    }
+    .userImage {
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+    }
+    .icon {
+      transition: fill 0.3s ease;
+      width: 30px;
+      height: 100%;
+      fill: #ccc;
+      &:Hover {
+        fill: #666;
+      }
+    }
+  }
+  .right {
+  }
+  .left {
+  }
+  .createNew {
+    margin: 10px;
+    height: 34px;
+    #newSnippet {
+      margin:0;
+    }
+  }
+  .createButton {
+    position:absolute;
+    top:2;
+    right:2;
+    .newButton {
+      fill:#ccc;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .createNew:Hover {
+    .newButton {
+      fill:#333;
+    }
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.4);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255,255,255,0.2);
+}

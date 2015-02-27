@@ -2,47 +2,92 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%; }
-
-.IDEStruct #header, .ideCSSMode #header, .ide #header, .ideDark #header {
+  background: #fff;
   font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 100;
+  background-size: cover;
+  -webkit-font-smoothing: antialiased; }
+
+div#header {
+  max-width: 950px;
+  margin: 0 auto;
   overflow: auto;
-  display: flex;
-  flex: 3 0px;
-  flex-direction: row;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
-  align-content: space-around; }
-  .IDEStruct #header a, .ideCSSMode #header a, .ide #header a, .ideDark #header a {
-    padding: 5px 10px 5px 10px; }
-  .IDEStruct #header #details, .ideCSSMode #header #details, .ide #header #details, .ideDark #header #details {
-    margin: 0; }
-  .IDEStruct #header .section, .ideCSSMode #header .section, .ide #header .section, .ideDark #header .section {
-    flex: 0.5;
-    padding: 5px 10px 5px 10px;
-    vertical-align: middle; }
-.IDEStruct #holder, .ideCSSMode #holder, .ide #holder, .ideDark #holder {
+  display: flex; }
+  div#header h1 {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 100;
+    margin: auto;
+    display: inline-block; }
+    div#header h1 a {
+      text-decoration: none; }
+  div#header .section {
+    height: 60px;
+    display: inline-flex; }
+    div#header .section > * {
+      vertical-align: middle; }
+    div#header .section .userInfo {
+      margin: auto 5px; }
+      div#header .section .userInfo > * {
+        vertical-align: middle; }
+      div#header .section .userInfo .userName {
+        padding-left: 5px; }
+    div#header .section .userImage {
+      width: 30px;
+      height: 30px;
+      border-radius: 30px; }
+    div#header .section .icon {
+      transition: fill 0.3s ease;
+      width: 30px;
+      height: 100%;
+      fill: #ccc; }
+      div#header .section .icon:Hover {
+        fill: #666; }
+  div#header .createNew {
+    margin: 10px;
+    height: 34px; }
+    div#header .createNew #newSnippet {
+      margin: 0; }
+  div#header .createButton {
+    position: absolute;
+    top: 2;
+    right: 2; }
+    div#header .createButton .newButton {
+      fill: #ccc;
+      width: 30px;
+      height: 30px; }
+  div#header .createNew:Hover .newButton {
+    fill: #333; }
+
+::-webkit-scrollbar {
+  width: 7px; }
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 7px; }
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.4); }
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 255, 255, 0.2); }
+
+.IDESTRUCT, .ide {
   width: 100%;
   height: calc(100% - 36px);
   display: flex; }
-  .IDEStruct #holder #display, .ideCSSMode #holder #display, .ide #holder #display, .ideDark #holder #display, .IDEStruct #holder #editor, .ideCSSMode #holder #editor, .ide #holder #editor, .ideDark #holder #editor {
+  .IDESTRUCT #display, .ide #display, .IDESTRUCT #editor, .ide #editor {
     flex: 1;
     height: 100%;
     margin: 0;
     padding: 0; }
 
-.ideCSSMode #header {
-  background: #fff; }
-  .ideCSSMode #header #details input {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 10px; }
-  .ideCSSMode #header a {
-    color: rgba(0, 0, 0, 0.7);
-    text-decoration: none; }
-  .ideCSSMode #header :Hover {
-    color: black; }
+.ide #editor {
+  border-right: 1px dashed rgba(255, 255, 255, 0.5);
+  border-right: 1px dashed rgba(0, 0, 0, 0.5); }
+
 .ideCSSMode #holder {
   position: relative;
   display: block;
@@ -62,28 +107,6 @@ html, body {
     bottom: 40;
     width: 70%; }
 
-.ide #header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background: #fff; }
-  .ide #header .icon {
-    transition: fill 0.3s ease;
-    width: 30px;
-    height: 30px;
-    fill: #ccc; }
-    .ide #header .icon:Hover {
-      fill: #666; }
-  .ide #header #details input {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 10px; }
-  .ide #header a {
-    color: rgba(0, 0, 0, 0.7);
-    text-decoration: none; }
-  .ide #header :Hover {
-    color: black; }
-.ide #holder #editor {
-  border-right: 1px dashed rgba(255, 255, 255, 0.5);
-  border-right: 1px dashed rgba(0, 0, 0, 0.5); }
-
 .ideDark #header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   background: #fff; }
@@ -95,21 +118,3 @@ html, body {
 .ideDark #holder #editor {
   border-right: 1px dashed rgba(255, 255, 255, 0.5);
   border-right: 1px dashed rgba(0, 0, 0, 0.5); }
-
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px; }
-
-/* Track */
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 7px; }
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.4); }
-
-::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(255, 255, 255, 0.2); }

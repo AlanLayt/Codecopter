@@ -3,8 +3,6 @@ var collectionName = "code";
 
 
 
-
-
 var formatSnippet = function(snippets){
 	var s = [];
 	snippets.forEach(function(snip){
@@ -12,15 +10,12 @@ var formatSnippet = function(snippets){
 			id : snip.snid,
 			title : snip.title,
 			desc : snip.description,
-			content : snip.content
+			content : snip.content,
+			userinfo : snip.userinfo
 		});
-	//	console.log(s);
 	});
-	//console.log(s);
 	return s;
 };
-
-
 
 
 module.exports = {
@@ -40,14 +35,15 @@ module.exports = {
 	listAll : function(callback) {
 	  var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, snippets) {
-			snippets.forEach(function(snip){
+	    callback(formatSnippet(snippets));
+			/*	snippets.forEach(function(snippest){
 				s.push({
 					id : snip.snid,
 					title : snip.title,
 					desc : snip.description
 				});
 			})
-	    callback(s);
+	    callback(s);*/
 	  });
 	},
 
@@ -67,11 +63,12 @@ module.exports = {
 	},
 
 
-	add : function(id, content, callback) {
+	add : function(id, content, user, callback) {
 		  col.insert([{
 		    "snid" : id,
 				'title' : '',
 				'description' : '',
+				'userinfo' : user,
 		    "content" : content,
 		    "posted" : new Date(),
 		    "updated" : new Date()

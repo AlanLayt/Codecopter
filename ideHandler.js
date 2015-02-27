@@ -87,12 +87,12 @@ var userCount = function(){
   return clientNum;//io.clients().length;
 }
 
-var newSnippet = function(callback){
+var newSnippet = function(req,callback){
 		db.snippets.count(function(count){
 			var hashids = new Hashids("Twoflower"),
 		  id = hashids.encode(count,Date.now());
 
-      db.snippets.add(id,'',function(id){
+      db.snippets.add(id,'',req.session.twitterAuth,function(id){
         console.log('IDE: New snippet, %s, added.', id);
         callback(id);
       });
@@ -118,12 +118,7 @@ var getSnippet = function(snid,callback){
 }
 
 
-var stopTimeouts = function(){
-  return 'test';
-}
-
 exports.start = start;
-exports.stopTimeouts = stopTimeouts;
 exports.init = init;
 exports.getSnippet = getSnippet;
 exports.deleteSnippet = deleteSnippet;

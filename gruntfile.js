@@ -5,6 +5,7 @@ module.exports = function(grunt) {
         files: {
           'css/gallery.css' : 'dev/sass/gallery.scss',
           'css/ide.css' : 'dev/sass/ide.scss',
+          'css/display.css' : 'dev/sass/display.scss',
         }
       }
     },
