@@ -3,10 +3,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var jade = require('jade');
 var session = require('express-session');
-
+var compress = require('compression');
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
+app.use(compress());
 
 
 

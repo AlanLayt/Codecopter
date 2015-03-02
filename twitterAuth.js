@@ -43,6 +43,22 @@ var logout = function(req, res){
 	res.end();
 }
 
+var getUser = function(req, res){
+	if(req.session.twitterScreenName){
+		var uname = req.session.twitterScreenName;
+		var ad = req.session.twitterAuth;
+		return {
+			logged : true,
+			username : uname,
+			avatar : ad.profile_image_url,
+			twitterAuth : ad
+		};
+	}
+	else
+		return {logged:false};
+
+}
+
 var get = function(req, res){
 	if(req.session.twitterScreenName){
 		var uname = req.session.twitterScreenName;
@@ -108,6 +124,8 @@ var callback = function(req, res){
 exports.init = init;
 exports.start = start;
 exports.login = login;
+
 exports.get = get;
+exports.getUser = getUser;
 exports.logout = logout;
 exports.callback = callback;

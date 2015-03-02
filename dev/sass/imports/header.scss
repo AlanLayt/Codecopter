@@ -16,6 +16,7 @@ div#header {
   margin: 0 auto;
   overflow: auto;
   display: flex;
+  justify-content: space-between;
 
   h1{
     color:rgba(0,0,0,0.8);
@@ -24,7 +25,20 @@ div#header {
     display: inline-block;
     a {
       text-decoration:none;
+      color:rgba(0,0,0,0.8);
     }
+  }
+
+  .title,.user {
+    width: 150px;
+  }
+
+  .title {
+  }
+  .menu {
+  }
+  .user {
+    text-align:right;
   }
 
   .section {
@@ -42,24 +56,14 @@ div#header {
         padding-left:5px;
       }
     }
+    .icon {
+      height: 100%;
+    }
     .userImage {
       width: 30px;
       height: 30px;
       border-radius: 30px;
     }
-    .icon {
-      transition: fill 0.3s ease;
-      width: 30px;
-      height: 100%;
-      fill: #ccc;
-      &:Hover {
-        fill: #666;
-      }
-    }
-  }
-  .right {
-  }
-  .left {
   }
   .createNew {
     margin: 10px;
@@ -84,6 +88,27 @@ div#header {
     }
   }
 }
+
+
+.icon {
+  transition: fill 0.3s ease;
+  width: 30px;
+  height: 30px;
+  fill: #ccc;
+  &:Hover {
+    fill: #666;
+  }
+}
+
+
+form {
+  input[type="text"]{
+    padding: 8px 5px 8px 5px;
+  }
+}
+
+
+
 
 
 ::-webkit-scrollbar {

@@ -86,28 +86,3 @@
     fill:rgba(255,255,255,0.5);
   }
 }
-
-
-
-
-
-
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-  background: rgba(255,255,255,0.4);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(255,255,255,0.2);
-}

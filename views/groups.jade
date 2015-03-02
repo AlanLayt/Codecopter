@@ -13,14 +13,11 @@ html
 
 		div#holder
 			-each item in items
-				a(href='http://#{loc}/#{item.userinfo.screen_name}/#{item.id}')
-					div.container
-						div.thumb
-							iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
-						div.info
-							div.title= item.title
-							div.username 
-							div.caption= item.desc
+				a(href='http://#{loc}/group/#{item.id}')
+					div.info
+						div.title= item.title
+						div.caption= item.desc
+						hr
 
 	//-	div#footer
 			div.section

@@ -1,6 +1,6 @@
 var db = null;
 var collectionName = "code";
-
+var col;
 
 
 var formatSnippet = function(snippets){
@@ -33,9 +33,9 @@ module.exports = {
 
 
 	listAll : function(callback) {
-	  var s = [];
+		var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, snippets) {
-	    callback(formatSnippet(snippets));
+			callback(formatSnippet(snippets));
 			/*	snippets.forEach(function(snippest){
 				s.push({
 					id : snip.snid,
@@ -43,8 +43,16 @@ module.exports = {
 					desc : snip.description
 				});
 			})
-	    callback(s);*/
-	  });
+			callback(s);*/
+		});
+	},
+
+
+	listByUser : function(user, callback) {
+		var s = [];
+		col.find({"userinfo.screen_name" : user}).sort({updated: -1}).toArray(function(err, snippets) {
+			callback(formatSnippet(snippets));
+		});
 	},
 
 

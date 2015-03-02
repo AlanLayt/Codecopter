@@ -11,14 +11,20 @@ div#header {
   max-width: 950px;
   margin: 0 auto;
   overflow: auto;
-  display: flex; }
+  display: flex;
+  justify-content: space-between; }
   div#header h1 {
     color: rgba(0, 0, 0, 0.8);
     font-weight: 100;
     margin: auto;
     display: inline-block; }
     div#header h1 a {
-      text-decoration: none; }
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.8); }
+  div#header .title, div#header .user {
+    width: 150px; }
+  div#header .user {
+    text-align: right; }
   div#header .section {
     height: 60px;
     display: inline-flex; }
@@ -30,17 +36,12 @@ div#header {
         vertical-align: middle; }
       div#header .section .userInfo .userName {
         padding-left: 5px; }
+    div#header .section .icon {
+      height: 100%; }
     div#header .section .userImage {
       width: 30px;
       height: 30px;
       border-radius: 30px; }
-    div#header .section .icon {
-      transition: fill 0.3s ease;
-      width: 30px;
-      height: 100%;
-      fill: #ccc; }
-      div#header .section .icon:Hover {
-        fill: #666; }
   div#header .createNew {
     margin: 10px;
     height: 34px; }
@@ -56,6 +57,17 @@ div#header {
       height: 30px; }
   div#header .createNew:Hover .newButton {
     fill: #333; }
+
+.icon {
+  transition: fill 0.3s ease;
+  width: 30px;
+  height: 30px;
+  fill: #ccc; }
+  .icon:Hover {
+    fill: #666; }
+
+form input[type="text"] {
+  padding: 8px 5px 8px 5px; }
 
 ::-webkit-scrollbar {
   width: 7px; }

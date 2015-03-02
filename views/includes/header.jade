@@ -1,0 +1,18 @@
+div#header
+  div.section.title
+    h1
+      a(href="http://#{loc}/") CodeLight
+  if user.logged
+    div.section.menu
+      a(href="/new")
+        svg.icon
+          use(xlink:href="http://#{loc}/icons.svg#shape-new")
+    div.section.user
+      div.userInfo
+        img.userImage(src="#{user.avatar}")
+        span.userName #{user.username}
+  else
+    div.section.right
+      a(href="/auth")
+        svg.icon
+          use(xlink:href="http://#{loc}/icons.svg#shape-user2")

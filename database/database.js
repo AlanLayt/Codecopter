@@ -3,6 +3,7 @@ var url = require("url");
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var snippets = require('./snippets');
+var groups = require('./groups');
 var mongoConnect = require('./connect');
 var db=null;
 
@@ -13,6 +14,7 @@ function connect(connection, connected, failed) {
 		function(database,connection){
 			db = database;
 			snippets.init(db);
+			groups.init(db);
 			connected(database,connection);
 		},failed)
 }
@@ -62,3 +64,4 @@ exports.connect = connect;
 
 
 exports.snippets = snippets;
+exports.groups = groups;

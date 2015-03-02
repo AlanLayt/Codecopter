@@ -9,24 +9,7 @@ html
 		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
 
 	body
-		div#header
-			a(href="http://#{loc}/")
-				div.section.left
-					h1 CodeLight
-			if logged
-				div.section.right
-					div.userInfo
-						img.userImage(src="#{userImage}")
-						span.userName #{username}
-				div.section.right
-					a(href="/new")
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-new")
-			else
-				div.section.right
-					a(href="/auth")
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-user2")
+		include includes/header.jade
 
 
 		div#holder

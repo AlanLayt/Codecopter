@@ -15,39 +15,26 @@ html
 
 
 	body
-			div#header
-				if logged
-					div.section.right
-						div.userInfo
-							img.userImage(src="#{userImage}")
-							span.userName #{username}
-					div.section.right
-						a(href="/new")
-							svg.icon
-								use(xlink:href="http://#{loc}/icons.svg#shape-new")
-				else
-					div.section.right
-						a(href="/auth")
-							svg.icon
-								use(xlink:href="http://#{loc}/icons.svg#shape-user2")
+		include includes/header.jade
 								
 								
-				div.section
-					a(href='http://#{loc}')
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-back") < Back
-					a(href='http://#{loc}/delete/#{snid}') Delete
-					
-				div.section
-					form#details
-						input(type='text' placeholder='Title' name='title' value='#{title}')
-						input(type='text' placeholder='Description' name='desc' value='#{desc}')
+		div.section
+			a(href='http://#{loc}')
+				svg.icon
+					use(xlink:href="http://#{loc}/icons.svg#shape-back")
+			a(href='http://#{loc}/delete/#{snid}') Delete
+			
+		div.section
+			form#details
+				input(type='text' placeholder='Title' name='title' value='#{title}')
+				input(type='text' placeholder='Description' name='desc' value='#{desc}')
 						
 
-			div#holder.ide
-				pre#editor(snid='#{snid}').
-					#{snippet}
-				iframe#display(frameborder=0 scrolling='no')
+		div#holder.ide
+			div	test
+			pre#editor(snid='#{snid}').
+				#{snippet}
+			iframe#display(frameborder=0 scrolling='no')
 
 
 			div#cursorHold
