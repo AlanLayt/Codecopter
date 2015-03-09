@@ -4,17 +4,12 @@ var cursors = Array();
 
 
 var Preview = function(element){
-  this.foo = "bar";
   this.el = document.getElementById(element);
   this.cntnt = "";
   this.ut = 0;
   this.tickStep = 100;
   this.updateTimeout = 300;
   this.running = true;
-
-  var get = function(){
-    return this.foo;
-  }
 
   var update = function(val){
     this.cntnt = val;
@@ -44,7 +39,6 @@ var Preview = function(element){
   }
 
 
-  this.get = get;
   this.update = update;
   this.tickStart = tickStart;
   this.delay = delay;
@@ -62,7 +56,6 @@ var ide = function(snid){
   var caretBlink = false;
 
 
-  console.debug(preview.get());
   preview.tickStart(function(){
   //  console.debug("Refresh");
   });
@@ -145,7 +138,7 @@ document.addEventListener("keydown", function(e) {
 
     var details = document.getElementById("details");
 
-    console.debug(details.desc.value);
+  //  console.debug(details.desc.value);
     socket.emit('save', { snid : snid, content : editor.getValue(), title : details.title.value, desc : details.desc.value });
 
   }

@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var fs = require('fs');
-
+var pubDir = './public/';
 
 function route(app, db, handlers) {
 
@@ -11,38 +11,38 @@ function route(app, db, handlers) {
 		// CSS Rules
 		app.get('/css/:styleSheet.css', function(req, res){
 				var styleSheet = req.params["styleSheet"];
-				res.sendFile(__dirname + '/css/' + styleSheet + '.css');
+				res.sendFile('/css/' + styleSheet + '.css', {'root' : pubDir});
 		});
 		app.get('/ide/style.css', function(req, res){
-				res.sendFile(__dirname + '/css/IDE.css');
+				res.sendFile('/css/IDE.css', {'root' : pubDir});
 		});
 		app.get('/gallery/style.css', function(req, res){
-				res.sendFile(__dirname + '/css/gallery.css');
+				res.sendFile('/css/gallery.css', {'root' : pubDir});
 		});
 		// Images
 		app.get('/img/:img', function(req, res){
-				res.sendFile(__dirname + '/img/' + req.param("img"));
+				res.sendFile('/img/' + req.param("img"), {'root' : pubDir});
 		});
 		app.get('/icons.svg', function(req, res){
-				res.sendFile(__dirname + '/css/svg-defs.svg');
+				res.sendFile('/img/svg-defs.svg', {'root' : pubDir});
 		});
 		app.get('/favicon.ico', function(req, res){
-			res.sendFile(__dirname + '/img/icon.png');
+			res.sendFile('/img/icon.png', {'root' : pubDir});
 		});
 
 
 		// ========== Static Script Routes ==========
 		app.get('/stopTimeouts.js', function(req, res){
-				res.sendFile(__dirname + '/js/stopTimeouts.js');
+				res.sendFile('/js/stopTimeouts.js', {'root' : pubDir});
 		});
 		app.get('/ide/core.js', function(req, res){
-				res.sendFile(__dirname + '/js/IDE.js');
+				res.sendFile('/js/IDE.js', {'root' : pubDir});
 		});
 		app.get('/ace/*', function(req, res){
-				res.sendFile( __dirname + '/js/lib/ace/' + req.params[0]);
+				res.sendFile( '/js/lib/ace/' + req.params[0], {'root' : pubDir});
 		});
 		app.get('/lib/*', function(req, res){
-				res.sendFile( __dirname + '/js/lib/' + req.params[0]);
+				res.sendFile( '/js/lib/' + req.params[0], {'root' : pubDir});
 		});
 
 		// ========== Authentication Routes ==========

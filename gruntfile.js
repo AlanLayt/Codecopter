@@ -3,9 +3,9 @@ module.exports = function(grunt) {
     sass: {
       dist: {
         files: {
-          'css/gallery.css' : 'dev/sass/gallery.scss',
-          'css/ide.css' : 'dev/sass/ide.scss',
-          'css/display.css' : 'dev/sass/display.scss',
+          'public/css/gallery.css' : 'dev/sass/gallery.scss',
+          'public/css/ide.css' : 'dev/sass/ide.scss',
+          'public/css/display.css' : 'dev/sass/display.scss',
         }
       }
     },
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       },
       default : {
           files: {
-            'css/svg-defs.svg': ['dev/svgs/*.svg'],
+            'public/img/svg-defs.svg': ['dev/svgs/*.svg'],
           }
       }
     },
