@@ -23,7 +23,7 @@ module.exports = {
 		db = database;
 		col = db.collection(collectionName);
 	},
-
+	
 
 	count : function(callback) {
 	  col.count(function(err, count) {
@@ -36,14 +36,6 @@ module.exports = {
 		var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, snippets) {
 			callback(formatSnippet(snippets));
-			/*	snippets.forEach(function(snippest){
-				s.push({
-					id : snip.snid,
-					title : snip.title,
-					desc : snip.description
-				});
-			})
-			callback(s);*/
 		});
 	},
 

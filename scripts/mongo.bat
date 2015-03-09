@@ -1,1 +1,1 @@
-"C:\MongoDB\bin\mongod.exe" --dbpath=..\mongo --port 27017
+"C:\MongoDB\bin\mongod.exe" --dbpath=mongo --port 27017

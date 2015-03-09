@@ -2,6 +2,9 @@ var http = require("http");
 var url = require("url");
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
+var Hashids = require('hashids');
+var hashid = new Hashids("Twoflower");
+
 var snippets = require('./snippets');
 var groups = require('./groups');
 var mongoConnect = require('./connect');
@@ -13,8 +16,8 @@ function connect(connection, connected, failed) {
 	mongoConnect(connection,
 		function(database,connection){
 			db = database;
-			snippets.init(db);
-			groups.init(db);
+			snippets.init(db,hashid);
+			groups.init(db,hashid);
 			connected(database,connection);
 		},failed)
 }

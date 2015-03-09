@@ -1,8 +1,10 @@
-var app,io,db;
-var url = require('url');
-var Hashids = require('hashids');
-var loaded = Array();
-var clientNum = 0;
+var app,io,db,
+    url = require('url'),
+    Hashids = require('hashids');
+
+var loaded = Array(),
+    connectionCount = 0;
+
 
 var init = function(mapp,mio,mdb){
   app = mapp,
@@ -13,18 +15,25 @@ var init = function(mapp,mio,mdb){
   console.log('IDE: Initialized');
 }
 
+var Snippet = function(details){
+  var details = details;
+
+  this.getTitle = function(){
+    return details.title;
+  }
+}
+
 var start = function(){
 
   io.on('connection', function (socket) {
 
     console.log('User Connected. (%s)', socket.id);
-    clientNum++;
+    connectionCount++;
 
     socket.on('disconnect', function () {
       console.log('Client Disconnected. (%s)', socket.id);
-      clientNum--;
+      connectionCount--;
     });
-
 
     socket.emit("connectionConfirmed",{content : GLOBAL.test});
 
@@ -38,7 +47,9 @@ var start = function(){
           if(snippet.length<1){
             console.log('ERR: SNIPPET NOT FOUND');
           } else {
-            loaded[data.snid] = snippet.content;
+            loaded[data.snid] = new Snippet(snippet);//.content;
+            console.log(loaded[data.snid].getTitle());
+            //console.log(snippet)
           }
         });
       }
@@ -48,33 +59,24 @@ var start = function(){
     // Handles remove request and brodcasts to other connected clients
     socket.on('remove', function (data) {
       socket.broadcast.to(data.snid).emit("remove",data);
-      GLOBAL.test = data.full;
       loaded[data.snid] = data.full;
     });
 
     socket.on('save', function (data) {
-    //  console.log(data)
       db.snippets.update(data.snid, loaded[data.snid], {title : data.title, desc : data.desc}, function(info,content,title){
         console.log('Snippet %s updated.', data.snid);
       });
     });
+
     socket.on('insert', function (data) {
       socket.broadcast.to(data.snid).emit("insert",data);
-      GLOBAL.test = data.full;
       loaded[data.snid] = data.full;
-     // console.log(data)
-
-    //  db.updateSnippet(data.snid, loaded[data.snid], function(info,content,title){
-    //    console.log('Snippet %s updated.', title);
-    //  });
     });
-
-
 
     socket.on('cursorMove', function (data) {
       data.socketid = socket.id;
       socket.broadcast.to(data.snid).emit("cursorMove",data);
-      //console.log('cursormove');
+      console.log(socket.request.headers);
     });
 
   });
@@ -83,8 +85,18 @@ var start = function(){
   return this;
 }
 
+
+
+
+
+
+
+
+
+
+
 var userCount = function(){
-  return clientNum;//io.clients().length;
+  return connectionCount;
 }
 
 var newSnippet = function(req,callback){

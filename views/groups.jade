@@ -12,6 +12,10 @@ html
 		include includes/header.jade
 
 		div#holder
+			form(method="post" action='http://#{loc}/group/new')
+				input(type="text" placeholder="Group Title" name="group[title]")
+				input(type="text" placeholder="Description" name="group[desc]")
+				input(type="submit")
 			-each item in items
 				a(href='http://#{loc}/group/#{item.id}')
 					div.info

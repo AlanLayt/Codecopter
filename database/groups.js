@@ -1,6 +1,6 @@
 var db = null;
 var collectionName = "groups";
-var col;
+var col, hashid;
 
 var format = function(groups){
 	var s = [];
@@ -15,7 +15,8 @@ var format = function(groups){
 };
 
 module.exports = {
-	init : function(database){
+	init : function(database,hashid){
+		hashid = hashid;
 		db = database;
 		col = db.collection(collectionName);
 	},
@@ -52,7 +53,10 @@ module.exports = {
 	},
 
 
-	add : function(id, title, description, user, callback) {
+	add : function(title, description, user, callback) {
+			console.log('add');
+			console.log(this);
+			var id = hashid.encode(this.count());
 		  col.insert([{
 		    'gid' : id,
 				'title' : title,

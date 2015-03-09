@@ -129,38 +129,46 @@ function route(app, db, handlers) {
 
 
 
-app.get('/group/:gid', function(req, res){
-	var user = req.params["gid"];
-	var authDetails = handlers.auth.get(req, res);
+	app.get('/group/new', function(req, res){
+		var user = req.params["gid"];
+		var authDetails = handlers.auth.get(req, res);
 
-	db.groups.listAll(function(groups){
-		groups.forEach(function(g){
-			console.log(g.title);
-		})
-	});
-});
-app.get('/group/new', function(req, res){
-	var user = req.params["gid"];
-	var authDetails = handlers.auth.get(req, res);
-
-	db.groups.add('test', 'test', 'test', 'test', function(groups){
-		console.log(groups)
-	});
-});
-
-app.get('/groups', function(req, res){
-	var user = req.params["gid"];
-	var authDetails = handlers.auth.get(req, res);
-
-	db.groups.listAll(function(groups){
-		res.render('groups', {
-			loc: req.headers.host,
-			items : groups,
-			pretty : false,	
-			user : handlers.auth.getUser(req,res)
+		console.log('adding new')
+		console.log(req.body.group.title)
+		db.groups.add('test', 'test', 'test', function(groupid){
+			console.log(groupid)
 		});
 	});
-});
+	app.post('/group/new', function(req, res) {
+		console.log(req)
+    var username = req.body.group.title;
+    var password = req.body.group.desc;
+    console.log("post received: %s %s", username, password);
+	});
+
+	app.get('/group/:gid', function(req, res){
+		var user = req.params["gid"];
+		var authDetails = handlers.auth.get(req, res);
+
+		db.groups.listAll(function(groups){
+			groups.forEach(function(g){
+				console.log(g.title);
+			})
+		});
+	});
+	app.get('/groups', function(req, res){
+		var user = req.params["gid"];
+		var authDetails = handlers.auth.get(req, res);
+
+		db.groups.listAll(function(groups){
+			res.render('groups', {
+				loc: req.headers.host,
+				items : groups,
+				pretty : false,
+				user : handlers.auth.getUser(req,res)
+			});
+		});
+	});
 
 
 	app.get('/:uname/:snid', function(req, res){

@@ -4,10 +4,12 @@ var io = require('socket.io')(http);
 var jade = require('jade');
 var session = require('express-session');
 var compress = require('compression');
+var bodyparse = require('body-parser');
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(compress());
+app.use(bodyparse.json());
 
 
 
