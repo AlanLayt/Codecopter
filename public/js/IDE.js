@@ -17,11 +17,25 @@ var Preview = function(element){
   var refresh = function(){
     this.el.src = "data:text/html;charset=utf-8,"+escape(this.cntnt);
   }
+/*var tickStart = function(callback){
+  tick(this,callback);
+}
 
-  var tickStart = function(callback){
-    tick(this,callback);
+var tick = function(ts,callback){
+  ts.ut+=ts.tickStep;
+  if(ts.ut>ts.updateTimeout && ts.running){
+    ts.running = false;
+    ts.ut=0;
+    callback();
+    ts.refresh();
   }
-
+//  console.debug("Tick" + ts.ut);
+  this.ticker = setTimeout(tick,ts.tickStep,ts,callback);
+}
+var delay = function(){
+  this.ut=0;
+  this.running = true;
+}*/
   var tick = function(ts,callback){
     ts.ut+=ts.tickStep;
     if(ts.ut>ts.updateTimeout && ts.running){
@@ -32,16 +46,19 @@ var Preview = function(element){
     }
   //  console.debug("Tick" + ts.ut);
     this.ticker = setTimeout(tick,ts.tickStep,ts,callback);
+
+    this.reset = function(){
+      ts.ut=0;
+      ts.running = true;
+    }
   }
-  var delay = function(){
-    this.ut=0;
-    this.running = true;
-  }
+  tick(this,function(){})
 
 
   this.update = update;
-  this.tickStart = tickStart;
-  this.delay = delay;
+//  this.tickStart = tickStart;
+  this.tick = tick;
+  //this.delay = delay;
   this.refresh = refresh;
 }
 
@@ -56,9 +73,9 @@ var ide = function(snid){
   var caretBlink = false;
 
 
-  preview.tickStart(function(){
+  //preview.tickStart(function(){
   //  console.debug("Refresh");
-  });
+  //});
 
 
   // Ace Initialization
@@ -168,7 +185,7 @@ document.addEventListener("keydown", function(e) {
           break;
       }
       preview.update(editor.getValue());
-      preview.delay();
+      preview.tick.reset();
     }
 	});
 
