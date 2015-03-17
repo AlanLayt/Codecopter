@@ -1,4 +1,5 @@
 var OAuth= require('oauth').OAuth;
+var jwt = require('jsonwebtoken');
 
 var app,io,db,session;
 var url = require('url');
@@ -59,6 +60,21 @@ var getUser = function(req, res){
 
 }
 
+var getKey = function(req,res){
+	// we are sending the profile in the token
+	var token = jwt.sign(get(req,res), 'secretkey', { expiresInMinutes: 60*5 });
+
+	res.json({token: token});
+}
+
+var decodeKey = function(token){
+	//console.log(token);
+	// we are sending the profile in the token
+	var decoded = jwt.verify(token, 'secretkey');
+	//console.log(decoded) // bar
+	return decoded;
+}
+
 var get = function(req, res){
 	if(req.session.twitterScreenName){
 		var uname = req.session.twitterScreenName;
@@ -72,6 +88,8 @@ var get = function(req, res){
 var login = function(req, res){
 	if(req.session.twitterScreenName){
 		var uname = req.session.twitterScreenName;
+
+
 		return {logged:true,username:uname};
 	}
 	else
@@ -107,7 +125,8 @@ var callback = function(req, res){
 					} else {
 						req.session.twitterScreenName = JSON.parse(data).screen_name;
 						req.session.twitterAuth = JSON.parse(data);
-						req.session.save()
+						req.session.save();
+
 						//console.log(JSON.stringify(req.session));
 						res.statusCode = 302;
 						res.setHeader("Location", "/");
@@ -124,6 +143,8 @@ var callback = function(req, res){
 exports.init = init;
 exports.start = start;
 exports.login = login;
+exports.getKey = getKey;
+exports.decodeKey = decodeKey;
 
 exports.get = get;
 exports.getUser = getUser;

@@ -134,6 +134,13 @@ form input[type="text"] {
   padding: 5px 10px 5px 10px;
   overflow: hidden; }
 
+.userCard > * {
+  vertical-align: middle;
+  display: inline-block; }
+.userCard .userName {
+  margin-left: 10px;
+  font-size: 1.3em; }
+
 #footer {
   position: fixed;
   left: 0;

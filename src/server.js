@@ -44,7 +44,7 @@ var start = function(connection, route, db, handlers) {
 // Retained to handle user-related events later
 var handleInit = function(handlers,db,callback){
 	Object.keys(handlers).forEach(function(key){
-		handlers[key].init(app,io,db,session);
+		handlers[key].init(app,io,db,session,handlers.auth);
 	})
 	callback();
 }

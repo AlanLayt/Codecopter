@@ -1,25 +1,25 @@
-html
-	head
-		title CodeLight Development Environment
+var title = Codelight DE
+extends includes/structure.jade
 
-		link(rel='stylesheet', href='http://#{loc}/css/display.css')
-		link(rel='icon', href='http://#{loc}/favicon.ico')
-
-		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
-		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
-
-	body
-		include includes/header.jade
-
-
-		div#holder
-			div.preview
-				iframe(src='http://#{loc}/s/#{snid}' tabindex='-1')
-				a(href="http://#{loc}/c/#{snid}") Edit
-				a(href="http://#{loc}/s/#{snid}") View
-				h2 #{snippet.title}
-				p #{snippet.desc}
-				
-				div
-					img(src="#{poster.profile_image_url}")
-					h3 #{poster.screen_name}
+block headerAddition
+	+title(snippet.title + " by " + poster.screen_name)
+	
+block append body
+	div#holder
+		div.preview
+			iframe(src='http://#{loc}/s/#{snid}' tabindex='-1')
+			a(href="http://#{loc}/c/#{snid}")
+				svg.icon
+					use(xlink:href="http://#{loc}/icons.svg#shape-edit")
+			a(href="http://#{loc}/s/#{snid}")
+				svg.icon
+					use(xlink:href="http://#{loc}/icons.svg#shape-view")
+			a(href='http://#{loc}/delete/#{snid}')
+				svg.icon
+					use(xlink:href="http://#{loc}/icons.svg#shape-delete")
+			h2 #{snippet.title}
+			p #{snippet.desc}
+			
+			div.userCard
+				img(src="#{poster.profile_image_url}")
+				div.userName #{poster.screen_name}

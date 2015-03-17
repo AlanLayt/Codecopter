@@ -1,39 +1,21 @@
-html
-	head
-		title Test IDE
+extends includes/structure.jade
 
+block append scripts
+	script(rel='text/javascript', src='http://#{loc}/ace/ace.js')
+	script(rel='text/javascript', src='http://#{loc}/ace/ext-language_tools.js')
 
-		link(rel='stylesheet', href='http://#{loc}/ide/style.css')
-		link(rel='icon', href='http://#{loc}/favicon.ico')
+	script(rel='text/javascript', src='http://#{loc}/ide/core.js')
 
-		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
-		script(rel='text/javascript', src='http://#{loc}/ace/ace.js')
-		script(rel='text/javascript', src='http://#{loc}/ace/ext-language_tools.js')
-
-		script(rel='text/javascript', src='http://#{loc}/ide/core.js')
-		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
-
-
-	body
-		include includes/header.jade
-								
-								
-		div.section
-			a(href='http://#{loc}')
-				svg.icon
-					use(xlink:href="http://#{loc}/icons.svg#shape-back")
-			a(href='http://#{loc}/delete/#{snid}') Delete
-			
-		div.section
-			form#details
-				input(type='text' placeholder='Title' name='title' value='#{title}')
-				input(type='text' placeholder='Description' name='desc' value='#{desc}')
-						
-
-		div#holder.ide
-			div test
-			pre#editor(snid='#{snid}') #{snippet}
-			iframe#display(frameborder=0 scrolling='no')
-
-
-			div#cursorHold
+block headerAddition
+	+title("Development Environment")
+	div.section
+		a(href='http://#{loc}/#{poster.screen_name}/#{snid}')
+			svg.icon
+				use(xlink:href="http://#{loc}/icons.svg#shape-back")
+	
+block append body
+	div#holder.ide
+		pre#editor(snid='#{snid}') #{snippet} 
+		iframe#display(frameborder=0 scrolling='no')
+		
+	div#cursorHold

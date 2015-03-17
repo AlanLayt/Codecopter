@@ -1,31 +1,28 @@
-html
-	head
-		title CodeLight Development Environment
+var title = Codelight DE
+extends includes/structure.jade
 
-		link(rel='stylesheet', href='http://#{loc}/gallery/style.css')
-		link(rel='icon', href='http://#{loc}/favicon.ico')
 
-		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
-		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
+block headerAddition
+	+title("Development Environment")
+	
+block append body
+	include includes/header.jade
 
-	body
-		include includes/header.jade
-
-		div#holder
-			form(method="post" action='http://#{loc}/group/new')
-				input(type="text" placeholder="Group Title" name="group[title]")
-				input(type="text" placeholder="Description" name="group[desc]")
-				input(type="submit")
-			-each item in items
-				a(href='http://#{loc}/group/#{item.id}')
-					div.info
-						div.title= item.title
-						div.caption= item.desc
-						hr
+	div#holder
+		form(method="post" action='http://#{loc}/group/new')
+			input(type="text" placeholder="Group Title" name="group[title]")
+			input(type="text" placeholder="Description" name="group[desc]")
+			input(type="submit")
+		-each item in items
+			a(href='http://#{loc}/group/#{item.id}')
+				div.info
+					div.title= item.title
+					div.caption= item.desc
+					hr
 
 	//-	div#footer
-			div.section
-				svg.icon.shape-user
-					use(xlink:href="http://#{loc}/icons.svg#shape-user")
-				| #{userCount}
-				-//
+		div.section
+			svg.icon.shape-user
+				use(xlink:href="http://#{loc}/icons.svg#shape-user")
+			| #{userCount}
+			-//

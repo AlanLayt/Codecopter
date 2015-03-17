@@ -1,4 +1,4 @@
-var app,io,db,
+var app,io,db,auth,
     url = require('url'),
     Hashids = require('hashids'),
     Snippet = require('./snippet');
@@ -7,10 +7,11 @@ var loaded = Array(),
     connectionCount = 0;
 
 
-var init = function(mapp,mio,mdb){
+var init = function(mapp,mio,mdb,session,mauth){
   app = mapp,
   io = mio,
   db = mdb;
+  auth = mauth;
 
   start();
   console.log('IDE: Initialized');
@@ -19,13 +20,20 @@ var init = function(mapp,mio,mdb){
 var start = function(){
 
   io.on('connection', function (socket) {
-
-    console.log('User Connected. (%s)', socket.id);
     connectionCount++;
 
     socket.on('disconnect', function () {
-      console.log('Client Disconnected. (%s)', socket.id);
       connectionCount--;
+    });
+
+    socket.on('authKey', function (data) {
+      var details = auth.decodeKey(data.token);
+      if(!details.logged){
+      //  console.log("Client[%s] not logged in.", socket.id);
+      }
+      else{
+      //  console.log("Client[%s] has connected as user %s", socket.id, details.username)
+      }
     });
 
     socket.emit("connectionConfirmed",{content : GLOBAL.test});
@@ -54,6 +62,7 @@ var start = function(){
     });
 
     socket.on('save', function (data) {
+      console.log(socket.request)
       db.snippets.update(data.snid, loaded[data.snid].getContent(), {title : data.title, desc : data.desc}, function(info,content,title){
         console.log('Snippet %s updated.', data.snid);
       });

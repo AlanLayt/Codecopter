@@ -32,6 +32,10 @@ function route(app, db, handlers) {
 
 
 		// ========== Static Script Routes ==========
+		app.get('/js/:jsfile.js', function(req, res){
+				var jsfile = req.params["jsfile"];
+				res.sendFile('/js/' + jsfile + '.js', {'root' : pubDir});
+		});
 		app.get('/stopTimeouts.js', function(req, res){
 				res.sendFile('/js/stopTimeouts.js', {'root' : pubDir});
 		});
@@ -54,6 +58,9 @@ function route(app, db, handlers) {
 		});
 		app.get('/auth/logout', function(req, res){
 			handlers.auth.logout(req, res);
+		});
+		app.get('/auth/key', function(req, res){
+			handlers.auth.getKey(req, res);
 		});
 
 
@@ -93,7 +100,8 @@ function route(app, db, handlers) {
 					desc : snippet.desc,
 					snippet : snippet.content,
 					user : handlers.auth.getUser(req,res),
-					pretty : false,
+					pretty : true,
+					poster : snippet.userinfo
 				});
 
 			});

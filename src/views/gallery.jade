@@ -1,16 +1,11 @@
-html
-	head
-		title CodeLight Development Environment
+var title = Codelight DE
+extends includes/structure.jade
 
-		link(rel='stylesheet', href='http://#{loc}/gallery/style.css')
-		link(rel='icon', href='http://#{loc}/favicon.ico')
 
-		script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
-		script(rel='text/javascript', src='http://localhost:35729/livereload.js')
-
-	body
-		include includes/header.jade
-
+block headerAddition
+	+title("Development Environment")
+	
+block append body
 		div#holder
 			-each item in items
 				a(href='http://#{loc}/#{item.userinfo.screen_name}/#{item.id}')
@@ -28,3 +23,4 @@ html
 					use(xlink:href="http://#{loc}/icons.svg#shape-user")
 				| #{userCount}
 				-//
+div test

@@ -19,6 +19,7 @@
     "express-session": "^1.10.3",
     "hashids": "1.0.1",
     "jade": "^1.7.0",
+    "jsonwebtoken": "^4.1.0",
     "logger": "0.0.1",
     "mongodb": "~2.0",
     "oauth": "^0.9.12",

@@ -3,63 +3,47 @@ var socket = io(window.location.host,{ reconnection : false });
 var cursors = Array();
 
 
+var Draw = function(element){
+
+}
+
 var Preview = function(element){
   this.el = document.getElementById(element);
-  this.cntnt = "";
+  this.content = "";
   this.ut = 0;
   this.tickStep = 100;
   this.updateTimeout = 300;
   this.running = true;
 
-  var update = function(val){
-    this.cntnt = val;
+  this.update = function(val){
+    this.content = val;
   }
-  var refresh = function(){
-    this.el.src = "data:text/html;charset=utf-8,"+escape(this.cntnt);
+  this.refresh = function(){
+    this.el.src = "data:text/html;charset=utf-8,"+escape(this.content);
   }
-/*var tickStart = function(callback){
-  tick(this,callback);
-}
+  this.tick = function(preview,callback){
 
-var tick = function(ts,callback){
-  ts.ut+=ts.tickStep;
-  if(ts.ut>ts.updateTimeout && ts.running){
-    ts.running = false;
-    ts.ut=0;
-    callback();
-    ts.refresh();
-  }
-//  console.debug("Tick" + ts.ut);
-  this.ticker = setTimeout(tick,ts.tickStep,ts,callback);
-}
-var delay = function(){
-  this.ut=0;
-  this.running = true;
-}*/
-  var tick = function(ts,callback){
-    ts.ut+=ts.tickStep;
-    if(ts.ut>ts.updateTimeout && ts.running){
-      ts.running = false;
-      ts.ut=0;
+    //console.log(preview.running)
+    if(preview.ut<preview.updateTimeout || !preview.running)
+        preview.ut+=preview.tickStep;
+    else {
+      preview.running = false;
+      preview.ut=0;
       callback();
-      ts.refresh();
+      preview.refresh();
     }
-  //  console.debug("Tick" + ts.ut);
-    this.ticker = setTimeout(tick,ts.tickStep,ts,callback);
+    //console.debug("Tick %ds", preview.ut/1000);
+    var ticker = setTimeout(preview.tick,preview.tickStep,preview,callback);
 
-    this.reset = function(){
-      ts.ut=0;
-      ts.running = true;
-    }
   }
-  tick(this,function(){})
 
+  this.resetTicker = function(){
+    this.ut=0;
+    this.running = true;
+    //console.log("Resetting timer");
+  }
 
-  this.update = update;
-//  this.tickStart = tickStart;
-  this.tick = tick;
-  //this.delay = delay;
-  this.refresh = refresh;
+  this.tick(this,function(){})
 }
 
 
@@ -156,7 +140,7 @@ document.addEventListener("keydown", function(e) {
     var details = document.getElementById("details");
 
   //  console.debug(details.desc.value);
-    socket.emit('save', { snid : snid, content : editor.getValue(), title : details.title.value, desc : details.desc.value });
+    socket.emit('save', { snid : snid, content : editor.getValue()});
 
   }
 }, false);
@@ -185,7 +169,7 @@ document.addEventListener("keydown", function(e) {
           break;
       }
       preview.update(editor.getValue());
-      preview.tick.reset();
+      preview.resetTicker();
     }
 	});
 
