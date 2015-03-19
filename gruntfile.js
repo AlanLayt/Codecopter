@@ -28,8 +28,34 @@ module.exports = function(grunt) {
         }
       }
     },
+    bower_concat: {
+      all: {
+        dest: 'dev/bower/js/bower.js',
+        cssDest: 'dev/bower/css/dep.css',
+        exclude: [
+        ],
+        dependencies: {
+        },
+        bowerOptions: {
+          relative: false
+        }
+      }
+    },
+    uglify: {
+      bower: {
+        options: {
+          mangle: true,
+          compress: true
+        },
+        files: {
+          'public/js/dep.js': 'dev/bower/js/bower.js'
+        }
+      }
+    }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-bower-concat');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-svgstore');
