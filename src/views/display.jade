@@ -5,7 +5,7 @@ block headerAddition
 	+title(snippet.title + " by " + poster.screen_name)
 	
 block append body
-	div#holder
+	div#Display
 		div.preview
 			iframe(src='http://#{loc}/s/#{snid}' tabindex='-1')
 			a(href="http://#{loc}/c/#{snid}")

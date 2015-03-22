@@ -1,13 +1,11 @@
-var title = Codelight DE
 extends includes/structure.jade
 
+block append scripts
 
 block headerAddition
 	+title("Development Environment")
 	
 block append body
-	include includes/header.jade
-
 	div#holder
 		form(method="post" action='http://#{loc}/group/new')
 			input(type="text" placeholder="Group Title" name="group[title]")

@@ -10,17 +10,11 @@ var init = function(mapp,mio,mdb,sess){
 	app = mapp,
 	io = mio,
 	db = mdb;
-	session = sess;
 	start();
 	console.log('AUTH: Initialized');
 }
 
 var start = function(){
-	app.use(session({
-		resave : true,
-		saveUninitialized : true,
-		secret : 'test'
-	}));
 }
 
 
@@ -47,12 +41,17 @@ var logout = function(req, res){
 var getUser = function(req, res){
 	if(req.session.twitterScreenName){
 		var uname = req.session.twitterScreenName;
-		var ad = req.session.twitterAuth;
+		var twitterDetails = req.session.twitterAuth;
 		return {
 			logged : true,
 			username : uname,
-			avatar : ad.profile_image_url,
-			twitterAuth : ad
+			avatar : twitterDetails.profile_image_url,
+			icon : twitterDetails.profile_image_url,
+			twitterAuth : twitterDetails,
+			user : {
+				username : twitterDetails.screen_name,
+				icon : twitterDetails.profile_image_url
+			}
 		};
 	}
 	else
@@ -62,7 +61,7 @@ var getUser = function(req, res){
 
 var getKey = function(req,res){
 	// we are sending the profile in the token
-	var token = jwt.sign(get(req,res), 'secretkey', { expiresInMinutes: 60*5 });
+	var token = jwt.sign(getUser(req,res), 'secretkey', { expiresInMinutes: 60*5 });
 
 	res.json({token: token});
 }

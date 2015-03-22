@@ -21,6 +21,7 @@ var start = function(){
 
   io.on('connection', function (socket) {
     connectionCount++;
+    socket.user = {username : false};
 
     socket.on('disconnect', function () {
       connectionCount--;
@@ -32,10 +33,13 @@ var start = function(){
       //  console.log("Client[%s] not logged in.", socket.id);
       }
       else{
-      //  console.log("Client[%s] has connected as user %s", socket.id, details.username)
+          socket.user = details.user;
+          console.log("Client[%s] has connected as user %s", socket.id, details.username)
+          //console.log(details);
       }
     });
 
+    console.log('USER JOIN');
     socket.emit("connectionConfirmed",{content : GLOBAL.test});
 
     // Handles request for whole snippet and sends resulting snippet
@@ -52,6 +56,7 @@ var start = function(){
           }
         });
       }
+      console.log(data.snid)
       socket.join(data.snid);
     });
 
@@ -75,7 +80,8 @@ var start = function(){
 
     socket.on('cursorMove', function (data) {
       data.socketid = socket.id;
-      socket.broadcast.to(data.snid).emit("cursorMove",data);
+      console.log('Cursor Move: %s', data.snid);
+      socket.broadcast.to(data.snid).emit("cursorMove",{ user : { username : socket.user.username, icon : socket.user.icon}, position : data });
       //console.log(socket.request.headers);
     });
 

@@ -23,7 +23,7 @@ module.exports = {
 		db = database;
 		col = db.collection(collectionName);
 	},
-	
+
 
 	count : function(callback) {
 	  col.count(function(err, count) {
@@ -50,7 +50,8 @@ module.exports = {
 
 	get : function(id, callback) {
 	  col.find({ "snid" : id }).toArray(function(err, snippet) {
-	    callback(formatSnippet(snippet)[0]);
+			//if()
+	    	callback(snippet.length>0 ? formatSnippet(snippet)[0] : false);
 	  });
 	},
 

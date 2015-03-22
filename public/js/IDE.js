@@ -1,5 +1,8 @@
+
+
+
 console.debug(window.location.host);
-var socket = io(window.location.host,{ reconnection : false });
+//var socket = io(window.location.host,{ reconnection : false });
 var cursors = Array();
 
 
@@ -104,6 +107,7 @@ var ide = function(snid){
     //console.debug(editor.selection.getCursor());//textToScreenCoordinates
   });
 
+  /*
   socket.on('cursorMove', function (data) {
     var curhold = document.getElementById("cursorHold");
     curhold.innerHTML = '';
@@ -204,16 +208,17 @@ document.addEventListener("keydown", function(e) {
   //  console.log(data.snippet.content)
     editor.setValue(data.snippet.content);
   });
+  */
 
 }
 
 
-
 document.addEventListener("DOMContentLoaded", function(event) {
     var snid = document.getElementById('editor').getAttribute('snid');
-    socket.on('connectionConfirmed', function (data) {
+  /*  socket.on('connectionConfirmed', function (data) {
       socket.emit('requestSnip', {snid : snid});
       console.debug("Connected");
       ide(snid);
-    });
+    });*/
+    ide(snid);
 });

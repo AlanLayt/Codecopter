@@ -93,16 +93,20 @@ function route(app, db, handlers) {
 			var snid = req.params["snid"];
 
 			db.snippets.get(snid,function(snippet){
-				res.render('ide', {
-					loc : req.headers.host,
-					snid : snid,
-					title : snippet.title,
-					desc : snippet.desc,
-					snippet : snippet.content,
-					user : handlers.auth.getUser(req,res),
-					pretty : true,
-					poster : snippet.userinfo
-				});
+				if(!snippet){
+
+				}
+				else
+					res.render('ide', {
+						loc : req.headers.host,
+						snid : snid,
+						title : snippet.title,
+						desc : snippet.desc,
+						snippet : snippet.content,
+						user : handlers.auth.getUser(req,res),
+						pretty : true,
+						poster : snippet.userinfo
+					});
 
 			});
 		});
@@ -148,10 +152,14 @@ function route(app, db, handlers) {
 		});
 	});
 	app.post('/group/new', function(req, res) {
-		console.log(req)
-    var username = req.body.group.title;
-    var password = req.body.group.desc;
-    console.log("post received: %s %s", username, password);
+		var user = handlers.auth.getUser(req, res);
+    var title = req.body.group.title;
+    var desc = req.body.group.desc;
+
+    console.log("Creating group %s", title);
+		db.groups.add(title, desc, user.username, function(groupid){
+			console.log(groupid)
+		});
 	});
 
 	app.get('/group/:gid', function(req, res){

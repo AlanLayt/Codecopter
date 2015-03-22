@@ -14,8 +14,14 @@ block headerAddition
 				use(xlink:href="http://#{loc}/icons.svg#shape-back")
 	
 block append body
-	div#holder.ide
+	div#IDE.ide
 		pre#editor(snid='#{snid}') #{snippet} 
 		iframe#display(frameborder=0 scrolling='no')
 		
 	div#cursorHold
+	
+	
+	div(ng-app='userController')
+		div(id='activeUsers' ng-controller='activeUsers')
+			div(ng-repeat='user in users' rel='{{user.username}}')
+				img(class='userIcon' ng-style='{borderColor: user.color}' src='{{user.icon}}')

@@ -5,11 +5,14 @@ var jade = require('jade');
 var session = require('express-session');
 var compress = require('compression');
 var bodyparse = require('body-parser');
+var MongoStore = require('connect-mongo')(session);
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(compress());
 app.use(bodyparse.json());
+app.use(bodyparse.urlencoded());
+//app.use(cookieParser())
 
 
 
@@ -18,9 +21,17 @@ var start = function(connection, route, db, handlers) {
 	console.log("------- Startup --------");
 	app.connection = connection;
 
+
 	db.connect(connection, function(dbm,srv){
 		console.log('MONGO: Database found. (Port %d)', srv.dbPort);
 		http.listen(srv.httpPort, function(err){
+
+			app.use(session({
+				resave : true,
+				saveUninitialized : true,
+				secret : 'test',
+				store : new MongoStore({ db : dbm })
+			}));
 
 			console.log('HTTP: Server Started. (Port %d)', srv.httpPort);
 

@@ -94,7 +94,7 @@ form input[type="text"] {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 255, 255, 0.2); }
 
-#holder {
+#Gallery {
   display: flex;
   flex: 3 0px;
   flex-direction: row;
@@ -104,7 +104,7 @@ form input[type="text"] {
   align-content: space-around;
   max-width: 950px;
   margin: 0 auto 50px auto; }
-  #holder a {
+  #Gallery a {
     flex: 1;
     min-width: 300px;
     max-width: 700px;
