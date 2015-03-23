@@ -32,7 +32,7 @@ module.exports = {
 	listAll : function(callback) {
 		var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, groups) {
-		//	console.log("list all")
+			//console.log(format(groups))
 			callback(format(groups));
 		});
 	},
@@ -40,7 +40,7 @@ module.exports = {
 
 	get : function(id, callback) {
 	  col.find({ "gid" : id }).toArray(function(err, group) {
-	    callback(group);
+	    	callback(group.length>0 ? group[0] : false);
 	  });
 	},
 
@@ -53,15 +53,12 @@ module.exports = {
 	},
 
 
-	add : function(title, description, user, callback) {
-			console.log('add');
-			console.log(this);
-			var id = hashid.encode(this.count());
+	add : function(id, title, description, user, callback) {
 		  col.insert([{
 		    'gid' : id,
 				'title' : title,
 				'description' : description,
-				'userinfo' : user,
+				'user' : user,
 		    'created' : new Date()
 		  }
 		  ], function(err, result) {

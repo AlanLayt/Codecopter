@@ -6,21 +6,25 @@ block headerAddition
 	+title("Development Environment")
 	
 block append body
-	div#holder
-		form(method="post" action='http://#{loc}/group/new')
-			input(type="text" placeholder="Group Title" name="group[title]")
-			input(type="text" placeholder="Description" name="group[desc]")
-			input(type="submit")
-		-each item in items
-			a(href='http://#{loc}/group/#{item.id}')
-				div.info
-					div.title= item.title
-					div.caption= item.desc
-					hr
-
-	//-	div#footer
-		div.section
-			svg.icon.shape-user
-				use(xlink:href="http://#{loc}/icons.svg#shape-user")
-			| #{userCount}
-			-//
+	div#Gallery
+		div.container
+			div.infopane
+				h2 Groups
+				div Create a new group
+				form(method="post" action='http://#{loc}/group/new')
+					div
+						input(type="text" placeholder="Group Title" name="group[title]")
+					div
+						input(type="text" placeholder="Description" name="group[desc]")
+					div
+						input(type="submit" value="Create")
+		-each group in groups
+			a(href='http://#{loc}/group/#{group.id}')
+				div.container
+					div.thumb
+						if group.snippets.length>0
+							iframe(src='http://#{loc}/s/#{group.snippets[0].id}' tabindex='-1')
+					div.info
+						div.title= group.title
+						div.username 
+						div.caption= group.desc

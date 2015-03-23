@@ -1,13 +1,18 @@
 var snid;
-var app = angular.module('userController', []);
+var app = angular.module('CodeLight', []);
 
 window.addEventListener("DOMContentLoaded", function() {
-  snid = document.getElementById('editor').getAttribute('snid');
+  var el = document.getElementById('editor');
+  if(el!==null)
+    snid = el.getAttribute('snid');
 }, false);
 
 app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$http,socket) {
     var token;
     var colors = ['587D59','F9D189','AF734C','88C843','FA347B'];
+    var snid = document.getElementById('editor').getAttribute('snid');
+    console.log(snid);
+    //var editor = element.find('#editor');
 
     socket.on('connectionConfirmed', function (data) {
       console.log('Angular Connection Success');
@@ -15,6 +20,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$htt
 
       $http.get('http://127.0.0.1:8888/auth/key')
         .success(function(data){
+          console.log('token retrieved');
           token = data.token;
           socket.emit('authKey',{token:token});
         })
@@ -48,13 +54,125 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$htt
       //$scope.todoText = '';
     };
   }]
-);
+).controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
+    console.log('Development environment online.');
+    var cursors = Array();
+      var lastUpdate;
+      var preview = new Preview('display');
+          preview.update(editor.getValue());
+
+      socket.on('insert', function (data) {
+        lastUpdate = data;
+        // Removed .getDocument() from before insert. May have broken things?
+        editor.session.insert(data.range.start,data.text);
+        preview.update(editor.getValue());
+      });
+      socket.on('remove', function (data) {
+        lastUpdate = data;
+        editor.session.remove(data.range);
+        preview.update(editor.getValue());
+      });
+      socket.on('disconnect', function () {
+        socket.disconnect();
+        console.debug("Connection Lost. Reloading.");
+        var test = window.setTimeout(function(){location.reload()},1000);
+      });
+
+      socket.on('loadSnip', function (data) {
+        editor.setValue(data.snippet.content);
+      });
+
+
+      editor.on("change", function(e){
+        var content = editor.getValue();
+        console.debug(lastUpdate);
+        if( lastUpdate !== 'undefined' || lastUpdate===false
+            || (e.data.text != lastUpdate.text
+            || e.data.range.start.column != lastUpdate.range.start.column
+            || e.data.range.start.row != lastUpdate.range.start.row )){
+
+          var data = e.data;
+          data.full = editor.getValue();
+          data.snid = snid;
+
+          switch(e.data.action){
+            case 'insertText':
+              socket.emit('insert', data);
+              break;
+            case 'removeText':
+              socket.emit('remove', data);
+              break;
+          }
+          preview.update(editor.getValue());
+          preview.resetTicker();
+        }
+      });
+
+
+    document.addEventListener("keydown", function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+        e.preventDefault();
+        console.debug('Saving.');
+
+        var details = document.getElementById("details");
+
+      //  console.debug(details.desc.value);
+      //console.debug(snid);
+        socket.emit('save', { snid : snid, content : editor.getValue()});
+
+      }
+    }, false);
+
+  }]
+).controller('display', ['$scope', '$http', 'socket', function($scope,$http,socket) {
+  $scope.editForm = {};
+
+    var el = document.getElementById('Display');
+    if(el!==null)
+      snid = el.getAttribute('snid');
+
+
+  $scope.edit = function(){
+    console.log("Opening edit")
+    $scope.editing = true;
+  }
+
+  $scope.submit = function(form){
+    console.log(snid);
+    $http.post('http://127.0.0.1:8888/snippet/update',{
+      snid : snid,
+      title : $scope.editForm.title,
+      desc : $scope.editForm.description
+    }).success(function(data){
+        console.log('Details updated');
+        $scope.editing = false;
+        var test = window.setTimeout(function(){location.reload()},1);
+      })
+  }
+
+}])
 
 
 
+app.directive("contenteditable", function() {
+  return {
+    require: "ngModel",
+    link: function(scope, element, attrs, ngModel) {
 
+      function read() {
+        ngModel.$setViewValue(element.html());
+      }
 
+      ngModel.$render = function() {
+        element.html(ngModel.$viewValue || "");
+      };
 
+      element.bind("blur keyup change", function() {
+        scope.$apply(read);
+      });
+    }
+  };
+});
 
 
 app.factory('socket', function ($rootScope) {
@@ -92,3 +210,115 @@ app.factory('socket', function ($rootScope) {
       }
     };
 });
+
+
+
+app.factory('editor', function ($rootScope) {
+    var caretBlink = false;
+
+    // Ace Initialization
+    var lastUpdate = false;
+    ace.require("ace/ext/language_tools");
+    var editor = ace.edit("editor");
+    editor.session.setMode("ace/mode/html");
+    editor.setTheme("ace/theme/dreamweaver");
+
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: false
+    });
+
+
+
+// Caret stuff
+
+    /*var blinkProc = function(){
+      caretBlink = caretBlink?false:true;
+      var blinkTimer = window.setTimeout(blinkProc,800);
+      Object.keys(cursors).forEach(function(key){
+        cursors[key].el.style.display = caretBlink?'block':'none';
+      });
+    }
+    blinkProc();
+    editor.selection.on('changeCursor',function(){
+      var pos = editor.selection.getCursor();
+      pos.snid = snid;
+      socket.emit('cursorMove',pos);
+    });*/
+
+
+
+
+
+    console.log('Initializing Ace editor.');
+    return {
+      getValue: function () {
+        return editor.getValue();
+      },
+      on : function(evt,callback){
+        editor.on(evt,function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        });
+        //editor.on(evt,callback);
+      },
+      session : {
+        insert : function(start,text){
+          editor.session.insert(start,text);
+        },
+        remove : function(range){
+          editor.session.getDocument().remove(range);
+        }
+      }
+
+    };
+});
+
+
+
+
+
+
+var Preview = function(element){
+  this.el = document.getElementById(element);
+  this.content = "";
+  this.ut = 0;
+  this.tickStep = 100;
+  this.updateTimeout = 300;
+  this.running = true;
+
+  this.update = function(val){
+    this.content = val;
+  }
+  this.refresh = function(){
+    this.el.src = "data:text/html;charset=utf-8,"+escape(this.content);
+  }
+  this.tick = function(preview,callback){
+
+    //console.log(preview.running)
+    if(preview.ut<preview.updateTimeout || !preview.running)
+        preview.ut+=preview.tickStep;
+    else {
+      preview.running = false;
+      preview.ut=0;
+      callback();
+      preview.refresh();
+    }
+    //console.debug("Tick %ds", preview.ut/1000);
+    var ticker = setTimeout(preview.tick,preview.tickStep,preview,callback);
+
+  }
+
+  this.resetTicker = function(){
+    this.ut=0;
+    this.running = true;
+    //console.log("Resetting timer");
+  }
+
+  this.tick(this,function(){})
+}

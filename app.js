@@ -6,6 +6,7 @@ var config = require('./src/config/config')
 var handlers = {
 		ide : require('./src/ide/ide'),
 		gallery : require('./src/galleryHandler'),
+		groups : require('./src/groupHandler'),
 		auth : require('./src/twitterAuth')
 	};
 

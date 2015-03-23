@@ -1,374 +1,247 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '--g', 'bower' ]
 2 info using npm@1.4.28
 3 info using node@v0.10.33
-4 verbose readDependencies using package.json deps
-5 verbose install where, deps [ '/Users/Lif/Web/Codeucation',
-5 verbose install   [ 'body-parser',
-5 verbose install     'compression',
-5 verbose install     'express',
-5 verbose install     'express-session',
-5 verbose install     'hashids',
-5 verbose install     'jade',
-5 verbose install     'jsonwebtoken',
-5 verbose install     'logger',
-5 verbose install     'mongodb',
-5 verbose install     'oauth',
-5 verbose install     'socket.io',
-5 verbose install     'url',
-5 verbose install     'chai',
-5 verbose install     'grunt',
-5 verbose install     'grunt-bower-concat',
-5 verbose install     'grunt-contrib-uglify',
-5 verbose install     'grunt-contrib-watch',
-5 verbose install     'grunt-sass',
-5 verbose install     'grunt-svgstore',
-5 verbose install     'livereload',
-5 verbose install     'mocha',
-5 verbose install     'should' ] ]
-6 info preinstall codeucation@1.0.0
-7 warn package.json logger@0.0.1 No repository field.
-8 warn package.json url@0.10.2 url is also the name of a node core module.
-9 verbose readDependencies using package.json deps
-10 verbose already installed skipping body-parser@^1.10.0 /Users/Lif/Web/Codeucation
-11 verbose already installed skipping compression@^1.4.1 /Users/Lif/Web/Codeucation
-12 verbose already installed skipping express@^4.10.0 /Users/Lif/Web/Codeucation
-13 verbose already installed skipping express-session@^1.10.3 /Users/Lif/Web/Codeucation
-14 verbose already installed skipping hashids@1.0.1 /Users/Lif/Web/Codeucation
-15 verbose already installed skipping jade@^1.7.0 /Users/Lif/Web/Codeucation
-16 verbose cache add [ 'jsonwebtoken@^4.1.0', null ]
-17 verbose cache add name=undefined spec="jsonwebtoken@^4.1.0" args=["jsonwebtoken@^4.1.0",null]
-18 verbose parsed url { protocol: null,
-18 verbose parsed url   slashes: null,
-18 verbose parsed url   auth: null,
-18 verbose parsed url   host: null,
-18 verbose parsed url   port: null,
-18 verbose parsed url   hostname: null,
-18 verbose parsed url   hash: null,
-18 verbose parsed url   search: null,
-18 verbose parsed url   query: null,
-18 verbose parsed url   pathname: 'jsonwebtoken@^4.1.0',
-18 verbose parsed url   path: 'jsonwebtoken@^4.1.0',
-18 verbose parsed url   href: 'jsonwebtoken@^4.1.0' }
-19 verbose already installed skipping logger@0.0.1 /Users/Lif/Web/Codeucation
-20 verbose cache add name="jsonwebtoken" spec="^4.1.0" args=["jsonwebtoken","^4.1.0"]
-21 verbose parsed url { protocol: null,
-21 verbose parsed url   slashes: null,
-21 verbose parsed url   auth: null,
-21 verbose parsed url   host: null,
-21 verbose parsed url   port: null,
-21 verbose parsed url   hostname: null,
-21 verbose parsed url   hash: null,
-21 verbose parsed url   search: null,
-21 verbose parsed url   query: null,
-21 verbose parsed url   pathname: '^4.1.0',
-21 verbose parsed url   path: '^4.1.0',
-21 verbose parsed url   href: '^4.1.0' }
-22 verbose addNamed [ 'jsonwebtoken', '^4.1.0' ]
-23 verbose addNamed [ null, '>=4.1.0-0 <5.0.0-0' ]
-24 verbose already installed skipping mongodb@~2.0 /Users/Lif/Web/Codeucation
-25 silly lockFile 118bf6b0-jsonwebtoken-4-1-0 jsonwebtoken@^4.1.0
-26 verbose lock jsonwebtoken@^4.1.0 /Users/Lif/.npm/118bf6b0-jsonwebtoken-4-1-0.lock
-27 verbose already installed skipping oauth@^0.9.12 /Users/Lif/Web/Codeucation
-28 verbose already installed skipping socket.io@^1.1.0 /Users/Lif/Web/Codeucation
-29 verbose already installed skipping url@^0.10.1 /Users/Lif/Web/Codeucation
-30 verbose already installed skipping chai@^2.0.0 /Users/Lif/Web/Codeucation
-31 verbose already installed skipping grunt@^0.4.5 /Users/Lif/Web/Codeucation
-32 verbose cache add [ 'grunt-bower-concat@^0.4.0', null ]
-33 verbose cache add name=undefined spec="grunt-bower-concat@^0.4.0" args=["grunt-bower-concat@^0.4.0",null]
-34 verbose parsed url { protocol: null,
-34 verbose parsed url   slashes: null,
-34 verbose parsed url   auth: null,
-34 verbose parsed url   host: null,
-34 verbose parsed url   port: null,
-34 verbose parsed url   hostname: null,
-34 verbose parsed url   hash: null,
-34 verbose parsed url   search: null,
-34 verbose parsed url   query: null,
-34 verbose parsed url   pathname: 'grunt-bower-concat@^0.4.0',
-34 verbose parsed url   path: 'grunt-bower-concat@^0.4.0',
-34 verbose parsed url   href: 'grunt-bower-concat@^0.4.0' }
-35 verbose cache add [ 'grunt-contrib-uglify@^0.8.0', null ]
-36 verbose cache add name=undefined spec="grunt-contrib-uglify@^0.8.0" args=["grunt-contrib-uglify@^0.8.0",null]
-37 verbose parsed url { protocol: null,
-37 verbose parsed url   slashes: null,
-37 verbose parsed url   auth: null,
-37 verbose parsed url   host: null,
-37 verbose parsed url   port: null,
-37 verbose parsed url   hostname: null,
-37 verbose parsed url   hash: null,
-37 verbose parsed url   search: null,
-37 verbose parsed url   query: null,
-37 verbose parsed url   pathname: 'grunt-contrib-uglify@^0.8.0',
-37 verbose parsed url   path: 'grunt-contrib-uglify@^0.8.0',
-37 verbose parsed url   href: 'grunt-contrib-uglify@^0.8.0' }
-38 verbose cache add name="grunt-bower-concat" spec="^0.4.0" args=["grunt-bower-concat","^0.4.0"]
-39 verbose parsed url { protocol: null,
-39 verbose parsed url   slashes: null,
-39 verbose parsed url   auth: null,
-39 verbose parsed url   host: null,
-39 verbose parsed url   port: null,
-39 verbose parsed url   hostname: null,
-39 verbose parsed url   hash: null,
-39 verbose parsed url   search: null,
-39 verbose parsed url   query: null,
-39 verbose parsed url   pathname: '^0.4.0',
-39 verbose parsed url   path: '^0.4.0',
-39 verbose parsed url   href: '^0.4.0' }
-40 verbose addNamed [ 'grunt-bower-concat', '^0.4.0' ]
-41 verbose addNamed [ null, '>=0.4.0-0 <0.5.0-0' ]
-42 silly lockFile bd1f929f-grunt-bower-concat-0-4-0 grunt-bower-concat@^0.4.0
-43 verbose lock grunt-bower-concat@^0.4.0 /Users/Lif/.npm/bd1f929f-grunt-bower-concat-0-4-0.lock
-44 verbose cache add name="grunt-contrib-uglify" spec="^0.8.0" args=["grunt-contrib-uglify","^0.8.0"]
-45 verbose parsed url { protocol: null,
-45 verbose parsed url   slashes: null,
-45 verbose parsed url   auth: null,
-45 verbose parsed url   host: null,
-45 verbose parsed url   port: null,
-45 verbose parsed url   hostname: null,
-45 verbose parsed url   hash: null,
-45 verbose parsed url   search: null,
-45 verbose parsed url   query: null,
-45 verbose parsed url   pathname: '^0.8.0',
-45 verbose parsed url   path: '^0.8.0',
-45 verbose parsed url   href: '^0.8.0' }
-46 verbose addNamed [ 'grunt-contrib-uglify', '^0.8.0' ]
-47 verbose addNamed [ null, '>=0.8.0-0 <0.9.0-0' ]
-48 silly lockFile 45ed070c-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@^0.8.0
-49 verbose lock grunt-contrib-uglify@^0.8.0 /Users/Lif/.npm/45ed070c-grunt-contrib-uglify-0-8-0.lock
-50 verbose already installed skipping grunt-contrib-watch@^0.6.1 /Users/Lif/Web/Codeucation
-51 verbose already installed skipping grunt-sass@^0.18.0 /Users/Lif/Web/Codeucation
-52 verbose already installed skipping grunt-svgstore@^0.5.0 /Users/Lif/Web/Codeucation
-53 verbose already installed skipping livereload@^0.3.6 /Users/Lif/Web/Codeucation
-54 verbose already installed skipping mocha@^2.1.0 /Users/Lif/Web/Codeucation
-55 verbose already installed skipping should@^5.0.0 /Users/Lif/Web/Codeucation
-56 silly addNameRange { name: 'grunt-bower-concat',
-56 silly addNameRange   range: '>=0.4.0-0 <0.5.0-0',
-56 silly addNameRange   hasData: false }
-57 silly addNameRange { name: 'jsonwebtoken',
-57 silly addNameRange   range: '>=4.1.0-0 <5.0.0-0',
-57 silly addNameRange   hasData: false }
-58 verbose request where is /grunt-bower-concat
-59 verbose request registry https://registry.npmjs.org/
-60 verbose request id b0f79253a4c8152c
-61 verbose url raw /grunt-bower-concat
-62 verbose url resolving [ 'https://registry.npmjs.org/', './grunt-bower-concat' ]
-63 verbose url resolved https://registry.npmjs.org/grunt-bower-concat
-64 verbose request where is https://registry.npmjs.org/grunt-bower-concat
-65 info trying registry request attempt 1 at 16:39:27
-66 http GET https://registry.npmjs.org/grunt-bower-concat
-67 verbose request where is /jsonwebtoken
-68 verbose request registry https://registry.npmjs.org/
-69 verbose url raw /jsonwebtoken
-70 verbose url resolving [ 'https://registry.npmjs.org/', './jsonwebtoken' ]
-71 verbose url resolved https://registry.npmjs.org/jsonwebtoken
-72 verbose request where is https://registry.npmjs.org/jsonwebtoken
-73 info trying registry request attempt 1 at 16:39:27
-74 http GET https://registry.npmjs.org/jsonwebtoken
-75 silly addNameRange { name: 'grunt-contrib-uglify',
-75 silly addNameRange   range: '>=0.8.0-0 <0.9.0-0',
-75 silly addNameRange   hasData: false }
-76 verbose request where is /grunt-contrib-uglify
-77 verbose request registry https://registry.npmjs.org/
-78 verbose url raw /grunt-contrib-uglify
-79 verbose url resolving [ 'https://registry.npmjs.org/', './grunt-contrib-uglify' ]
-80 verbose url resolved https://registry.npmjs.org/grunt-contrib-uglify
-81 verbose request where is https://registry.npmjs.org/grunt-contrib-uglify
-82 info trying registry request attempt 1 at 16:39:27
-83 verbose etag "9D8MYFRZGQM50SIWPV5PCNCTQ"
-84 http GET https://registry.npmjs.org/grunt-contrib-uglify
-85 http 200 https://registry.npmjs.org/grunt-contrib-uglify
-86 silly registry.get cb [ 200,
-86 silly registry.get   { date: 'Fri, 20 Mar 2015 16:39:27 GMT',
-86 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-86 silly registry.get     etag: '"D36K44E2OJ6JLXP1EY2H5EO2P"',
-86 silly registry.get     'content-type': 'application/json',
-86 silly registry.get     'cache-control': 'max-age=60',
-86 silly registry.get     'content-length': '56730',
-86 silly registry.get     'accept-ranges': 'bytes',
-86 silly registry.get     via: '1.1 varnish',
-86 silly registry.get     age: '40',
-86 silly registry.get     'x-served-by': 'cache-fra1241-FRA',
-86 silly registry.get     'x-cache': 'HIT',
-86 silly registry.get     'x-cache-hits': '1',
-86 silly registry.get     'x-timer': 'S1426869567.656095,VS0,VE0',
-86 silly registry.get     vary: 'Accept',
-86 silly registry.get     'keep-alive': 'timeout=10, max=50',
-86 silly registry.get     connection: 'Keep-Alive' } ]
-87 silly addNameRange number 2 { name: 'grunt-contrib-uglify',
-87 silly addNameRange   range: '>=0.8.0-0 <0.9.0-0',
-87 silly addNameRange   hasData: true }
-88 silly addNameRange versions [ 'grunt-contrib-uglify',
-88 silly addNameRange   [ '0.1.0',
-88 silly addNameRange     '0.1.1',
-88 silly addNameRange     '0.1.2',
-88 silly addNameRange     '0.2.0',
-88 silly addNameRange     '0.2.1',
-88 silly addNameRange     '0.2.2',
-88 silly addNameRange     '0.2.3',
-88 silly addNameRange     '0.2.4',
-88 silly addNameRange     '0.2.5',
-88 silly addNameRange     '0.2.6',
-88 silly addNameRange     '0.2.7',
-88 silly addNameRange     '0.3.0',
-88 silly addNameRange     '0.3.1',
-88 silly addNameRange     '0.1.1-rc5',
-88 silly addNameRange     '0.1.1-rc6',
-88 silly addNameRange     '0.3.2',
-88 silly addNameRange     '0.3.3',
-88 silly addNameRange     '0.4.0',
-88 silly addNameRange     '0.5.0',
-88 silly addNameRange     '0.4.1',
-88 silly addNameRange     '0.5.1',
-88 silly addNameRange     '0.6.0',
-88 silly addNameRange     '0.7.0',
-88 silly addNameRange     '0.8.0' ] ]
-89 verbose addNamed [ 'grunt-contrib-uglify', '0.8.0' ]
-90 verbose addNamed [ '0.8.0', '0.8.0' ]
-91 silly lockFile 54aac03d-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@0.8.0
-92 verbose lock grunt-contrib-uglify@0.8.0 /Users/Lif/.npm/54aac03d-grunt-contrib-uglify-0-8-0.lock
-93 silly lockFile f5269920-y-grunt-contrib-uglify-0-8-0-tgz https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-94 verbose lock https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz /Users/Lif/.npm/f5269920-y-grunt-contrib-uglify-0-8-0-tgz.lock
-95 verbose addRemoteTarball [ 'https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz',
-95 verbose addRemoteTarball   '6897a450fab8563c9885e388bd705a5ff2c3937e' ]
-96 info retry fetch attempt 1 at 16:39:27
-97 verbose fetch to= /var/folders/nd/s040qbpn0tzf7hf1ngcjz2dh0000gn/T/npm-1328-u8HF6SK9/registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-98 http GET https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-99 http 200 https://registry.npmjs.org/grunt-bower-concat
-100 silly registry.get cb [ 200,
-100 silly registry.get   { date: 'Fri, 20 Mar 2015 16:39:27 GMT',
-100 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-100 silly registry.get     etag: '"EYZ530UZGCZ0YUK3P4Z3YE1DC"',
-100 silly registry.get     'content-type': 'application/json',
-100 silly registry.get     'cache-control': 'max-age=60',
-100 silly registry.get     'content-length': '19044',
-100 silly registry.get     'accept-ranges': 'bytes',
-100 silly registry.get     via: '1.1 varnish',
-100 silly registry.get     age: '0',
-100 silly registry.get     'x-served-by': 'cache-fra1222-FRA',
-100 silly registry.get     'x-cache': 'HIT',
-100 silly registry.get     'x-cache-hits': '1',
-100 silly registry.get     'x-timer': 'S1426869567.659545,VS0,VE105',
-100 silly registry.get     vary: 'Accept',
-100 silly registry.get     'keep-alive': 'timeout=10, max=50',
-100 silly registry.get     connection: 'Keep-Alive' } ]
-101 silly addNameRange number 2 { name: 'grunt-bower-concat',
-101 silly addNameRange   range: '>=0.4.0-0 <0.5.0-0',
-101 silly addNameRange   hasData: true }
-102 silly addNameRange versions [ 'grunt-bower-concat',
-102 silly addNameRange   [ '0.1.0',
-102 silly addNameRange     '0.1.1',
-102 silly addNameRange     '0.1.2',
-102 silly addNameRange     '0.2.0',
-102 silly addNameRange     '0.2.1',
-102 silly addNameRange     '0.2.2',
-102 silly addNameRange     '0.2.3',
-102 silly addNameRange     '0.2.4',
-102 silly addNameRange     '0.2.5',
-102 silly addNameRange     '0.3.0',
-102 silly addNameRange     '0.4.0' ] ]
-103 verbose addNamed [ 'grunt-bower-concat', '0.4.0' ]
-104 verbose addNamed [ '0.4.0', '0.4.0' ]
-105 silly lockFile 53fe2c78-grunt-bower-concat-0-4-0 grunt-bower-concat@0.4.0
-106 verbose lock grunt-bower-concat@0.4.0 /Users/Lif/.npm/53fe2c78-grunt-bower-concat-0-4-0.lock
-107 silly lockFile 7893b6b5-cat-grunt-bower-concat-0-4-0-tgz https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-108 verbose lock https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz /Users/Lif/.npm/7893b6b5-cat-grunt-bower-concat-0-4-0-tgz.lock
-109 verbose addRemoteTarball [ 'https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz',
-109 verbose addRemoteTarball   '27e5ead1686b6524d5bce044b565532e866c0980' ]
-110 info retry fetch attempt 1 at 16:39:27
-111 verbose fetch to= /var/folders/nd/s040qbpn0tzf7hf1ngcjz2dh0000gn/T/npm-1328-u8HF6SK9/registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-112 http GET https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-113 http 200 https://registry.npmjs.org/jsonwebtoken
-114 silly registry.get cb [ 200,
-114 silly registry.get   { date: 'Fri, 20 Mar 2015 16:39:27 GMT',
-114 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
-114 silly registry.get     etag: '"1RCYGAH69ZI8QDZM41TJMDWVB"',
-114 silly registry.get     'content-type': 'application/json',
-114 silly registry.get     'cache-control': 'max-age=60',
-114 silly registry.get     'content-length': '32228',
-114 silly registry.get     'accept-ranges': 'bytes',
-114 silly registry.get     via: '1.1 varnish',
-114 silly registry.get     age: '0',
-114 silly registry.get     'x-served-by': 'cache-fra1238-FRA',
-114 silly registry.get     'x-cache': 'HIT',
-114 silly registry.get     'x-cache-hits': '1',
-114 silly registry.get     'x-timer': 'S1426869567.655817,VS0,VE171',
-114 silly registry.get     vary: 'Accept',
-114 silly registry.get     'keep-alive': 'timeout=10, max=50',
-114 silly registry.get     connection: 'Keep-Alive' } ]
-115 silly addNameRange number 2 { name: 'jsonwebtoken',
-115 silly addNameRange   range: '>=4.1.0-0 <5.0.0-0',
-115 silly addNameRange   hasData: true }
-116 silly addNameRange versions [ 'jsonwebtoken',
-116 silly addNameRange   [ '0.1.0',
-116 silly addNameRange     '0.2.0',
-116 silly addNameRange     '0.3.0',
-116 silly addNameRange     '0.4.0',
-116 silly addNameRange     '0.4.1',
-116 silly addNameRange     '1.0.0',
-116 silly addNameRange     '1.0.2',
-116 silly addNameRange     '1.1.0',
-116 silly addNameRange     '1.1.1',
-116 silly addNameRange     '1.1.2',
-116 silly addNameRange     '1.2.0',
-116 silly addNameRange     '1.3.0',
-116 silly addNameRange     '2.0.0',
-116 silly addNameRange     '3.0.0',
-116 silly addNameRange     '3.1.0',
-116 silly addNameRange     '3.1.1',
-116 silly addNameRange     '3.2.0',
-116 silly addNameRange     '3.2.1',
-116 silly addNameRange     '3.2.2',
-116 silly addNameRange     '4.0.0',
-116 silly addNameRange     '4.1.0',
-116 silly addNameRange     '4.2.0',
-116 silly addNameRange     '4.2.1' ] ]
-117 verbose addNamed [ 'jsonwebtoken', '4.2.1' ]
-118 verbose addNamed [ '4.2.1', '4.2.1' ]
-119 silly lockFile 4984cfac-jsonwebtoken-4-2-1 jsonwebtoken@4.2.1
-120 verbose lock jsonwebtoken@4.2.1 /Users/Lif/.npm/4984cfac-jsonwebtoken-4-2-1.lock
-121 silly lockFile 55d0872c-nwebtoken-jsonwebtoken-4-2-1-tgz https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-122 verbose lock https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz /Users/Lif/.npm/55d0872c-nwebtoken-jsonwebtoken-4-2-1-tgz.lock
-123 verbose addRemoteTarball [ 'https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz',
-123 verbose addRemoteTarball   '979b5e2c0a282b81d73a91ed62d9a47970657300' ]
-124 info retry fetch attempt 1 at 16:39:27
-125 verbose fetch to= /var/folders/nd/s040qbpn0tzf7hf1ngcjz2dh0000gn/T/npm-1328-u8HF6SK9/registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-126 http GET https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-127 http 200 https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-128 http 200 https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-129 silly lockFile f5269920-y-grunt-contrib-uglify-0-8-0-tgz https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-130 silly lockFile f5269920-y-grunt-contrib-uglify-0-8-0-tgz https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-0.8.0.tgz
-131 silly lockFile 54aac03d-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@0.8.0
-132 silly lockFile 54aac03d-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@0.8.0
-133 silly lockFile 45ed070c-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@^0.8.0
-134 silly lockFile 45ed070c-grunt-contrib-uglify-0-8-0 grunt-contrib-uglify@^0.8.0
-135 silly lockFile 7893b6b5-cat-grunt-bower-concat-0-4-0-tgz https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-136 silly lockFile 7893b6b5-cat-grunt-bower-concat-0-4-0-tgz https://registry.npmjs.org/grunt-bower-concat/-/grunt-bower-concat-0.4.0.tgz
-137 silly lockFile 53fe2c78-grunt-bower-concat-0-4-0 grunt-bower-concat@0.4.0
-138 silly lockFile 53fe2c78-grunt-bower-concat-0-4-0 grunt-bower-concat@0.4.0
-139 silly lockFile bd1f929f-grunt-bower-concat-0-4-0 grunt-bower-concat@^0.4.0
-140 silly lockFile bd1f929f-grunt-bower-concat-0-4-0 grunt-bower-concat@^0.4.0
-141 http 200 https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-142 silly lockFile 55d0872c-nwebtoken-jsonwebtoken-4-2-1-tgz https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-143 silly lockFile 55d0872c-nwebtoken-jsonwebtoken-4-2-1-tgz https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-4.2.1.tgz
-144 silly lockFile 4984cfac-jsonwebtoken-4-2-1 jsonwebtoken@4.2.1
-145 silly lockFile 4984cfac-jsonwebtoken-4-2-1 jsonwebtoken@4.2.1
-146 silly lockFile 118bf6b0-jsonwebtoken-4-1-0 jsonwebtoken@^4.1.0
-147 silly lockFile 118bf6b0-jsonwebtoken-4-1-0 jsonwebtoken@^4.1.0
-148 error Error: EACCES, mkdir '/Users/Lif/.npm/grunt-contrib-uglify/0.8.0'
-148 error  { [Error: EACCES, mkdir '/Users/Lif/.npm/grunt-contrib-uglify/0.8.0']
-148 error   errno: 3,
-148 error   code: 'EACCES',
-148 error   path: '/Users/Lif/.npm/grunt-contrib-uglify/0.8.0',
-148 error   parent: 'codeucation' }
-149 error Please try running this command again as root/Administrator.
-150 error System Darwin 14.0.0
-151 error command "node" "/usr/local/bin/npm" "install"
-152 error cwd /Users/Lif/Web/Codeucation
-153 error node -v v0.10.33
-154 error npm -v 1.4.28
-155 error path /Users/Lif/.npm/grunt-contrib-uglify/0.8.0
-156 error code EACCES
-157 error errno 3
-158 error stack Error: EACCES, mkdir '/Users/Lif/.npm/grunt-contrib-uglify/0.8.0'
-159 verbose exit [ 3, true ]
+4 verbose cache add [ 'bower', null ]
+5 verbose cache add name=undefined spec="bower" args=["bower",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'bower',
+6 verbose parsed url   path: 'bower',
+6 verbose parsed url   href: 'bower' }
+7 silly lockFile 206e3ce5-bower bower
+8 verbose lock bower /Users/Lif/.npm/206e3ce5-bower.lock
+9 silly lockFile 206e3ce5-bower bower
+10 silly lockFile 206e3ce5-bower bower
+11 verbose addNamed [ 'bower', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 1240aab1-bower bower@
+14 verbose lock bower@ /Users/Lif/.npm/1240aab1-bower.lock
+15 silly addNameRange { name: 'bower', range: '*', hasData: false }
+16 verbose request where is /bower
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 127abec149fdb0a9
+19 verbose url raw /bower
+20 verbose url resolving [ 'https://registry.npmjs.org/', './bower' ]
+21 verbose url resolved https://registry.npmjs.org/bower
+22 verbose request where is https://registry.npmjs.org/bower
+23 info trying registry request attempt 1 at 19:18:18
+24 verbose etag "A3X0VVLYBV0TDNCY1X614VZF6"
+25 http GET https://registry.npmjs.org/bower
+26 http 304 https://registry.npmjs.org/bower
+27 silly registry.get cb [ 304,
+27 silly registry.get   { date: 'Sun, 22 Mar 2015 19:18:18 GMT',
+27 silly registry.get     server: 'Apache',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     'last-modified': 'Sun, 22 Mar 2015 19:18:15 GMT',
+27 silly registry.get     'cache-control': 'max-age=60',
+27 silly registry.get     etag: '"A3X0VVLYBV0TDNCY1X614VZF6"',
+27 silly registry.get     age: '27',
+27 silly registry.get     'x-served-by': 'cache-lhr6322-LHR',
+27 silly registry.get     'x-cache': 'HIT',
+27 silly registry.get     'x-cache-hits': '2',
+27 silly registry.get     'x-timer': 'S1427051898.563452,VS0,VE0',
+27 silly registry.get     vary: 'Accept',
+27 silly registry.get     'content-length': '0',
+27 silly registry.get     'keep-alive': 'timeout=10, max=50',
+27 silly registry.get     connection: 'Keep-Alive' } ]
+28 verbose etag https://registry.npmjs.org/bower from cache
+29 silly addNameRange number 2 { name: 'bower', range: '*', hasData: true }
+30 silly addNameRange versions [ 'bower',
+30 silly addNameRange   [ '0.1.0',
+30 silly addNameRange     '0.1.2',
+30 silly addNameRange     '0.1.3',
+30 silly addNameRange     '0.2.0',
+30 silly addNameRange     '0.3.0',
+30 silly addNameRange     '0.3.1',
+30 silly addNameRange     '0.3.2',
+30 silly addNameRange     '0.4.0',
+30 silly addNameRange     '0.5.0',
+30 silly addNameRange     '0.5.1',
+30 silly addNameRange     '0.6.0',
+30 silly addNameRange     '0.6.1',
+30 silly addNameRange     '0.6.2',
+30 silly addNameRange     '0.6.3',
+30 silly addNameRange     '0.6.4',
+30 silly addNameRange     '0.6.5',
+30 silly addNameRange     '0.6.6',
+30 silly addNameRange     '0.6.7',
+30 silly addNameRange     '0.6.8',
+30 silly addNameRange     '0.7.0',
+30 silly addNameRange     '0.7.1',
+30 silly addNameRange     '0.8.0',
+30 silly addNameRange     '0.8.1',
+30 silly addNameRange     '0.8.2',
+30 silly addNameRange     '0.8.3',
+30 silly addNameRange     '0.8.4',
+30 silly addNameRange     '0.8.5',
+30 silly addNameRange     '0.8.6',
+30 silly addNameRange     '0.9.0',
+30 silly addNameRange     '0.9.1',
+30 silly addNameRange     '0.9.2',
+30 silly addNameRange     '0.10.0',
+30 silly addNameRange     '1.0.0',
+30 silly addNameRange     '1.0.1',
+30 silly addNameRange     '1.0.2',
+30 silly addNameRange     '1.0.3',
+30 silly addNameRange     '1.1.0',
+30 silly addNameRange     '1.1.1',
+30 silly addNameRange     '1.1.2',
+30 silly addNameRange     '1.2.0',
+30 silly addNameRange     '1.2.1',
+30 silly addNameRange     '1.2.2',
+30 silly addNameRange     '1.2.3',
+30 silly addNameRange     '1.2.4',
+30 silly addNameRange     '1.2.5',
+30 silly addNameRange     '1.2.6',
+30 silly addNameRange     '1.2.7',
+30 silly addNameRange     '1.2.8',
+30 silly addNameRange     '1.3.0',
+30 silly addNameRange     '1.3.1',
+30 silly addNameRange     '1.3.2',
+30 silly addNameRange     '1.3.3',
+30 silly addNameRange     '1.3.4',
+30 silly addNameRange     '1.3.5',
+30 silly addNameRange     '1.3.6',
+30 silly addNameRange     '1.3.7',
+30 silly addNameRange     '1.3.8',
+30 silly addNameRange     '1.3.9',
+30 silly addNameRange     '1.3.10',
+30 silly addNameRange     '1.3.11',
+30 silly addNameRange     '1.3.12' ] ]
+31 verbose addNamed [ 'bower', '1.3.12' ]
+32 verbose addNamed [ '1.3.12', '1.3.12' ]
+33 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+34 verbose lock bower@1.3.12 /Users/Lif/.npm/9819431c-bower-1-3-12.lock
+35 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+36 silly lockFile 9819431c-bower-1-3-12 bower@1.3.12
+37 silly lockFile 1240aab1-bower bower@
+38 silly lockFile 1240aab1-bower bower@
+39 silly resolved [ { name: 'bower',
+39 silly resolved     version: '1.3.12',
+39 silly resolved     description: 'The browser package manager',
+39 silly resolved     author: { name: 'Twitter' },
+39 silly resolved     licenses: [ [Object] ],
+39 silly resolved     repository: { type: 'git', url: 'https://github.com/bower/bower' },
+39 silly resolved     main: 'lib',
+39 silly resolved     homepage: 'http://bower.io',
+39 silly resolved     engines: { node: '>=0.10.0' },
+39 silly resolved     dependencies:
+39 silly resolved      { abbrev: '~1.0.4',
+39 silly resolved        archy: '0.0.2',
+39 silly resolved        'bower-config': '~0.5.2',
+39 silly resolved        'bower-endpoint-parser': '~0.2.2',
+39 silly resolved        'bower-json': '~0.4.0',
+39 silly resolved        'bower-logger': '~0.2.2',
+39 silly resolved        'bower-registry-client': '~0.2.0',
+39 silly resolved        cardinal: '0.4.0',
+39 silly resolved        chalk: '0.5.0',
+39 silly resolved        chmodr: '0.1.0',
+39 silly resolved        'decompress-zip': '0.0.8',
+39 silly resolved        fstream: '~1.0.2',
+39 silly resolved        'fstream-ignore': '~1.0.1',
+39 silly resolved        glob: '~4.0.2',
+39 silly resolved        'graceful-fs': '~3.0.1',
+39 silly resolved        handlebars: '~2.0.0',
+39 silly resolved        inquirer: '0.7.1',
+39 silly resolved        insight: '0.4.3',
+39 silly resolved        'is-root': '~1.0.0',
+39 silly resolved        junk: '~1.0.0',
+39 silly resolved        lockfile: '~1.0.0',
+39 silly resolved        'lru-cache': '~2.5.0',
+39 silly resolved        mkdirp: '0.5.0',
+39 silly resolved        mout: '~0.9.0',
+39 silly resolved        nopt: '~3.0.0',
+39 silly resolved        opn: '~1.0.0',
+39 silly resolved        osenv: '0.1.0',
+39 silly resolved        'p-throttler': '0.1.0',
+39 silly resolved        promptly: '0.2.0',
+39 silly resolved        q: '~1.0.1',
+39 silly resolved        request: '~2.42.0',
+39 silly resolved        'request-progress': '0.3.0',
+39 silly resolved        retry: '0.6.0',
+39 silly resolved        rimraf: '~2.2.0',
+39 silly resolved        semver: '~2.3.0',
+39 silly resolved        'shell-quote': '~1.4.1',
+39 silly resolved        'stringify-object': '~1.0.0',
+39 silly resolved        'tar-fs': '0.5.2',
+39 silly resolved        tmp: '0.0.23',
+39 silly resolved        'update-notifier': '0.2.0',
+39 silly resolved        which: '~1.0.5' },
+39 silly resolved     devDependencies:
+39 silly resolved      { coveralls: '~2.11.0',
+39 silly resolved        'expect.js': '~0.3.1',
+39 silly resolved        grunt: '~0.4.4',
+39 silly resolved        'grunt-cli': '^0.1.13',
+39 silly resolved        'grunt-contrib-jshint': '~0.10.0',
+39 silly resolved        'grunt-contrib-watch': '~0.6.1',
+39 silly resolved        'grunt-exec': '~0.4.2',
+39 silly resolved        'grunt-simple-mocha': '~0.4.0',
+39 silly resolved        istanbul: '~0.3.2',
+39 silly resolved        'load-grunt-tasks': '~0.6.0',
+39 silly resolved        mocha: '~1.21.4',
+39 silly resolved        nock: '~0.46.0',
+39 silly resolved        'node-uuid': '~1.4.1',
+39 silly resolved        proxyquire: '~1.0.1' },
+39 silly resolved     scripts: { test: 'grunt test' },
+39 silly resolved     bin: { bower: 'bin/bower' },
+39 silly resolved     preferGlobal: true,
+39 silly resolved     gitHead: 'b26c072f0db054a1902ec4d2e3726dbf8a1c799a',
+39 silly resolved     bugs: { url: 'https://github.com/bower/bower/issues' },
+39 silly resolved     _id: 'bower@1.3.12',
+39 silly resolved     _shasum: '37de0edb3904baf90aee13384a1a379a05ee214c',
+39 silly resolved     _from: 'bower@',
+39 silly resolved     _npmVersion: '2.0.0',
+39 silly resolved     _npmUser: { name: 'sheerun', email: 'sheerun@sher.pl' },
+39 silly resolved     maintainers: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+39 silly resolved     dist:
+39 silly resolved      { shasum: '37de0edb3904baf90aee13384a1a379a05ee214c',
+39 silly resolved        tarball: 'http://registry.npmjs.org/bower/-/bower-1.3.12.tgz' },
+39 silly resolved     directories: {},
+39 silly resolved     _resolved: 'https://registry.npmjs.org/bower/-/bower-1.3.12.tgz',
+39 silly resolved     readme: 'ERROR: No README data found!' } ]
+40 info install bower@1.3.12 into /usr/local/lib
+41 info installOne bower@1.3.12
+42 verbose lib/node_modules/bower unbuild
+43 verbose tar unpack /Users/Lif/.npm/bower/1.3.12/package.tgz
+44 silly lockFile 1396471b-usr-local-lib-node-modules-bower tar:///usr/local/lib/node_modules/bower
+45 verbose lock tar:///usr/local/lib/node_modules/bower /Users/Lif/.npm/1396471b-usr-local-lib-node-modules-bower.lock
+46 silly lockFile d9c9cde8-Lif-npm-bower-1-3-12-package-tgz tar:///Users/Lif/.npm/bower/1.3.12/package.tgz
+47 verbose lock tar:///Users/Lif/.npm/bower/1.3.12/package.tgz /Users/Lif/.npm/d9c9cde8-Lif-npm-bower-1-3-12-package-tgz.lock
+48 silly gunzTarPerm modes [ '755', '644' ]
+49 error Error: EACCES, mkdir '/usr/local/lib/node_modules/bower'
+49 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/bower']
+49 error   errno: 3,
+49 error   code: 'EACCES',
+49 error   path: '/usr/local/lib/node_modules/bower',
+49 error   fstream_type: 'Directory',
+49 error   fstream_path: '/usr/local/lib/node_modules/bower',
+49 error   fstream_class: 'DirWriter',
+49 error   fstream_stack:
+49 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+49 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+49 error      'Object.oncomplete (fs.js:107:15)' ] }
+50 error Please try running this command again as root/Administrator.
+51 error System Darwin 14.0.0
+52 error command "node" "/usr/local/bin/npm" "install" "--g" "bower"
+53 error cwd /Users/Lif/Web/Codeucation
+54 error node -v v0.10.33
+55 error npm -v 1.4.28
+56 error path /usr/local/lib/node_modules/bower
+57 error fstream_path /usr/local/lib/node_modules/bower
+58 error fstream_type Directory
+59 error fstream_class DirWriter
+60 error code EACCES
+61 error errno 3
+62 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/bower'
+63 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+63 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+63 error fstream_stack Object.oncomplete (fs.js:107:15)
+64 verbose exit [ 3, true ]

@@ -11,7 +11,8 @@ var formatSnippet = function(snippets){
 			title : snip.title,
 			desc : snip.description,
 			content : snip.content,
-			userinfo : snip.userinfo
+			userinfo : snip.userinfo,
+			gid : snip.gid
 		});
 	});
 	return s;
@@ -48,6 +49,23 @@ module.exports = {
 	},
 
 
+		listByGroup : function(gid, callback) {
+			var s = [];
+			col.find({gid : gid}).sort({updated: -1}).toArray(function(err, snippets) {
+				//console.log(formatSnippet(snippets))
+				callback(formatSnippet(snippets));
+			});
+		},
+
+		listByGroups : function(ids, callback) {
+			var s = [];
+			col.find({gid : {$in : ids}}).sort({updated: -1}).toArray(function(err, snippets) {
+				//console.log(formatSnippet(snippets))
+				callback(formatSnippet(snippets));
+			});
+		},
+
+
 	get : function(id, callback) {
 	  col.find({ "snid" : id }).toArray(function(err, snippet) {
 			//if()
@@ -64,7 +82,7 @@ module.exports = {
 	},
 
 
-	add : function(id, content, user, callback) {
+	add : function(id, content, user, group, callback) {
 		  col.insert([{
 		    "snid" : id,
 				'title' : '',
@@ -72,7 +90,8 @@ module.exports = {
 				'userinfo' : user,
 		    "content" : content,
 		    "posted" : new Date(),
-		    "updated" : new Date()
+		    "updated" : new Date(),
+				'gid' : group
 		  }
 		  ], function(err, result) {
 		    callback(id);
@@ -80,18 +99,33 @@ module.exports = {
 	},
 
 
-	update : function(id, content, details, callback) {
+	edit : function(id, title, desc, callback) {
 	  var id = id;
 
-	  console.log(details.title);
+		col.update(
+	    { 'snid' : id },
+	    {
+	      $set: {
+	        'title' : title,
+	        'description' : desc
+	      }
+	    },
+	    {},
+			function(err){
+	  		callback(err,{title:title,desc:desc},id);
+	  	}
+	  );
+	},
+
+	update : function(id, content, callback) {
+	  var id = id;
+
 		col.update(
 	    { 'snid' : id },
 	    {
 	      $set: {
 	        'content' : content,
-	        'updated' : new Date(),
-					'title' : details.title,
-					'description' : details.desc
+	        'updated' : new Date()
 	      }
 	    },
 	    {},

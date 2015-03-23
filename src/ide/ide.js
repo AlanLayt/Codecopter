@@ -68,7 +68,7 @@ var start = function(){
 
     socket.on('save', function (data) {
       console.log(socket.request)
-      db.snippets.update(data.snid, loaded[data.snid].getContent(), {title : data.title, desc : data.desc}, function(info,content,title){
+      db.snippets.update(data.snid, loaded[data.snid].getContent(), function(info,content,title){
         console.log('Snippet %s updated.', data.snid);
       });
     });
@@ -105,12 +105,12 @@ var userCount = function(){
   return connectionCount;
 }
 
-var newSnippet = function(req,callback){
+var newSnippet = function(gid,req,callback){
 		db.snippets.count(function(count){
 			var hashids = new Hashids("Twoflower"),
 		  id = hashids.encode(count,Date.now());
 
-      db.snippets.add(id,'',req.session.twitterAuth,function(id){
+      db.snippets.add(id,'',req.session.twitterAuth,gid,function(id){
         console.log('IDE: New snippet, %s, added.', id);
         callback(id);
       });

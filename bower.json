@@ -1,0 +1,27 @@
+{
+  "name": "Codelight",
+  "version": "2.0.0",
+  "homepage": "https://github.com/AlanLayt/Codeucation",
+  "authors": [
+    "Alan Layt <alanlayt@googlemail.com>"
+  ],
+  "description": "Social web-based development environment",
+  "main": "public/css/style.css",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.15",
+    "angular-route": "~1.3.15"
+  }
+}

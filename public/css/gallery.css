@@ -111,6 +111,15 @@ form input[type="text"] {
     text-decoration: none;
     color: #333; }
 
+.infopane {
+  height: 250px;
+  width: 250px;
+  position: relative;
+  padding: 5px 10px 5px 10px;
+  overflow: hidden;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 100; }
+
 .container {
   padding: 15px; }
   .container iframe {

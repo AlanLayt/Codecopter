@@ -1,0 +1,24 @@
+var title = Codelight DE
+extends includes/structure.jade
+
+
+block headerAddition
+	+title("Development Environment")
+	
+block append body
+		div#Gallery
+			div.container
+				div.infopane
+					h2= group.title
+					div= group.description
+					div= group.user
+			-each item in items
+				a(href='http://#{loc}/#{item.userinfo.screen_name}/#{item.id}')
+					div.container
+						div.thumb
+							iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
+						div.info
+							div.title= item.title
+							div.username 
+							div.caption= item.desc
+							

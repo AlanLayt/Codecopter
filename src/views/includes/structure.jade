@@ -13,7 +13,7 @@ html
       script(rel='text/javascript', src='http://#{loc}/socket.io/socket.io.js')
       script(rel='text/javascript', src='http://#{loc}/js/core.js')
     
-  body
+  body(ng-app='CodeLight')
     block header
       div#header
         div.section.title
@@ -23,6 +23,9 @@ html
         if user.logged
           div.section.menu
             a(href="/new")
+              svg.icon
+                use(xlink:href="http://#{loc}/icons.svg#shape-new")
+            a(href="/groups") 
               svg.icon
                 use(xlink:href="http://#{loc}/icons.svg#shape-new")
           div.section.user

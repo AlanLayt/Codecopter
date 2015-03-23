@@ -5,7 +5,7 @@ block headerAddition
 	+title(snippet.title + " by " + poster.screen_name)
 	
 block append body
-	div#Display
+	div#Display(snid='#{snid}' ng-controller='display')
 		div.preview
 			iframe(src='http://#{loc}/s/#{snid}' tabindex='-1')
 			a(href="http://#{loc}/c/#{snid}")
@@ -17,8 +17,18 @@ block append body
 			a(href='http://#{loc}/delete/#{snid}')
 				svg.icon
 					use(xlink:href="http://#{loc}/icons.svg#shape-delete")
-			h2 #{snippet.title}
-			p #{snippet.desc}
+					
+			div(ng-if='!editing')
+				h2(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
+				p= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
+				
+			div(ng-if='editing')
+				form(name='detailsForm' ng-submit='submit(detailsForm)')
+					div 
+						input(type='text' placeholder='Title' name='editTitle' ng-model='editForm.title' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title))
+					div 	
+						input(type='text' placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
+					input(type='submit')
 			
 			div.userCard
 				img(src="#{poster.profile_image_url}")

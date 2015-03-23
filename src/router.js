@@ -77,7 +77,7 @@ function route(app, db, handlers) {
 		// ========== Snippet Routes ==========
 
 		app.get('/new', function(req, res){
-			handlers.ide.newSnippet(req,function(id){
+			handlers.ide.newSnippet(false, req,function(id){
 				res.redirect('/c/' + id);
 			});
 		});
@@ -156,36 +156,62 @@ function route(app, db, handlers) {
     var title = req.body.group.title;
     var desc = req.body.group.desc;
 
-    console.log("Creating group %s", title);
-		db.groups.add(title, desc, user.username, function(groupid){
-			console.log(groupid)
+		console.log(title)
+		handlers.groups.add({
+			title : title,
+			desc : desc,
+			user : user.username
+		});
+	});
+
+	app.get('/group/:gid/new', function(req, res){
+		var gid = req.params["gid"];
+		db.groups.get(gid,function(g){
+			if(g!==false)
+				handlers.ide.newSnippet(gid, req,function(id){
+					res.redirect('/c/' + id);
+				});
 		});
 	});
 
 	app.get('/group/:gid', function(req, res){
-		var user = req.params["gid"];
+		var gid = req.params["gid"];
 		var authDetails = handlers.auth.get(req, res);
 
-		db.groups.listAll(function(groups){
-			groups.forEach(function(g){
-				console.log(g.title);
-			})
+		handlers.groups.get(gid,function(g,snippets){
+			console.log(g.title);
+			res.render('group', {
+				loc: req.headers.host,
+				group : g,
+				items : snippets,
+				pretty : false,
+				user : handlers.auth.getUser(req,res)
+			});
 		});
 	});
 	app.get('/groups', function(req, res){
 		var user = req.params["gid"];
 		var authDetails = handlers.auth.get(req, res);
 
-		db.groups.listAll(function(groups){
+		handlers.groups.listAll(function(groups){
+			//console.log(groups[0].snippets)
 			res.render('groups', {
 				loc: req.headers.host,
-				items : groups,
+				groups : groups,
 				pretty : false,
 				user : handlers.auth.getUser(req,res)
 			});
 		});
 	});
 
+
+	app.post('/snippet/update/', function(req, res){
+		console.log(req.body);
+		db.snippets.edit(req.body.snid,req.body.title,req.body.desc,function(err,details){
+			console.log('Snippet %s updated.', details.title);
+			res.json({ ok : true });
+		});
+	});
 
 	app.get('/:uname/:snid', function(req, res){
 		var snid = req.params["snid"];
