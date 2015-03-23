@@ -151,6 +151,14 @@ function route(app, db, handlers) {
 			console.log(groupid)
 		});
 	});
+	app.get('/group/delete/:gid', function(req, res){
+		var group = req.params["gid"];
+		var authDetails = handlers.auth.get(req, res);
+
+		db.groups.delete(group, function(groupid){
+			console.log(groupid)
+		});
+	});
 	app.post('/group/new', function(req, res) {
 		var user = handlers.auth.getUser(req, res);
     var title = req.body.group.title;

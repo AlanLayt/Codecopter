@@ -27,6 +27,8 @@
     height: 30em;
     border: none;
     padding:0;
+    overflow-x: hidden;
+    position:relative;
   }
   .title {
     -webkit-font-smoothing: antialiased;

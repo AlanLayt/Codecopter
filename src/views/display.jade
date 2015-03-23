@@ -7,7 +7,7 @@ block headerAddition
 block append body
 	div#Display(snid='#{snid}' ng-controller='display')
 		div.preview
-			iframe(src='http://#{loc}/s/#{snid}' tabindex='-1')
+			iframe(src='http://#{loc}/s/#{snid}' scrolling='no' tabindex='-1')
 			a(href="http://#{loc}/c/#{snid}")
 				svg.icon
 					use(xlink:href="http://#{loc}/icons.svg#shape-edit")

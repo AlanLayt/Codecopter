@@ -7,18 +7,19 @@ window.addEventListener("DOMContentLoaded", function() {
     snid = el.getAttribute('snid');
 }, false);
 
-app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$http,socket) {
+app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
     var token;
     var colors = ['587D59','F9D189','AF734C','88C843','FA347B'];
     var snid = document.getElementById('editor').getAttribute('snid');
     console.log(snid);
     //var editor = element.find('#editor');
+    var cursors = [];
 
     socket.on('connectionConfirmed', function (data) {
       console.log('Angular Connection Success');
       socket.emit('requestSnip', {snid : snid});
 
-      $http.get('http://127.0.0.1:8888/auth/key')
+      $http.get('http://'+window.location.hostname+':8888/auth/key')
         .success(function(data){
           console.log('token retrieved');
           token = data.token;
@@ -36,7 +37,60 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$htt
       console.debug("Incoming cursor: %s", data.user.username);
       if(!userExists(data.user.username))
         $scope.addUser(data.user);
+
+
+    console.debug(data)
+          var curhold = document.getElementById("cursorHold");
+          curhold.innerHTML = '';
+          var pos = editor.renderer.textToScreenCoordinates(data.position.row,data.position.column);
+          //console.debug("Incoming cursor:");
+          //console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
+          var colours = Array('B8006D','FF774C','3DA7D5');
+
+          if(data.socketid in cursors){
+            cursors[data.socketid].position.row = data.position.row;
+            cursors[data.socketid].position.column = data.position.column;
+          }
+          else {
+            cursors[data.socketid] = data;
+            Object.keys($scope.users).forEach(function(key){
+              if(data.user.username == $scope.users[key].username)
+                color = $scope.users[key].color;
+            });
+            cursors[data.socketid].colour = color;//colours[Math.floor(Math.random()*3)];
+          }
+
+      //  console.debug(cursors)
+          Object.keys(cursors).forEach(function(key){
+            var pos = editor.renderer.textToScreenCoordinates(cursors[key].position.row,cursors[key].position.column);
+            var obj = document.createElement('div');
+            obj.id = "::img";
+            var color;
+
+
+            obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff; display:'+(caretBlink?'block':'none')+';';
+            cursors[key].el = obj;
+            curhold.appendChild(obj);
+          });
     });
+
+    var caretBlink = false;
+      console.log(cursors);
+          var blinkProc = function(){
+            caretBlink = caretBlink?false:true;
+            var blinkTimer = window.setTimeout(blinkProc,800);
+            Object.keys(cursors).forEach(function(key){
+              cursors[key].el.style.display = caretBlink?'block':'none';
+            });
+          }
+          blinkProc();
+          editor.selection.on('changeCursor',function(){
+            var pos = editor.selection.getCursor();
+            pos.snid = snid;
+            socket.emit('cursorMove',pos);
+          });
+
+
 
     var userExists = function(username){
       var found = false;
@@ -81,6 +135,11 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$htt
       socket.on('loadSnip', function (data) {
         editor.setValue(data.snippet.content);
       });
+
+
+
+
+
 
 
       editor.on("change", function(e){
@@ -139,7 +198,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', function($scope,$htt
 
   $scope.submit = function(form){
     console.log(snid);
-    $http.post('http://127.0.0.1:8888/snippet/update',{
+    $http.post('http://'+window.location.hostname+':8888/snippet/update',{
       snid : snid,
       title : $scope.editForm.title,
       desc : $scope.editForm.description
@@ -229,28 +288,6 @@ app.factory('editor', function ($rootScope) {
         enableLiveAutocompletion: false
     });
 
-
-
-// Caret stuff
-
-    /*var blinkProc = function(){
-      caretBlink = caretBlink?false:true;
-      var blinkTimer = window.setTimeout(blinkProc,800);
-      Object.keys(cursors).forEach(function(key){
-        cursors[key].el.style.display = caretBlink?'block':'none';
-      });
-    }
-    blinkProc();
-    editor.selection.on('changeCursor',function(){
-      var pos = editor.selection.getCursor();
-      pos.snid = snid;
-      socket.emit('cursorMove',pos);
-    });*/
-
-
-
-
-
     console.log('Initializing Ace editor.');
     return {
       getValue: function () {
@@ -274,8 +311,27 @@ app.factory('editor', function ($rootScope) {
         remove : function(range){
           editor.session.getDocument().remove(range);
         }
+      },
+      selection : {
+        on : function(evt,callback){
+          editor.selection.on(evt,function () {
+            var args = arguments;
+            $rootScope.$apply(function () {
+              if (callback) {
+                callback.apply(socket, args);
+              }
+            });
+          })
+        },
+        getCursor : function(){
+          return editor.selection.getCursor();
+        }
+      },
+      renderer : {
+        textToScreenCoordinates : function(row,col){
+        return editor.renderer.textToScreenCoordinates(row,col);
+        }
       }
-
     };
 });
 
