@@ -9,13 +9,13 @@ block append scripts
 block headerAddition
 	+title("Development Environment")
 	div.section
-		a(href='http://#{loc}/#{poster.screen_name}/#{snid}')
+		a(href='http://#{loc}/#{snippet.poster.username}/#{snid}')
 			svg.icon
 				use(xlink:href="http://#{loc}/icons.svg#shape-back")
 	
 block append body
 	div#IDE.ide(ng-controller='ide')
-		pre#editor(snid='#{snid}' ng-data='#{snid}' editor) #{snippet} 
+		pre#editor(snid='#{snippet.snid}' ng-data='#{snippet.snid}' editor) #{snippet.content} 
 		iframe#display(frameborder=0 scrolling='no')
 		
 	div#cursorHold

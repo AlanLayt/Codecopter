@@ -39,18 +39,13 @@ var logout = function(req, res){
 }
 
 var getUser = function(req, res){
-	if(req.session.twitterScreenName){
-		var uname = req.session.twitterScreenName;
-		var twitterDetails = req.session.twitterAuth;
+	if(req.session.twitterAuth){
+		var authDetails = req.session.twitterAuth;
 		return {
 			logged : true,
-			username : uname,
-			avatar : twitterDetails.profile_image_url,
-			icon : twitterDetails.profile_image_url,
-			twitterAuth : twitterDetails,
 			user : {
-				username : twitterDetails.screen_name,
-				icon : twitterDetails.profile_image_url
+				username : authDetails.screen_name,
+				icon : authDetails.profile_image_url
 			}
 		};
 	}

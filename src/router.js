@@ -77,7 +77,8 @@ function route(app, db, handlers) {
 		// ========== Snippet Routes ==========
 
 		app.get('/new', function(req, res){
-			handlers.ide.newSnippet(false, req,function(id){
+			var user = handlers.auth.getUser(req, res).user;
+			handlers.ide.newSnippet(false, user, req,function(id){
 				res.redirect('/c/' + id);
 			});
 		});
@@ -99,13 +100,15 @@ function route(app, db, handlers) {
 				else
 					res.render('ide', {
 						loc : req.headers.host,
-						snid : snid,
-						title : snippet.title,
-						desc : snippet.desc,
-						snippet : snippet.content,
-						user : handlers.auth.getUser(req,res),
-						pretty : true,
-						poster : snippet.userinfo
+						auth : handlers.auth.getUser(req,res),
+						snippet : {
+							snid : snid,
+							title : snippet.title,
+							desc : snippet.desc,
+							content : snippet.content,
+							poster : snippet.user
+						},
+						pretty : true
 					});
 
 			});
@@ -115,6 +118,23 @@ function route(app, db, handlers) {
 			handlers.ide.getSnippet(snid,function(snippet){
 				res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet);
 			});
+		});
+		app.get('/search/:search?', function(req, res){
+			var search = req.params["search"];
+
+			handlers.snippets.search(search,function(result){
+
+				//console.log(lines);
+				res.render('search', {
+					loc : req.headers.host,
+					auth : handlers.auth.getUser(req,res),
+					search : {
+						string : search,
+						result : result
+					},
+					pretty : true
+				});
+			})
 		});
 
 
@@ -131,7 +151,7 @@ function route(app, db, handlers) {
 					items : snippets,
 					pretty : false,
 					userCount : handlers.ide.userCount(),
-					user : handlers.auth.getUser(req,res)
+					auth : handlers.auth.getUser(req,res),
 				});
 		});
 	});
@@ -193,7 +213,7 @@ function route(app, db, handlers) {
 				group : g,
 				items : snippets,
 				pretty : false,
-				user : handlers.auth.getUser(req,res)
+				auth : handlers.auth.getUser(req,res),
 			});
 		});
 	});
@@ -207,7 +227,7 @@ function route(app, db, handlers) {
 				loc: req.headers.host,
 				groups : groups,
 				pretty : false,
-				user : handlers.auth.getUser(req,res)
+				auth : handlers.auth.getUser(req,res),
 			});
 		});
 	});
@@ -223,15 +243,18 @@ function route(app, db, handlers) {
 
 	app.get('/:uname/:snid', function(req, res){
 		var snid = req.params["snid"];
-		var authDetails = handlers.auth.get(req, res);
 
 		db.snippets.get(snid,function(snippet){
+			console.log(snippet.desc);
 			res.render('display', {
 				loc : req.headers.host,
-				snid : snid,
-				snippet : snippet,
-				user : handlers.auth.getUser(req,res),
-				poster : snippet.userinfo
+				auth : handlers.auth.getUser(req,res),
+				snippet : {
+					snid : snid,
+					user : snippet.user,
+					title : snippet.title,
+					desc : snippet.desc,
+				}
 			});
 		});
 	});

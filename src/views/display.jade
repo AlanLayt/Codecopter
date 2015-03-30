@@ -2,34 +2,37 @@ var title = Codelight DE
 extends includes/structure.jade
 
 block headerAddition
-	+title(snippet.title + " by " + poster.screen_name)
+	+title(snippet.title + " by " + snippet.user.username)
 	
 block append body
-	div#Display(snid='#{snid}' ng-controller='display')
+	div#Display(snid='#{snippet.snid}' ng-controller='display' ng-init='editForm.description="#{snippet.desc}";editForm.title="#{snippet.title}";')
 		div.preview
-			iframe(src='http://#{loc}/s/#{snid}' scrolling='no' tabindex='-1')
-			a(href="http://#{loc}/c/#{snid}")
-				svg.icon
-					use(xlink:href="http://#{loc}/icons.svg#shape-edit")
-			a(href="http://#{loc}/s/#{snid}")
-				svg.icon
-					use(xlink:href="http://#{loc}/icons.svg#shape-view")
-			a(href='http://#{loc}/delete/#{snid}')
-				svg.icon
-					use(xlink:href="http://#{loc}/icons.svg#shape-delete")
-					
-			div(ng-if='!editing')
-				h2(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
-				p= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
-				
-			div(ng-if='editing')
-				form(name='detailsForm' ng-submit='submit(detailsForm)')
-					div 
-						input(type='text' placeholder='Title' name='editTitle' ng-model='editForm.title' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title))
-					div 	
-						input(type='text' placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
-					input(type='submit')
+			iframe(src='http://#{loc}/s/#{snippet.snid}' scrolling='no' tabindex='-1')
 			
-			div.userCard
-				img(src="#{poster.profile_image_url}")
-				div.userName #{poster.screen_name}
+			div.info		
+				div.editMenu
+					a(href="http://#{loc}/c/#{snippet.snid}")
+						svg.icon
+							use(xlink:href="http://#{loc}/icons.svg#shape-edit")
+					a(href="http://#{loc}/s/#{snippet.snid}")
+						svg.icon
+							use(xlink:href="http://#{loc}/icons.svg#shape-view")
+					a(href='http://#{loc}/delete/#{snippet.snid}')
+						svg.icon
+							use(xlink:href="http://#{loc}/icons.svg#shape-delete")
+							
+				div(ng-if='!editing')
+					h2.title(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
+					p.description= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
+					
+				div(ng-if='editing')
+					form#detailsform(name='detailsForm' ng-submit='submit(detailsForm)')
+						div 
+							input.title(type='text' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title) placeholder='Title' name='editTitle' ng-model='editForm.title')
+						div 	
+							textarea.description(placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
+						input(type='submit')
+				
+				div.userCard
+					img.userIcon(src="#{snippet.user.icon}")
+					div.userName #{snippet.user.username}

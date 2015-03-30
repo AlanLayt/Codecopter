@@ -1,0 +1,25 @@
+var title = Codelight DE
+extends includes/structure.jade
+
+block append scripts
+	script(rel='text/javascript', src='http://#{loc}/ace/ace.js')
+	script(rel='text/javascript', src='http://#{loc}/ace/ext-language_tools.js')
+
+block headerAddition
+	+title("Development Environment")
+	
+block append body
+		div#Search
+			-each item in search.result
+				div.searchItem
+					div.codePrevHold
+						pre.searchCodeDisplay #{item.search.result}
+					a(href='http://#{loc}/#{item.user.username}/#{item.id}')
+						div.container
+							div.thumb
+								iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
+							div.info
+								div.user
+									img.userIcon(src='#{item.user.icon}')
+								div.title= item.title
+								div.caption= item.desc

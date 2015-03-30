@@ -6,12 +6,13 @@ var col;
 var formatSnippet = function(snippets){
 	var s = [];
 	snippets.forEach(function(snip){
+		//console.log(snip)
 		s.push({
 			id : snip.snid,
-			title : snip.title,
-			desc : snip.description,
+			title : snip.title==null?'':snip.title,
+			desc : snip.description==null?'':snip.description,
 			content : snip.content,
-			userinfo : snip.userinfo,
+			user : snip.userinfo,
 			gid : snip.gid
 		});
 	});
@@ -78,6 +79,13 @@ module.exports = {
 	  col.remove({ 'snid' : id }, function(err, result) {
 	    console.log("Snippet removed: %s", id);
 	    callback(id);
+	  });
+	},
+
+
+	search : function(search, callback) {
+	  col.find({ "content" : new RegExp(search) }).toArray(function(err, snippet) {
+	    	callback(snippet.length>0 ? formatSnippet(snippet) : false);
 	  });
 	},
 

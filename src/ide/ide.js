@@ -105,12 +105,12 @@ var userCount = function(){
   return connectionCount;
 }
 
-var newSnippet = function(gid,req,callback){
+var newSnippet = function(gid,user,req,callback){
 		db.snippets.count(function(count){
 			var hashids = new Hashids("Twoflower"),
 		  id = hashids.encode(count,Date.now());
 
-      db.snippets.add(id,'',req.session.twitterAuth,gid,function(id){
+      db.snippets.add(id,'',user,gid,function(id){
         console.log('IDE: New snippet, %s, added.', id);
         callback(id);
       });

@@ -8,13 +8,14 @@ block headerAddition
 block append body
 		div#Gallery
 			-each item in items
-				a(href='http://#{loc}/#{item.userinfo.screen_name}/#{item.id}')
+				a(href='http://#{loc}/#{item.user.username}/#{item.id}')
 					div.container
 						div.thumb
 							iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
 						div.info
+							div.user
+								img.userIcon(src='#{item.user.icon}')
 							div.title= item.title
-							div.username 
 							div.caption= item.desc
 
 	//-	div#footer

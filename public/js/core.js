@@ -5,6 +5,21 @@ window.addEventListener("DOMContentLoaded", function() {
   var el = document.getElementById('editor');
   if(el!==null)
     snid = el.getAttribute('snid');
+
+
+  var search = document.getElementById('Search');
+  if(search!==null){
+    var es = document.getElementsByClassName("searchCodeDisplay");
+    //  console.log(es[0])
+    for(var i=0;i<es.length;i++){
+      console.log(es[i]);
+      var editor = ace.edit(es[i]);
+      editor.setTheme("ace/theme/monokai");
+      editor.renderer.setShowGutter(false); 
+      editor.getSession().setMode("ace/mode/javascript");
+    };
+  }
+
 }, false);
 
 app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
