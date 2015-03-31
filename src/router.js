@@ -194,9 +194,11 @@ function route(app, db, handlers) {
 
 	app.get('/group/:gid/new', function(req, res){
 		var gid = req.params["gid"];
+		var user = handlers.auth.getUser(req, res).user;
+
 		db.groups.get(gid,function(g){
 			if(g!==false)
-				handlers.ide.newSnippet(gid, req,function(id){
+				handlers.ide.newSnippet(gid, user, req, function(id){
 					res.redirect('/c/' + id);
 				});
 		});
