@@ -51,7 +51,6 @@ module.exports = function(grunt) {
         },
         files: {
           'public/js/dep.js': 'dev/bower/js/bower.js',
-          'public/js/core.js': 'dev/js/core.js',
         }
       }
     },
