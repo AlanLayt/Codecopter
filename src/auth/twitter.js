@@ -26,13 +26,14 @@ function consumer(){
 		app.config.auth.twitter.consumerKey,
 		app.config.auth.twitter.applicationSecret,
 		"1.0A",
-		'http://' + app.connection.host + ':' + app.connection.httpPort + '/auth/callback',
+		'http://' + app.config.http.host + ':' + app.config.http.port + '/auth/callback',
 		"HMAC-SHA1"
 	);
 }
 
 var logout = function(req, res){
 	req.session.twitterScreenName = undefined;
+	req.session.twitterAuth = undefined;
 	res.statusCode = 302;
 	res.setHeader("Location", "/");
 	res.end();

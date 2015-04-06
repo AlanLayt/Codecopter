@@ -11,6 +11,7 @@ var init = function(mapp,mio,mdb){
 
   start();
   console.log('SNIPPETS: Initialized');
+  return true;
 }
 
 var start = function(){

@@ -20,32 +20,11 @@ var init = function(mapp,mio,mdb,session,mauth){
 var start = function(){
 
   io.on('connection', function (socket) {
-    connectionCount++;
-    socket.user = {username : false};
-
-    socket.on('disconnect', function () {
-      connectionCount--;
-    });
-
-    socket.on('authKey', function (data) {
-      var details = auth.decodeKey(data.token);
-      if(!details.logged){
-      //  console.log("Client[%s] not logged in.", socket.id);
-      }
-      else{
-          socket.user = details.user;
-          console.log("Client[%s] has connected as user %s", socket.id, details.user.username)
-          //console.log(details);
-      }
-    });
-
-    console.log('USER JOIN');
-    socket.emit("connectionConfirmed",{content : GLOBAL.test});
-
+    
     // Handles request for whole snippet and sends resulting snippet
     socket.on('requestSnip', function (data) {
       if(data.snid in loaded){
-        console.log('Snippet already loaded.');
+      //  console.log('Snippet already loaded.');
       }
       else {
         db.snippets.get(data.snid,function(err, snippet){
@@ -56,7 +35,6 @@ var start = function(){
           }
         });
       }
-      console.log(data.snid)
       socket.join(data.snid);
     });
 

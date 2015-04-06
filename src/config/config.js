@@ -2,7 +2,7 @@ var twitterConfig = require('./twitterConfig')
 module.exports = {
 	http : {
 		host : '127.0.0.1',
-		port : 8888,
+		port : 80,
 	},
 
 	db : {

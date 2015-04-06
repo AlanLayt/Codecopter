@@ -15,12 +15,20 @@ window.addEventListener("DOMContentLoaded", function() {
       console.log(es[i]);
       var editor = ace.edit(es[i]);
       editor.setTheme("ace/theme/monokai");
-      editor.renderer.setShowGutter(false); 
+      editor.renderer.setShowGutter(false);
       editor.getSession().setMode("ace/mode/javascript");
     };
   }
 
 }, false);
+
+
+
+
+
+
+
+
 
 app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
     var token;
@@ -30,23 +38,8 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
     //var editor = element.find('#editor');
     var cursors = [];
 
-    socket.on('connectionConfirmed', function (data) {
-      console.log('Angular Connection Success');
-      socket.emit('requestSnip', {snid : snid});
-
-      $http.get('http://'+window.location.hostname+':8888/auth/key')
-        .success(function(data){
-          console.log('token retrieved');
-          token = data.token;
-          socket.emit('authKey',{token:token});
-        })
-    });
-
-    socket.on('disconnect', function () {
-      socket.disconnect();
-      console.debug("Connection Lost. Reloading.");
-      var test = window.setTimeout(function(){location.reload()},1000);
-    });
+    //was part of auth when it existed here
+    //socket.emit('requestSnip', {snid : snid});
 
     socket.on('cursorMove', function (data) {
       console.debug("Incoming cursor: %s", data.user.username);
@@ -54,56 +47,56 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
         $scope.addUser(data.user);
 
 
-    console.debug(data)
-          var curhold = document.getElementById("cursorHold");
-          curhold.innerHTML = '';
-          var pos = editor.renderer.textToScreenCoordinates(data.position.row,data.position.column);
-          //console.debug("Incoming cursor:");
-          //console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
-          var colours = Array('B8006D','FF774C','3DA7D5');
+      console.debug(data)
+      var curhold = document.getElementById("cursorHold");
+      curhold.innerHTML = '';
+      var pos = editor.renderer.textToScreenCoordinates(data.position.row,data.position.column);
+      //console.debug("Incoming cursor:");
+      //console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
+      var colours = Array('B8006D','FF774C','3DA7D5');
 
-          if(data.socketid in cursors){
-            cursors[data.socketid].position.row = data.position.row;
-            cursors[data.socketid].position.column = data.position.column;
-          }
-          else {
-            cursors[data.socketid] = data;
-            Object.keys($scope.users).forEach(function(key){
-              if(data.user.username == $scope.users[key].username)
-                color = $scope.users[key].color;
-            });
-            cursors[data.socketid].colour = color;//colours[Math.floor(Math.random()*3)];
-          }
+      if(data.socketid in cursors){
+        cursors[data.socketid].position.row = data.position.row;
+        cursors[data.socketid].position.column = data.position.column;
+      }
+      else {
+        cursors[data.socketid] = data;
+        Object.keys($scope.users).forEach(function(key){
+          if(data.user.username == $scope.users[key].username)
+            color = $scope.users[key].color;
+        });
+        cursors[data.socketid].colour = color;//colours[Math.floor(Math.random()*3)];
+      }
 
-      //  console.debug(cursors)
-          Object.keys(cursors).forEach(function(key){
-            var pos = editor.renderer.textToScreenCoordinates(cursors[key].position.row,cursors[key].position.column);
-            var obj = document.createElement('div');
-            obj.id = "::img";
-            var color;
+  //  console.debug(cursors)
+      Object.keys(cursors).forEach(function(key){
+        var pos = editor.renderer.textToScreenCoordinates(cursors[key].position.row,cursors[key].position.column);
+        var obj = document.createElement('div');
+        obj.id = "::img";
+        var color;
 
 
-            obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff; display:'+(caretBlink?'block':'none')+';';
-            cursors[key].el = obj;
-            curhold.appendChild(obj);
-          });
+        obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff; display:'+(caretBlink?'block':'none')+';';
+        cursors[key].el = obj;
+        curhold.appendChild(obj);
+      });
     });
 
     var caretBlink = false;
-      console.log(cursors);
-          var blinkProc = function(){
-            caretBlink = caretBlink?false:true;
-            var blinkTimer = window.setTimeout(blinkProc,800);
-            Object.keys(cursors).forEach(function(key){
-              cursors[key].el.style.display = caretBlink?'block':'none';
-            });
-          }
-          blinkProc();
-          editor.selection.on('changeCursor',function(){
-            var pos = editor.selection.getCursor();
-            pos.snid = snid;
-            socket.emit('cursorMove',pos);
-          });
+    console.log(cursors); 
+    var blinkProc = function(){
+      caretBlink = caretBlink?false:true;
+      var blinkTimer = window.setTimeout(blinkProc,800);
+      Object.keys(cursors).forEach(function(key){
+        cursors[key].el.style.display = caretBlink?'block':'none';
+      });
+    }
+    blinkProc();
+    editor.selection.on('changeCursor',function(){
+      var pos = editor.selection.getCursor();
+      pos.snid = snid;
+      socket.emit('cursorMove',pos);
+    });
 
 
 
@@ -123,33 +116,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
       //$scope.todoText = '';
     };
   }]
-).controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
-    console.log('Development environment online.');
-    var cursors = Array();
-      var lastUpdate;
-      var preview = new Preview('display');
-          preview.update(editor.getValue());
-
-      socket.on('insert', function (data) {
-        lastUpdate = data;
-        // Removed .getDocument() from before insert. May have broken things?
-        editor.session.insert(data.range.start,data.text);
-        preview.update(editor.getValue());
-      });
-      socket.on('remove', function (data) {
-        lastUpdate = data;
-        editor.session.remove(data.range);
-        preview.update(editor.getValue());
-      });
-      socket.on('disconnect', function () {
-        socket.disconnect();
-        console.debug("Connection Lost. Reloading.");
-        var test = window.setTimeout(function(){location.reload()},1000);
-      });
-
-      socket.on('loadSnip', function (data) {
-        editor.setValue(data.snippet.content);
-      });
+);
 
 
 
@@ -157,53 +124,102 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
 
 
 
-      editor.on("change", function(e){
-        var content = editor.getValue();
-        console.debug(lastUpdate);
-        if( lastUpdate !== 'undefined' || lastUpdate===false
-            || (e.data.text != lastUpdate.text
-            || e.data.range.start.column != lastUpdate.range.start.column
-            || e.data.range.start.row != lastUpdate.range.start.row )){
-
-          var data = e.data;
-          data.full = editor.getValue();
-          data.snid = snid;
-
-          switch(e.data.action){
-            case 'insertText':
-              socket.emit('insert', data);
-              break;
-            case 'removeText':
-              socket.emit('remove', data);
-              break;
-          }
-          preview.update(editor.getValue());
-          preview.resetTicker();
-        }
-      });
 
 
-    document.addEventListener("keydown", function(e) {
-      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
-        e.preventDefault();
-        console.debug('Saving.');
 
-        var details = document.getElementById("details");
 
-      //  console.debug(details.desc.value);
-      //console.debug(snid);
-        socket.emit('save', { snid : snid, content : editor.getValue()});
 
+
+
+
+
+app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
+  console.log('Development environment online.');
+  var cursors = Array();
+  var lastUpdate;
+  console.debug(socket);
+  var preview = new Preview('display');
+      preview.update(editor.getValue());
+
+  socket.on('insert', function (data) {
+    lastUpdate = data;
+    // Removed .getDocument() from before insert. May have broken things?
+    editor.session.insert(data.range.start,data.text);
+    preview.update(editor.getValue());
+  });
+  socket.on('remove', function (data) {
+    lastUpdate = data;
+    editor.session.remove(data.range);
+    preview.update(editor.getValue());
+  });
+  socket.on('disconnect', function () {
+    socket.disconnect();
+    console.debug("Connection Lost. Reloading.");
+    var test = window.setTimeout(function(){location.reload()},1000);
+  });
+
+  socket.on('loadSnip', function (data) {
+    editor.setValue(data.snippet.content);
+  });
+
+  editor.on("change", function(e){
+    var content = editor.getValue();
+    console.debug(lastUpdate);
+    if( lastUpdate !== 'undefined' || lastUpdate===false
+        || (e.data.text != lastUpdate.text
+        || e.data.range.start.column != lastUpdate.range.start.column
+        || e.data.range.start.row != lastUpdate.range.start.row )){
+
+      var data = e.data;
+      data.full = editor.getValue();
+      data.snid = snid;
+
+      switch(e.data.action){
+        case 'insertText':
+          socket.emit('insert', data);
+          break;
+        case 'removeText':
+          socket.emit('remove', data);
+          break;
       }
-    }, false);
+      preview.update(editor.getValue());
+      preview.resetTicker();
+    }
+  });
 
-  }]
-).controller('display', ['$scope', '$http', 'socket', function($scope,$http,socket) {
+
+  document.addEventListener("keydown", function(e) {
+    if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+      e.preventDefault();
+      console.debug('Saving.');
+      var details = document.getElementById("details");
+      socket.emit('save', { snid : snid, content : editor.getValue()});
+    }
+  }, false);
+
+}]);
+
+
+
+
+
+
+
+
+
+
+
+
+app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth) {
   $scope.editForm = {};
 
-    var el = document.getElementById('Display');
-    if(el!==null)
-      snid = el.getAttribute('snid');
+  auth.connect(function(){
+    console.debug(auth.getUser());
+  });
+
+  var el = document.getElementById('Display');
+  if(el!==null)
+    snid = el.getAttribute('snid');
 
 
   $scope.edit = function(){
@@ -212,7 +228,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
   }
 
   $scope.submit = function(form){
-    console.log(snid);
+    console.log('Modifying %s', snid);
     $http.post('http://'+window.location.hostname+':8888/snippet/update',{
       snid : snid,
       title : $scope.editForm.title,
@@ -224,30 +240,76 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
       })
   }
 
-}])
+  console.log('Displaying "%s".', snid);
+}]);
 
 
 
-app.directive("contenteditable", function() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
+  var user = null,
+      logged = null;
+
+
   return {
-    require: "ngModel",
-    link: function(scope, element, attrs, ngModel) {
+    connect : function(callback){
+      socket.on('AUTH:Connected', function () {
+        console.log('SOCKET: Connection Success.');
 
-      function read() {
-        ngModel.$setViewValue(element.html());
-      }
-
-      ngModel.$render = function() {
-        element.html(ngModel.$viewValue || "");
-      };
-
-      element.bind("blur keyup change", function() {
-        scope.$apply(read);
+        $http.get('http://'+window.location.hostname+':8888/auth/key')
+        .success(function(data){
+          console.log('SOCKET: Token retrieved.');
+          socket.emit('AUTH:Key',{token:data.token});
+        });
       });
-    }
-  };
-});
+      socket.on('AUTH:Verified', function (data) {
+        console.log('SOCKET: Verified as %s.', data.user.username);
+        user = data.user;
+        logged = true;
+        callback(null,user);
+      });
+      socket.on('AUTH:Denied', function (data) {
+        console.log('SOCKET: Unverified.');
+        logged = false;
+        callback({logged:false},null)
+      });
 
+      socket.on('disconnect', function () {
+        socket.disconnect();
+        console.debug("Connection Lost. Reloading.");
+        var test = window.setTimeout(function(){location.reload()},1000);
+      });
+    },
+    getUser : function(){
+      return user;
+    }
+  }
+}]);
 
 app.factory('socket', function ($rootScope) {
     var socket = io(window.location.host,{ reconnection : false });
@@ -284,6 +346,12 @@ app.factory('socket', function ($rootScope) {
       }
     };
 });
+
+
+
+
+
+
 
 
 
@@ -352,6 +420,33 @@ app.factory('editor', function ($rootScope) {
 
 
 
+
+
+
+
+
+
+
+
+app.directive("contenteditable", function() {
+  return {
+    require: "ngModel",
+    link: function(scope, element, attrs, ngModel) {
+
+      function read() {
+        ngModel.$setViewValue(element.html());
+      }
+
+      ngModel.$render = function() {
+        element.html(ngModel.$viewValue || "");
+      };
+
+      element.bind("blur keyup change", function() {
+        scope.$apply(read);
+      });
+    }
+  };
+});
 
 
 

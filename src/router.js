@@ -233,9 +233,11 @@ function route(app, db, handlers) {
 	// ================ User Routes ==================
 	app.get('/:uname/:snid', function(req, res){
 		var snid = req.params["snid"];
+		var authDetails = handlers.auth.getUser(req, res);
 
 		db.snippets.get(snid,function(err, snippet){
-			console.log(snippet.desc);
+			if(authDetails.logged)
+				console.log('%s viewing "%s"',authDetails.user.username,snippet.title);
 			res.render('display', {
 				loc : req.headers.host,
 				auth : handlers.auth.getUser(req,res),
