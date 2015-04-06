@@ -46,4 +46,5 @@ Temporary Items
 node_modules/
 mongo/
 
+src/config/config.js
 src/config/twitterConfig.js
