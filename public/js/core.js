@@ -285,7 +285,7 @@ app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
       socket.on('AUTH:Connected', function () {
         console.log('SOCKET: Connection Success.');
 
-        $http.get('http://'+window.location.hostname+':8888/auth/key')
+        $http.get('http://'+window.location.hostname+':' + port + '/auth/key')
         .success(function(data){
           console.log('SOCKET: Token retrieved.');
           socket.emit('AUTH:Key',{token:data.token});
