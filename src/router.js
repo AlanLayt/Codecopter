@@ -109,7 +109,7 @@ function route(app, db, handlers) {
 							content : snippet.content,
 							poster : snippet.user
 						},
-						pretty : true
+						pretty : false
 					});
 
 			});
@@ -131,7 +131,7 @@ function route(app, db, handlers) {
 						string : search,
 						result : result
 					},
-					pretty : true
+					pretty : false
 				});
 			})
 		});

@@ -50,7 +50,8 @@ module.exports = function(grunt) {
           compress: true
         },
         files: {
-          'public/js/dep.js': 'dev/bower/js/bower.js'
+          'public/js/dep.js': 'dev/bower/js/bower.js',
+          'public/js/core.js': 'dev/js/core.js',
         }
       }
     },
