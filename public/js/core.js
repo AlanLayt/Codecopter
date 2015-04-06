@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 
-app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
+app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', function($scope,$http,socket,editor,auth) {
     var token;
     var colors = ['587D59','F9D189','AF734C','88C843','FA347B'];
     var snid = document.getElementById('editor').getAttribute('snid');
@@ -39,7 +39,10 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
     var cursors = [];
 
     //was part of auth when it existed here
-    //socket.emit('requestSnip', {snid : snid});
+    auth.connect(function(){
+      socket.emit('requestSnip', {snid : snid});
+    });
+    //
 
     socket.on('cursorMove', function (data) {
       console.debug("Incoming cursor: %s", data.user.username);
@@ -83,7 +86,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', function($
     });
 
     var caretBlink = false;
-    console.log(cursors); 
+    console.log(cursors);
     var blinkProc = function(){
       caretBlink = caretBlink?false:true;
       var blinkTimer = window.setTimeout(blinkProc,800);
