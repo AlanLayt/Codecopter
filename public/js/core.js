@@ -1,5 +1,6 @@
 var snid;
 var app = angular.module('CodeLight', []);
+var port = 80;
 
 window.addEventListener("DOMContentLoaded", function() {
   var el = document.getElementById('editor');
@@ -232,7 +233,7 @@ app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth
 
   $scope.submit = function(form){
     console.log('Modifying %s', snid);
-    $http.post('http://'+window.location.hostname+':8888/snippet/update',{
+    $http.post('http://'+window.location.hostname+':' + port + '/snippet/update',{
       snid : snid,
       title : $scope.editForm.title,
       desc : $scope.editForm.description

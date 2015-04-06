@@ -20,7 +20,7 @@ var init = function(mapp,mio,mdb,session,mauth){
 var start = function(){
 
   io.on('connection', function (socket) {
-    
+
     // Handles request for whole snippet and sends resulting snippet
     socket.on('requestSnip', function (data) {
       if(data.snid in loaded){
