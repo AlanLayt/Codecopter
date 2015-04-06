@@ -11,20 +11,18 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(compress());
 app.use(bodyparse.json());
-app.use(bodyparse.urlencoded());
+app.use(bodyparse.urlencoded({ extended : false }));
 //app.use(cookieParser())
 
 
 
 // Start http server,MongoDB, sockets and initialize routing or fail gracefully
-var start = function(connection, route, db, handlers) {
-	console.log("------- Startup --------");
-	app.connection = connection;
+var start = function(config, route, db, handlers, callback) {
+	app.config = config;
 
-
-	db.connect(connection, function(dbm,srv){
-		console.log('MONGO: Database found. (Port %d)', srv.dbPort);
-		http.listen(srv.httpPort, function(err){
+	db.connect(config, function(err,dbm,srv){
+		console.log('MONGO: Database found. (Port %d)', srv.db.port);
+		http.listen(srv.http.port, function(err){
 
 			app.use(session({
 				resave : true,
@@ -33,39 +31,25 @@ var start = function(connection, route, db, handlers) {
 				store : new MongoStore({ db : dbm })
 			}));
 
-			console.log('HTTP: Server Started. (Port %d)', srv.httpPort);
+			console.log('HTTP: Server Started. (Port %d)', srv.http.port);
 
-			handleInit(handlers,db,function(){
-				route(app, db, handlers);
-				finalizeInit();
+			Object.keys(handlers).forEach(function(key){
+				handlers[key].init(app,io,db,session,handlers.auth);
 			});
-		});
 
+			route(app, db, handlers);
+
+			return callback(err);
+		});
 	},
 	function(err,srv){
-		console.error('ERR: Mongo database not found on %s:%d. Exiting.',srv.address, srv.dbPort);
+		console.error('ERR: Mongo database not found on %s:%d. Exiting.',srv.db.host, srv.db.port);
 		console.error(err);
-		console.error('----');
-		finalizeInit();
+		console.error('-----------------------');
+		return err;
 	});
 
 }
-
-// Depricated Method, contained socket.io events,
-// Retained to handle user-related events later
-var handleInit = function(handlers,db,callback){
-	Object.keys(handlers).forEach(function(key){
-		handlers[key].init(app,io,db,session,handlers.auth);
-	})
-	callback();
-}
-
-// Final output for startup
-var finalizeInit = function(){
-	console.log("------------------------");
-}
-
-
 
 
 exports.start = start;

@@ -2,7 +2,7 @@
   "name": "codeucation",
   "version": "1.0.0",
   "description": "Work in progress version of educational code app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "node_modules/.bin/mocha -w"
   },

@@ -24,23 +24,22 @@ module.exports = {
 
 	count : function(callback) {
 	  col.count(function(err, count) {
-	    callback(count);
+	    return callback(err, count);
 	  });
 	},
 
 
 	listAll : function(callback) {
-		var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, groups) {
-			//console.log(format(groups))
-			callback(format(groups));
+			return callback(err, format(groups));
 		});
 	},
 
 
 	get : function(id, callback) {
-	  col.find({ "gid" : id }).toArray(function(err, group) {
-	    	callback(group.length>0 ? group[0] : false);
+	  col.findOne({ "gid" : id }).toArray(function(err, g) {
+			//	var group = g.length>0 ? g[0] : false;
+	    	return callback(err, g);
 	  });
 	},
 
@@ -48,7 +47,7 @@ module.exports = {
 	delete : function(id, callback) {
 	  col.remove({ 'gid' : id }, function(err, result) {
 	    console.log("Group removed: %s", id);
-	    callback(id);
+	    return callback(err, id);
 	  });
 	},
 
@@ -60,9 +59,8 @@ module.exports = {
 				'description' : description,
 				'user' : user,
 		    'created' : new Date()
-		  }
-		  ], function(err, result) {
-		    callback(id);
+		  }], function(err, result) {
+		    return callback(err, id);
 		  });
 	},
 

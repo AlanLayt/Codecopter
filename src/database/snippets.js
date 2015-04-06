@@ -6,7 +6,6 @@ var col;
 var formatSnippet = function(snippets){
 	var s = [];
 	snippets.forEach(function(snip){
-		//console.log(snip)
 		s.push({
 			id : snip.snid,
 			title : snip.title==null?'':snip.title,
@@ -24,53 +23,49 @@ module.exports = {
 	init : function(database){
 		db = database;
 		col = db.collection(collectionName);
+		return col;
 	},
 
 
 	count : function(callback) {
 	  col.count(function(err, count) {
-	    callback(count);
+	    return callback(err, count);
 	  });
 	},
 
 
 	listAll : function(callback) {
-		var s = [];
 		col.find().sort({updated: -1}).toArray(function(err, snippets) {
-			callback(formatSnippet(snippets));
+			return callback(err, formatSnippet(snippets));
 		});
 	},
 
 
 	listByUser : function(user, callback) {
-		var s = [];
-		col.find({"userinfo.screen_name" : user}).sort({updated: -1}).toArray(function(err, snippets) {
-			callback(formatSnippet(snippets));
+		col.find({"userinfo.username" : user}).sort({updated: -1}).toArray(function(err, snippets) {
+			return callback(err, formatSnippet(snippets));
 		});
 	},
 
 
-		listByGroup : function(gid, callback) {
-			var s = [];
-			col.find({gid : gid}).sort({updated: -1}).toArray(function(err, snippets) {
-				//console.log(formatSnippet(snippets))
-				callback(formatSnippet(snippets));
-			});
-		},
+	listByGroup : function(gid, callback) {
+		col.find({gid : gid}).sort({updated: -1}).toArray(function(err, snippets) {
+			return callback(err, formatSnippet(snippets));
+		});
+	},
 
-		listByGroups : function(ids, callback) {
-			var s = [];
-			col.find({gid : {$in : ids}}).sort({updated: -1}).toArray(function(err, snippets) {
-				//console.log(formatSnippet(snippets))
-				callback(formatSnippet(snippets));
-			});
-		},
+	listByGroups : function(ids, callback) {
+		col.find({gid : {$in : ids}}).sort({updated: -1}).toArray(function(err, snippets) {
+			return callback(err, formatSnippet(snippets));
+		});
+	},
 
 
 	get : function(id, callback) {
 	  col.find({ "snid" : id }).toArray(function(err, snippet) {
-			//if()
-	    	callback(snippet.length>0 ? formatSnippet(snippet)[0] : false);
+			var s = snippet.length>0 ? formatSnippet(snippet)[0] : false;
+
+	   	return callback(err, s);
 	  });
 	},
 
@@ -78,14 +73,15 @@ module.exports = {
 	delete : function(id, callback) {
 	  col.remove({ 'snid' : id }, function(err, result) {
 	    console.log("Snippet removed: %s", id);
-	    callback(id);
+	    return callback(err, id);
 	  });
 	},
 
 
 	search : function(search, callback) {
 	  col.find({ "content" : new RegExp(search) }).toArray(function(err, snippet) {
-	    	callback(snippet.length>0 ? formatSnippet(snippet) : false);
+			var s = snippet.length>0 ? formatSnippet(snippet) : false;
+	    return callback(err, s);
 	  });
 	},
 
@@ -100,15 +96,14 @@ module.exports = {
 		    "posted" : new Date(),
 		    "updated" : new Date(),
 				'gid' : group
-		  }
-		  ], function(err, result) {
-		    callback(id);
+		  }], function(err, result) {
+		    return callback(err, id);
 		  });
 	},
 
 
 	edit : function(id, title, desc, callback) {
-	  var id = id;
+	  //var id = id;
 
 		col.update(
 	    { 'snid' : id },
@@ -120,13 +115,13 @@ module.exports = {
 	    },
 	    {},
 			function(err){
-	  		callback(err,{title:title,desc:desc},id);
+	  		return callback(err,{title:title,desc:desc},id);
 	  	}
 	  );
 	},
 
 	update : function(id, content, callback) {
-	  var id = id;
+	  //var id = id;
 
 		col.update(
 	    { 'snid' : id },
@@ -138,7 +133,7 @@ module.exports = {
 	    },
 	    {},
 			function(err){
-	  		callback(err,content,id);
+	  		return callback(err,content,id);
 	  	}
 	  );
 	},

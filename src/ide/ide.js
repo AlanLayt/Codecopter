@@ -34,7 +34,7 @@ var start = function(){
       }
       else{
           socket.user = details.user;
-          console.log("Client[%s] has connected as user %s", socket.id, details.username)
+          console.log("Client[%s] has connected as user %s", socket.id, details.user.username)
           //console.log(details);
       }
     });
@@ -48,7 +48,7 @@ var start = function(){
         console.log('Snippet already loaded.');
       }
       else {
-        db.snippets.get(data.snid,function(snippet){
+        db.snippets.get(data.snid,function(err, snippet){
           if(snippet.length<1){
             console.log('ERR: SNIPPET NOT FOUND');
           } else {
@@ -68,7 +68,7 @@ var start = function(){
 
     socket.on('save', function (data) {
       console.log(socket.request)
-      db.snippets.update(data.snid, loaded[data.snid].getContent(), function(info,content,title){
+      db.snippets.update(data.snid, loaded[data.snid].getContent(), function(err, info, content, title){
         console.log('Snippet %s updated.', data.snid);
       });
     });
@@ -105,40 +105,44 @@ var userCount = function(){
   return connectionCount;
 }
 
-var newSnippet = function(gid,user,req,callback){
-		db.snippets.count(function(count){
-			var hashids = new Hashids("Twoflower"),
-		  id = hashids.encode(count,Date.now());
+var add = function(gid, user, req, callback){
+  db.snippets.count(function(err, count){
+  	var hashids = new Hashids("Twoflower"),
+    id = hashids.encode(count,Date.now());
+    console.log(id)
 
-      db.snippets.add(id,'',user,gid,function(id){
-        console.log('IDE: New snippet, %s, added.', id);
-        callback(id);
-      });
-
-		});
-}
-
-var deleteSnippet = function(id,callback){
-    db.snippets.delete(id,function(id){
-      console.log('IDE: Snippet, %s, deleted.', id);
-      callback(id);
+    db.snippets.add(id,'',user,gid,function(err, id){
+      console.log('IDE: New snippet, %s, added.', id);
+      return callback(err, id);
     });
 
+  });
 }
 
-var getSnippet = function(snid,callback){
+var remove = function(id, callback){
+  db.snippets.delete(id,function(err, id){
+    console.log('IDE: Snippet, %s, deleted.', id);
+    return callback(err, id);
+  });
+}
+
+var get = function(snid, callback){
+  var err = null;
+
   if(snid in loaded)
-    callback(loaded[snid].getContent());
+    return callback(err, loaded[snid].getContent());
   else
-    db.snippets.get(snid,function(snippet){
-      callback(snippet.content);
+    db.snippets.get(snid, function(err, snippet){
+      return callback(err, snippet.content);
     });
+
+
 }
 
 
 exports.start = start;
 exports.init = init;
-exports.getSnippet = getSnippet;
-exports.deleteSnippet = deleteSnippet;
-exports.newSnippet = newSnippet;
+exports.get = get;
+exports.remove = remove;
+exports.add = add;
 exports.userCount = userCount;

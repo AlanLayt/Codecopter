@@ -11,4 +11,8 @@ var handlers = {
 		auth : require('./src/twitterAuth')
 	};
 
-server.start(config, router.route, db, handlers);
+
+console.log("------- Startup --------");
+server.start(config, router.route, db, handlers, function(err){
+	console.log("------------------------");
+});

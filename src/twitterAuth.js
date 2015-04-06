@@ -23,8 +23,8 @@ function consumer(){
 	return new OAuth(
 		"https://api.twitter.com/oauth/request_token",
 		"https://api.twitter.com/oauth/access_token",
-		"mw6PxiPT3pwUVS4X79DipfUVs",
-		"JZE3yiF0Ibg6LpWV7UBARKBb8ZRGhIVoTh74HMgLs9yjzzZr8V",
+		app.config.auth.twitter.consumerKey,
+		app.config.auth.twitter.applicationSecret,
 		"1.0A",
 		'http://' + app.connection.host + ':' + app.connection.httpPort + '/auth/callback',
 		"HMAC-SHA1"

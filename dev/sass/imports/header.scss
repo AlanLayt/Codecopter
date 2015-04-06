@@ -68,28 +68,6 @@ div#header {
       border-radius: 30px;
     }
   }
-  .createNew {
-    margin: 10px;
-    height: 34px;
-    #newSnippet {
-      margin:0;
-    }
-  }
-  .createButton {
-    position:absolute;
-    top:2;
-    right:2;
-    .newButton {
-      fill:#ccc;
-      width: 30px;
-      height: 30px;
-    }
-  }
-  .createNew:Hover {
-    .newButton {
-      fill:#333;
-    }
-  }
 }
 
 
@@ -103,13 +81,20 @@ div#header {
   }
 }
 
-
 form {
   input[type="text"]{
     padding: 8px 5px 8px 5px;
   }
 }
 
+.thumb {
+  background-size:cover;
+  height: 200px;
+  position:relative;
+  background: #272822;
+  padding: 5px 10px 5px 10px;
+  overflow:hidden;
+}
 
 
 

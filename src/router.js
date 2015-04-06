@@ -13,12 +13,12 @@ function route(app, db, handlers) {
 				var styleSheet = req.params["styleSheet"];
 				res.sendFile('/css/' + styleSheet + '.css', {'root' : pubDir});
 		});
-		app.get('/ide/style.css', function(req, res){
+		/*app.get('/ide/style.css', function(req, res){
 				res.sendFile('/css/IDE.css', {'root' : pubDir});
 		});
 		app.get('/gallery/style.css', function(req, res){
 				res.sendFile('/css/gallery.css', {'root' : pubDir});
-		});
+		});*/
 		// Images
 		app.get('/img/:img', function(req, res){
 				res.sendFile('/img/' + req.param("img"), {'root' : pubDir});
@@ -78,14 +78,15 @@ function route(app, db, handlers) {
 
 		app.get('/new', function(req, res){
 			var user = handlers.auth.getUser(req, res).user;
-			handlers.ide.newSnippet(false, user, req,function(id){
-				res.redirect('/c/' + id);
+
+			handlers.ide.add(false, user, req, function(err, id){
+				return res.redirect('/c/' + id);
 			});
 		});
 		app.get('/delete/:snid', function(req, res){
 			var snid = req.params["snid"];
 
-			handlers.ide.deleteSnippet(snid,function(id){
+			handlers.ide.remove(snid,function(err, id){
 				res.redirect('/');
 			});
 		});
@@ -93,7 +94,7 @@ function route(app, db, handlers) {
 		app.get('/c/:snid', function(req, res){
 			var snid = req.params["snid"];
 
-			db.snippets.get(snid,function(snippet){
+			db.snippets.get(snid,function(err, snippet){
 				if(!snippet){
 
 				}
@@ -115,16 +116,14 @@ function route(app, db, handlers) {
 		});
 		app.get('/s/:snid', function(req, res){
 			var snid = req.params["snid"];
-			handlers.ide.getSnippet(snid,function(snippet){
+			handlers.ide.get(snid,function(err, snippet){
 				res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet);
 			});
 		});
 		app.get('/search/:search?', function(req, res){
 			var search = req.params["search"];
 
-			handlers.snippets.search(search,function(result){
-
-				//console.log(lines);
+			handlers.snippets.search(search,function(err, result){
 				res.render('search', {
 					loc : req.headers.host,
 					auth : handlers.auth.getUser(req,res),
@@ -145,7 +144,7 @@ function route(app, db, handlers) {
 	// :var(r)? removed?
 	app.get('/', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
-		db.snippets.listAll(function(snippets){
+		db.snippets.listAll(function(err, snippets){
 	  		res.render('gallery', {
 					loc: req.headers.host,
 					items : snippets,
@@ -158,24 +157,11 @@ function route(app, db, handlers) {
 
 
 
-
-
-
-	app.get('/group/new', function(req, res){
-		var user = req.params["gid"];
-		var authDetails = handlers.auth.get(req, res);
-
-		console.log('adding new')
-		console.log(req.body.group.title)
-		db.groups.add('test', 'test', 'test', function(groupid){
-			console.log(groupid)
-		});
-	});
 	app.get('/group/delete/:gid', function(req, res){
 		var group = req.params["gid"];
 		var authDetails = handlers.auth.get(req, res);
 
-		db.groups.delete(group, function(groupid){
+		db.groups.delete(group, function(err, groupid){
 			console.log(groupid)
 		});
 	});
@@ -224,7 +210,6 @@ function route(app, db, handlers) {
 		var authDetails = handlers.auth.get(req, res);
 
 		handlers.groups.listAll(function(groups){
-			//console.log(groups[0].snippets)
 			res.render('groups', {
 				loc: req.headers.host,
 				groups : groups,
@@ -243,10 +228,13 @@ function route(app, db, handlers) {
 		});
 	});
 
+
+
+	// ================ User Routes ==================
 	app.get('/:uname/:snid', function(req, res){
 		var snid = req.params["snid"];
 
-		db.snippets.get(snid,function(snippet){
+		db.snippets.get(snid,function(err, snippet){
 			console.log(snippet.desc);
 			res.render('display', {
 				loc : req.headers.host,
@@ -267,10 +255,10 @@ function route(app, db, handlers) {
 		db.snippets.listByUser(user, function(snippets){
 			res.render('gallery', {
 				loc: req.headers.host,
+				auth : handlers.auth.getUser(req,res),
 				items : snippets,
 				pretty : false,
-				userCount : handlers.ide.userCount(),
-				user : handlers.auth.getUser(req,res)
+				userCount : handlers.ide.userCount()
 			});
 		});
 	});

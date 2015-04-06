@@ -25,22 +25,23 @@ var get = function(gid,callback){
 
 var add = function(group){
 }
-var search = function(search,callback){
+var search = function(search, callback){
   console.log('searching.');
   var result = {};
-  db.snippets.search(search,function(result){
+  db.snippets.search(search,function(err, result){
     result.forEach(function(s){
       var lines = s.content.split('\n');
       s.search = {
         result : ''
       };
       lines.forEach(function(line,k){
+        console.log(line.indexOf(search)>-1)
         if(line.indexOf(search)>-1)
           s.search.result += line.trim() + '\n';
 //          console.log('%s: %s',k+1,line);
       });
     })
-    callback(result);
+    callback(err, result);
   });
 }
 

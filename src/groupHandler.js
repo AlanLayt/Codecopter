@@ -19,7 +19,7 @@ var start = function(){
 
 var listAll = function(callback){
   console.log('listing all')
-	db.groups.listAll(function(groups){
+	db.groups.listAll(function(err, groups){
     var ids = [];
   //  console.log(groups)
     groups.forEach(function(g){
@@ -27,7 +27,7 @@ var listAll = function(callback){
         ids.push(g.id);
     })
 
-  	db.snippets.listByGroups(ids,function(snippets){
+  	db.snippets.listByGroups(ids,function(err, snippets){
       //  console.log(snippets);
         groups.forEach(function(g){
           g.snippets = [];
