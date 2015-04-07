@@ -1,7 +1,7 @@
 var app,io,db;
-var url = require('url');
 var loaded = Array(),
   Hashids = require('hashids'),
+  Snippet = require('./snippet'),
   hashids = new Hashids("Twoflower");
 
 var init = function(mapp,mio,mdb){
@@ -19,13 +19,53 @@ var start = function(){
 }
 
 var listAll = function(callback){
+  db.snippets.listAll(function(err,snippets){
+    return callback(err,snippets);
+  });
 }
 
-var get = function(gid,callback){
+var get = function(snid,callback){
+  var err = null;
+  if(snid in loaded){
+    return callback(err,loaded[snid]);
+  }
+  else {
+    db.snippets.get(snid,function(err, snippet){
+      if(snippet.length<1){
+        console.log('ERR: SNIPPET NOT FOUND');
+      } else {
+        loaded[snid] = new Snippet(snippet);
+        return callback(err,loaded[snid]);
+      }
+    });
+  }
 }
 
-var add = function(group){
+var add = function(details, callback){
+  db.snippets.count(function(err, count){
+  	var hashids = new Hashids("Twoflower"),
+    id = hashids.encode(count,Date.now());
+    console.log(id)
+
+    db.snippets.add(id,'',details.user,details.group,function(err, id){
+      return callback(err, id);
+    });
+  });
 }
+
+var remove = function(id, callback){
+  db.snippets.delete(id,function(err, id){
+    return callback(err, id);
+  });
+}
+
+var save = function(id, callback){
+  var s = loaded[id];
+  db.snippets.update(id, s.getContent(), function(err, id){
+    callback(err, id);
+  });
+}
+
 var search = function(search, callback){
   console.log('searching.');
   var result = {};
@@ -51,7 +91,9 @@ var search = function(search, callback){
 exports.start = start;
 exports.init = init;
 
+exports.save = save;
 exports.add = add;
+exports.remove = remove;
 exports.get = get;
 exports.search = search;
 exports.listAll = listAll;

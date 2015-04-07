@@ -34,7 +34,7 @@ var start = function(config, route, db, handlers, callback) {
 			console.log('HTTP: Server Started. (Port %d)', srv.http.port);
 
 			Object.keys(handlers).forEach(function(key){
-				handlers[key].init(app,io,db,session,handlers.auth);
+				handlers[key].init(app,io,db,session,handlers.auth,handlers);
 			});
 
 			route(app, db, handlers);

@@ -56,17 +56,13 @@ var getUser = function(req, res){
 }
 
 var getKey = function(req,res){
-	// we are sending the profile in the token
 	var token = jwt.sign(getUser(req,res), 'secretkey', { expiresInMinutes: 60*5 });
 
 	res.json({token: token});
 }
 
 var decodeKey = function(token){
-	//console.log(token);
-	// we are sending the profile in the token
 	var decoded = jwt.verify(token, 'secretkey');
-	//console.log(decoded) // bar
 	return decoded;
 }
 
@@ -100,13 +96,14 @@ var login = function(req, res){
 }
 
 var callback = function(req, res){
+	console.log(req);
 	consumer().getOAuthAccessToken(
 		req.session.oauthRequestToken,
 		req.session.oauthRequestTokenSecret,
 		req.query.oauth_verifier,
 		function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
 			if (error) {
-				res.send("Error getting OAuth access token : " + console.log(error) + "["+oauthAccessToken+"]"+ "["+oauthAccessTokenSecret+"]"+ "["+sys.inspect(results)+"]", 500);
+				res.send("Error getting OAuth access token : " + console.log(error) + "["+oauthAccessToken+"]"+ "["+oauthAccessTokenSecret+"]"+ "["+results+"]", 500);
 			} else {
 				req.session.oauthAccessToken = oauthAccessToken;
 				req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;

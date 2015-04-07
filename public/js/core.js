@@ -1,6 +1,5 @@
 var snid;
 var app = angular.module('CodeLight', []);
-var port = 80;
 
 window.addEventListener("DOMContentLoaded", function() {
   var el = document.getElementById('editor');
@@ -32,92 +31,75 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', function($scope,$http,socket,editor,auth) {
-    var token;
-    var colors = ['587D59','F9D189','AF734C','88C843','FA347B'];
-    var snid = document.getElementById('editor').getAttribute('snid');
-    console.log(snid);
-    //var editor = element.find('#editor');
-    var cursors = [];
+    var token,
+        colors = ['587D59','F9D189','AF734C','88C843','FA347B'],
+        snid = document.getElementById('editor').getAttribute('snid');
 
-    //was part of auth when it existed here
+    $scope.cursors = [];
+    $scope.users = [];
+
     auth.connect(function(){
-      socket.emit('requestSnip', {snid : snid});
-    });
-    //
-
-    socket.on('cursorMove', function (data) {
-      console.debug("Incoming cursor: %s", data.user.username);
-      if(!userExists(data.user.username))
-        $scope.addUser(data.user);
-
-
-      console.debug(data)
-      var curhold = document.getElementById("cursorHold");
-      curhold.innerHTML = '';
-      var pos = editor.renderer.textToScreenCoordinates(data.position.row,data.position.column);
-      //console.debug("Incoming cursor:");
-      //console.debug(editor.renderer.textToScreenCoordinates(data.row,data.column));
-      var colours = Array('B8006D','FF774C','3DA7D5');
-
-      if(data.socketid in cursors){
-        cursors[data.socketid].position.row = data.position.row;
-        cursors[data.socketid].position.column = data.position.column;
-      }
-      else {
-        cursors[data.socketid] = data;
-        Object.keys($scope.users).forEach(function(key){
-          if(data.user.username == $scope.users[key].username)
-            color = $scope.users[key].color;
-        });
-        cursors[data.socketid].colour = color;//colours[Math.floor(Math.random()*3)];
-      }
-
-  //  console.debug(cursors)
-      Object.keys(cursors).forEach(function(key){
-        var pos = editor.renderer.textToScreenCoordinates(cursors[key].position.row,cursors[key].position.column);
-        var obj = document.createElement('div');
-        obj.id = "::img";
-        var color;
-
-
-        obj.style.cssText = 'position:absolute;top:' + pos.pageY + 'px;left:' + pos.pageX + 'px;width:0px;height:15px;border-left:3px  solid #'+cursors[key].colour+';-moz-box-shadow: 0px 0px 8px  #fff; display:'+(caretBlink?'block':'none')+';';
-        cursors[key].el = obj;
-        curhold.appendChild(obj);
-      });
+      socket.emit('IDE:RequestSnip', {snid : snid});
     });
 
-    var caretBlink = false;
-    console.log(cursors);
-    var blinkProc = function(){
-      caretBlink = caretBlink?false:true;
-      var blinkTimer = window.setTimeout(blinkProc,800);
-      Object.keys(cursors).forEach(function(key){
-        cursors[key].el.style.display = caretBlink?'block':'none';
-      });
-    }
-    blinkProc();
     editor.selection.on('changeCursor',function(){
       var pos = editor.selection.getCursor();
       pos.snid = snid;
-      socket.emit('cursorMove',pos);
+      socket.emit('IDE:Cursor',pos);
     });
+    socket.on('IDE:Cursor', function (data) {
+      console.debug("Incoming cursor: %s", data.user.username);
 
+      var checkUser = userExists(data.user.username);
+      if(checkUser!==false){
+        console.log('User exists. Updating position.');
+        checkUser.cursor.pos = {
+          carat : data.position,
+          display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
+        }
+      }
+      else {
+        var user = $scope.addUser(data.user);
+        var cursor = $scope.addCursor({
+          username : user.username,
+          color : user.color,
+          pos : {
+            carat : data.position,
+            display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
+          }
+        });
+        user.cursor = cursor;
+      }
+    });
 
 
     var userExists = function(username){
       var found = false;
       $scope.users.forEach(function(user){
         if(user.username == username)
-          found = true;
+          found = user;
       });
       return found;
     }
 
-    $scope.users = [];
 
     $scope.addUser = function(user) {
-      $scope.users.push({username : user.username, icon : user.icon, color : colors[Math.floor(Math.random()*colors.length)], done:false});
-      //$scope.todoText = '';
+      var userObj = {
+        username : user.username,
+        icon : user.icon,
+        color : colors[Math.floor(Math.random()*colors.length)],
+        done:false
+      };
+
+      $scope.users.push(userObj);
+      return userObj;
+    };
+
+    $scope.addCursor = function(cursor) {
+      var cursorObj = cursor;
+
+      $scope.cursors.push(cursorObj);
+      return cursorObj;
     };
   }]
 );
@@ -141,34 +123,40 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
   console.log('Development environment online.');
   var cursors = Array();
   var lastUpdate;
-  console.debug(socket);
+  var loaded = false;
+  //console.debug(socket);
   var preview = new Preview('display');
       preview.update(editor.getValue());
 
-  socket.on('insert', function (data) {
+  socket.on('IDE:Insert', function (data) {
     lastUpdate = data;
+    console.log('insert')
     // Removed .getDocument() from before insert. May have broken things?
     editor.session.insert(data.range.start,data.text);
-    preview.update(editor.getValue());
+    prev();
   });
-  socket.on('remove', function (data) {
+  socket.on('IDE:InsertLines', function (data) {
+    lastUpdate = data;
+    console.log('INSERTLINES')
+    console.log(data.lines)
+    // Removed .getDocument() from before insert. May have broken things?
+    editor.session.insertLines(data.range.start.row,data.lines);
+    prev();
+  });
+  socket.on('IDE:Remove', function (data) {
     lastUpdate = data;
     editor.session.remove(data.range);
-    preview.update(editor.getValue());
+    prev();
   });
-  socket.on('disconnect', function () {
-    socket.disconnect();
-    console.debug("Connection Lost. Reloading.");
-    var test = window.setTimeout(function(){location.reload()},1000);
-  });
-
-  socket.on('loadSnip', function (data) {
-    editor.setValue(data.snippet.content);
+  socket.on('IDE:LoadSnip', function (data) {
+    console.debug('Loading.')
+  //  editor.setValue(data.content);
+    loaded = true;
   });
 
   editor.on("change", function(e){
     var content = editor.getValue();
-    console.debug(lastUpdate);
+    //console.debug(lastUpdate);
     if( lastUpdate !== 'undefined' || lastUpdate===false
         || (e.data.text != lastUpdate.text
         || e.data.range.start.column != lastUpdate.range.start.column
@@ -178,26 +166,36 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
       data.full = editor.getValue();
       data.snid = snid;
 
+      console.log(e);
       switch(e.data.action){
         case 'insertText':
-          socket.emit('insert', data);
+          socket.emit('IDE:Insert', data);
+          break;
+        case 'insertLines':
+          socket.emit('IDE:InsertLines', data);
           break;
         case 'removeText':
-          socket.emit('remove', data);
+          socket.emit('IDE:Remove', data);
+          break;
+        case 'removeLines':
+          socket.emit('IDE:Remove', data);
           break;
       }
-      preview.update(editor.getValue());
-      preview.resetTicker();
+      prev();
     }
   });
+
+  var prev = function(){
+    preview.update(editor.getValue()).resetTicker();
+  }
 
 
   document.addEventListener("keydown", function(e) {
     if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
       e.preventDefault();
       console.debug('Saving.');
-      var details = document.getElementById("details");
-      socket.emit('save', { snid : snid, content : editor.getValue()});
+    //  var details = document.getElementById("details");
+      socket.emit('IDE:Save', { snid : snid, content : editor.getValue()});
     }
   }, false);
 
@@ -233,7 +231,7 @@ app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth
 
   $scope.submit = function(form){
     console.log('Modifying %s', snid);
-    $http.post('http://'+window.location.hostname+':' + port + '/snippet/update',{
+    $http.post('http://'+window.location.hostname+':' + window.location.port + '/snippet/update',{
       snid : snid,
       title : $scope.editForm.title,
       desc : $scope.editForm.description
@@ -285,7 +283,7 @@ app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
       socket.on('AUTH:Connected', function () {
         console.log('SOCKET: Connection Success.');
 
-        $http.get('http://'+window.location.hostname+':' + port + '/auth/key')
+        $http.get('http://'+window.location.hostname+':' + window.location.port + '/auth/key')
         .success(function(data){
           console.log('SOCKET: Token retrieved.');
           socket.emit('AUTH:Key',{token:data.token});
@@ -304,6 +302,7 @@ app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
       });
 
       socket.on('disconnect', function () {
+        //socket.close();
         socket.disconnect();
         console.debug("Connection Lost. Reloading.");
         var test = window.setTimeout(function(){location.reload()},1000);
@@ -380,6 +379,10 @@ app.factory('editor', function ($rootScope) {
       getValue: function () {
         return editor.getValue();
       },
+      setValue: function (v) {
+        console.log('setvalue %s', v)
+        editor.setValue(v,0);
+      },
       on : function(evt,callback){
         editor.on(evt,function () {
           var args = arguments;
@@ -394,6 +397,9 @@ app.factory('editor', function ($rootScope) {
       session : {
         insert : function(start,text){
           editor.session.insert(start,text);
+        },
+        insertLines : function(start,lines){
+          editor.session.getDocument().insertLines(start,lines);
         },
         remove : function(range){
           editor.session.getDocument().remove(range);
@@ -464,6 +470,7 @@ var Preview = function(element){
 
   this.update = function(val){
     this.content = val;
+    return this;
   }
   this.refresh = function(){
     this.el.src = "data:text/html;charset=utf-8,"+escape(this.content);
@@ -491,4 +498,5 @@ var Preview = function(element){
   }
 
   this.tick(this,function(){})
+
 }

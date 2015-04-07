@@ -20,7 +20,7 @@ module.exports = function(grunt) {
             'public/img/svg-defs.svg': ['dev/svgs/*.svg'],
           }
       }
-    },
+    }, 
     watch: {
       source: {
         files: ['dev/sass/**/*.scss','dev/**','views/*'],

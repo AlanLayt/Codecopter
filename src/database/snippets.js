@@ -3,17 +3,21 @@ var collectionName = "code";
 var col;
 
 
-var formatSnippet = function(snippets){
+var formatSnippet = function(snip){
+	return {
+		id : snip.snid,
+		title : snip.title==null?'':snip.title,
+		desc : snip.description==null?'':snip.description,
+		content : snip.content,
+		user : snip.userinfo,
+		gid : snip.gid
+	};
+};
+
+var formatSnippets = function(snippets){
 	var s = [];
 	snippets.forEach(function(snip){
-		s.push({
-			id : snip.snid,
-			title : snip.title==null?'':snip.title,
-			desc : snip.description==null?'':snip.description,
-			content : snip.content,
-			user : snip.userinfo,
-			gid : snip.gid
-		});
+		s.push(formatSnippet(snip));
 	});
 	return s;
 };
@@ -36,7 +40,7 @@ module.exports = {
 
 	listAll : function(callback) {
 		col.find().sort({updated: -1}).toArray(function(err, snippets) {
-			return callback(err, formatSnippet(snippets));
+			return callback(err, formatSnippets(snippets));
 		});
 	},
 
@@ -62,11 +66,9 @@ module.exports = {
 
 
 	get : function(id, callback) {
-	  col.find({ "snid" : id }).toArray(function(err, snippet) {
-			var s = snippet.length>0 ? formatSnippet(snippet)[0] : false;
-
-	   	return callback(err, s);
-	  });
+		col.findOne({ "snid" : id },function(err,s){
+			return callback(err, formatSnippet(s));
+		});
 	},
 
 
@@ -121,8 +123,6 @@ module.exports = {
 	},
 
 	update : function(id, content, callback) {
-	  //var id = id;
-
 		col.update(
 	    { 'snid' : id },
 	    {
@@ -133,7 +133,7 @@ module.exports = {
 	    },
 	    {},
 			function(err){
-	  		return callback(err,content,id);
+	  		return callback(err,id);
 	  	}
 	  );
 	},

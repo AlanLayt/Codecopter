@@ -18,10 +18,12 @@ block append body
 		pre#editor(snid='#{snippet.snid}' ng-data='#{snippet.snid}' editor) #{snippet.content} 
 		iframe#display(frameborder=0 scrolling='no')
 		
-	div#cursorHold
 	
 	
 	div
-		div(id='activeUsers' ng-controller='activeUsers')
-			div(ng-repeat='user in users' rel='{{user.username}}')
-				img(class='userIcon' ng-style='{borderColor: user.color}' src='{{user.icon}}')
+		div(ng-controller='activeUsers')
+			div(id='activeUsers')
+				div(ng-repeat='user in users' rel='{{user.username}}')
+					img.userIcon(ng-style='{borderColor: user.color}' ng-src='{{user.icon}}')
+			div#cursorHold()
+				div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')

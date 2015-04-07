@@ -94,7 +94,11 @@ function route(app, db, handlers) {
 		app.get('/c/:snid', function(req, res){
 			var snid = req.params["snid"];
 
-			db.snippets.get(snid,function(err, snippet){
+
+			// LOAD SNIPPET FROM IDE - HANDLE SNIPPET CACHING IN SNIPPETS HANDLER
+			//db.snippets.get(snid,function(err, snippet){
+			handlers.snippets.get(snid,function(err, snippet){
+				//console.log(snippet.getUser());
 				if(!snippet){
 
 				}
@@ -104,10 +108,10 @@ function route(app, db, handlers) {
 						auth : handlers.auth.getUser(req,res),
 						snippet : {
 							snid : snid,
-							title : snippet.title,
-							desc : snippet.desc,
-							content : snippet.content,
-							poster : snippet.user
+							title : snippet.getTitle(),
+							desc : snippet.getDesc(),
+							content : snippet.getContent(),
+							poster : snippet.getUser()
 						},
 						pretty : true
 					});
@@ -116,8 +120,8 @@ function route(app, db, handlers) {
 		});
 		app.get('/s/:snid', function(req, res){
 			var snid = req.params["snid"];
-			handlers.ide.get(snid,function(err, snippet){
-				res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet);
+			handlers.snippets.get(snid,function(err, snippet){
+				res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet.getContent());
 			});
 		});
 		app.get('/search/:search?', function(req, res){
@@ -144,12 +148,11 @@ function route(app, db, handlers) {
 	// :var(r)? removed?
 	app.get('/', function(req, res){
 		var authDetails = handlers.auth.get(req, res);
-		db.snippets.listAll(function(err, snippets){
+		handlers.snippets.listAll(function(err, snippets){
 	  		res.render('gallery', {
 					loc: req.headers.host,
 					items : snippets,
 					pretty : false,
-					userCount : handlers.ide.userCount(),
 					auth : handlers.auth.getUser(req,res),
 				});
 		});

@@ -41,11 +41,11 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
 
     //was part of auth when it existed here
     auth.connect(function(){
-      socket.emit('requestSnip', {snid : snid});
+      socket.emit('IDE:RequestSnip', {snid : snid});
     });
     //
 
-    socket.on('cursorMove', function (data) {
+    socket.on('IDE:Cursor', function (data) {
       console.debug("Incoming cursor: %s", data.user.username);
       if(!userExists(data.user.username))
         $scope.addUser(data.user);
@@ -99,7 +99,8 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
     editor.selection.on('changeCursor',function(){
       var pos = editor.selection.getCursor();
       pos.snid = snid;
-      socket.emit('cursorMove',pos);
+      console.log('Cursor')
+      socket.emit('IDE:Cursor',pos);
     });
 
 
@@ -145,13 +146,13 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
   var preview = new Preview('display');
       preview.update(editor.getValue());
 
-  socket.on('insert', function (data) {
+  socket.on('IDE:Insert', function (data) {
     lastUpdate = data;
     // Removed .getDocument() from before insert. May have broken things?
     editor.session.insert(data.range.start,data.text);
     preview.update(editor.getValue());
   });
-  socket.on('remove', function (data) {
+  socket.on('IDE:Remove', function (data) {
     lastUpdate = data;
     editor.session.remove(data.range);
     preview.update(editor.getValue());
@@ -162,7 +163,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
     var test = window.setTimeout(function(){location.reload()},1000);
   });
 
-  socket.on('loadSnip', function (data) {
+  socket.on('IDE:LoadSnip', function (data) {
     editor.setValue(data.snippet.content);
   });
 
@@ -180,10 +181,10 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
 
       switch(e.data.action){
         case 'insertText':
-          socket.emit('insert', data);
+          socket.emit('IDE:Insert', data);
           break;
         case 'removeText':
-          socket.emit('remove', data);
+          socket.emit('IDE:Remove', data);
           break;
       }
       preview.update(editor.getValue());
@@ -197,7 +198,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
       e.preventDefault();
       console.debug('Saving.');
       var details = document.getElementById("details");
-      socket.emit('save', { snid : snid, content : editor.getValue()});
+      socket.emit('IDE:Save', { snid : snid, content : editor.getValue()});
     }
   }, false);
 
