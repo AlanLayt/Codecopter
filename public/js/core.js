@@ -137,9 +137,6 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
   });
   socket.on('IDE:InsertLines', function (data) {
     lastUpdate = data;
-    console.log('INSERTLINES')
-    console.log(data.lines)
-    // Removed .getDocument() from before insert. May have broken things?
     editor.session.insertLines(data.range.start.row,data.lines);
     prev();
   });
@@ -149,14 +146,13 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
     prev();
   });
   socket.on('IDE:LoadSnip', function (data) {
-    console.debug('Loading.')
-  //  editor.setValue(data.content);
+    console.debug('Loaded snippet.')
     loaded = true;
   });
 
   editor.on("change", function(e){
     var content = editor.getValue();
-    //console.debug(lastUpdate);
+
     if( lastUpdate !== 'undefined' || lastUpdate===false
         || (e.data.text != lastUpdate.text
         || e.data.range.start.column != lastUpdate.range.start.column
@@ -194,7 +190,6 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
     if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
       e.preventDefault();
       console.debug('Saving.');
-    //  var details = document.getElementById("details");
       socket.emit('IDE:Save', { snid : snid, content : editor.getValue()});
     }
   }, false);
@@ -476,8 +471,6 @@ var Preview = function(element){
     this.el.src = "data:text/html;charset=utf-8,"+escape(this.content);
   }
   this.tick = function(preview,callback){
-
-    //console.log(preview.running)
     if(preview.ut<preview.updateTimeout || !preview.running)
         preview.ut+=preview.tickStep;
     else {
@@ -486,17 +479,13 @@ var Preview = function(element){
       callback();
       preview.refresh();
     }
-    //console.debug("Tick %ds", preview.ut/1000);
     var ticker = setTimeout(preview.tick,preview.tickStep,preview,callback);
-
   }
 
   this.resetTicker = function(){
     this.ut=0;
     this.running = true;
-    //console.log("Resetting timer");
   }
 
-  this.tick(this,function(){})
-
+  this.tick(this,function(){});
 }

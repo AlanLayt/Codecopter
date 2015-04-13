@@ -4,6 +4,7 @@ var col;
 
 
 var formatSnippet = function(snip){
+	if(snip==null) return snip;
 	return {
 		id : snip.snid,
 		title : snip.title==null?'':snip.title,

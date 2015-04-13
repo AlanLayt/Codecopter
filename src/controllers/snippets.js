@@ -31,8 +31,9 @@ var get = function(snid,callback){
   }
   else {
     db.snippets.get(snid,function(err, snippet){
-      if(snippet.length<1){
+      if(!snippet || snippet.length<1){
         console.log('ERR: SNIPPET NOT FOUND');
+        return callback(err,snippet);
       } else {
         loaded[snid] = new Snippet(snippet);
         return callback(err,loaded[snid]);

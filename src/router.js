@@ -34,6 +34,7 @@ function route(app, db, handlers) {
 		// ========== Static Script Routes ==========
 		app.get('/js/:jsfile.js', function(req, res){
 				var jsfile = req.params["jsfile"];
+			//	console.log('Load JS file: %s',jsfile);
 				res.sendFile('/js/' + jsfile + '.js', {'root' : pubDir});
 		});
 		app.get('/stopTimeouts.js', function(req, res){
@@ -99,10 +100,7 @@ function route(app, db, handlers) {
 			//db.snippets.get(snid,function(err, snippet){
 			handlers.snippets.get(snid,function(err, snippet){
 				//console.log(snippet.getUser());
-				if(!snippet){
-
-				}
-				else
+				if(snippet)
 					res.render('ide', {
 						loc : req.headers.host,
 						auth : handlers.auth.getUser(req,res),
@@ -115,13 +113,18 @@ function route(app, db, handlers) {
 						},
 						pretty : true
 					});
+				else
+					notFound(req,res,'Page not found');
 
 			});
 		});
 		app.get('/s/:snid', function(req, res){
 			var snid = req.params["snid"];
 			handlers.snippets.get(snid,function(err, snippet){
-				res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet.getContent());
+				if(snippet)
+					res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet.getContent());
+				else
+					notFound(req,res,'Page not found');
 			});
 		});
 		app.get('/search/:search?', function(req, res){
@@ -270,9 +273,13 @@ function route(app, db, handlers) {
 
 
 	app.get('*', function(req, res){
-	  res.status(404).send('404\'d, friend.');
+		notFound('Page not found');
 	});
 
+
+	var notFound = function(req,res,s){
+	  res.status(404).send('404\'d, friend.' + s);
+	}
 	console.log("ROUTER: Initialized.");
 }
 
