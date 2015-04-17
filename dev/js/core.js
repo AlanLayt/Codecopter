@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", function() {
     snid = el.getAttribute('snid');
 
 
-  var search = document.getElementById('Search'); 
+  var search = document.getElementById('Search');
   if(search!==null){
     var es = document.getElementsByClassName("searchCodeDisplay");
     //  console.log(es[0])
@@ -30,7 +30,7 @@ var Preview = function(element){
   this.tickStep = 100;
   this.updateTimeout = 300;
   this.running = true;
-  this.liveView = true;
+  this.liveView = false;
 
   this.update = function(val,snid){
     this.content = val;
