@@ -7,4 +7,10 @@ module.exports = function(details){
   this.getIcon = function(){
     return details.icon;
   }
+  this.getBasicDetails = function(){
+    return {
+      username : details.username,
+      icon : details.icon
+    };
+  }
 }

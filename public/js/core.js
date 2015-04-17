@@ -123,6 +123,15 @@ var Preview = function(element){
     });
 
 
+
+
+    socket.on('IDE:chatMessage', function (data) {
+      $scope.messages.push({
+        content : data.msg,
+        user : data.user
+      });
+    });
+
     var userExists = function(username){
       var found = false;
       $scope.users.forEach(function(user){
@@ -137,6 +146,7 @@ var Preview = function(element){
     }
     $scope.chatSend = function(){
       console.log($scope.message);
+      socket.emit('IDE:chatMessage', {msg : $scope.message});
       $scope.messages.push({
         content : $scope.message,
         user : auth.getUser()

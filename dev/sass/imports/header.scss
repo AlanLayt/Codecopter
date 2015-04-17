@@ -102,19 +102,15 @@ form {
 
 ::-webkit-scrollbar {
   width: 7px;
+    height: 7px;
+}
+::-webkit-scrollbar:horizontal {
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-}
-::-webkit-scrollbar-thumb:horizontal {
-  -webkit-border-radius: 10px;
-  border-radius: 7px;
-  background: rgba(255,255,255,0.4);
-  background: rgba(0,0,0,0.2);
-  height: 2px;
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
 }
 
 /* Handle */

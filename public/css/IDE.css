@@ -50,7 +50,9 @@
   #activeUsers #chatMessages .message {
     overflow: auto;
     background: rgba(0, 0, 0, 0.1);
-    margin: 5px; }
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 11px; }
     #activeUsers #chatMessages .message .content {
       padding: 5px; }
     #activeUsers #chatMessages .message .icon {
@@ -67,12 +69,12 @@
       height: 33px; }
   #activeUsers .user {
     float: right;
-    margin: 2px; }
+    margin: 0 2px 0 2px; }
     #activeUsers .user .userIcon {
       border-radius: 0%;
       border-left: 4px solid #333;
-      width: 30px;
-      height: 30px; }
+      width: 33px;
+      height: 33px; }
 
 #CursorHold .cursor {
   position: absolute;

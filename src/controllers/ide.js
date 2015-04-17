@@ -97,6 +97,15 @@ var start = function(){
       //console.log(socket.request.headers);
     });
 
+
+
+    socket.on('IDE:chatMessage', function (data) {
+      socket.broadcast.to(socket.snippet.getID()).emit("IDE:chatMessage",{
+        msg : data.msg,
+        user : socket.user.getBasicDetails()
+      });
+    });
+
   });
 
   console.log("SOCKET: IDE Sockets Initialized.");
