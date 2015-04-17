@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", function() {
     snid = el.getAttribute('snid');
 
 
-  var search = document.getElementById('Search'); 
+  var search = document.getElementById('Search');
   if(search!==null){
     var es = document.getElementsByClassName("searchCodeDisplay");
     //  console.log(es[0])
@@ -37,7 +37,7 @@ var Preview = function(element){
     return this;
   }
   this.refresh = function(){
-    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid:"data:text/html;charset=utf-8,"+escape(this.content);
+    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid : "data:text/html;charset=utf-8,"+escape(this.content);
     this.el.src = src;
   }
   this.tick = function(preview,callback){

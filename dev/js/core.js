@@ -30,14 +30,14 @@ var Preview = function(element){
   this.tickStep = 100;
   this.updateTimeout = 300;
   this.running = true;
-  this.liveView = false;
+  this.liveView = true;
 
   this.update = function(val,snid){
     this.content = val;
     return this;
   }
   this.refresh = function(){
-    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid:"data:text/html;charset=utf-8,"+escape(this.content);
+    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid : "data:text/html;charset=utf-8,"+escape(this.content);
     this.el.src = src;
   }
   this.tick = function(preview,callback){

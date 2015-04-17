@@ -122,7 +122,8 @@ function route(app, db, handlers) {
 			var snid = req.params["snid"];
 			handlers.snippets.get(snid,function(err, snippet){
 				if(snippet)
-					res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet.getContent());
+					//res.send('<script src=\'../stopTimeouts.js\'></script>' + snippet.getContent());
+					res.send(snippet.getContent());
 				else
 					notFound(req,res,'Page not found');
 			});
