@@ -80,6 +80,9 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       return found;
     }
 
+
+
+
     $scope.typing = function(){
       //console.log($scope.message)
     }

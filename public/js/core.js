@@ -141,6 +141,9 @@ var Preview = function(element){
       return found;
     }
 
+
+
+
     $scope.typing = function(){
       //console.log($scope.message)
     }
@@ -251,6 +254,26 @@ app.directive("contenteditable", function() {
       });
     }
   };
+});
+
+
+
+app.directive('parseUrl', function () {
+    var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        replace: true,
+        scope: {
+            ngModel: '=ngModel'
+        },
+        link: function compile(scope, element, attrs, controller) {
+            scope.$watch('ngModel', function (value) {
+                var html = value.replace(urlPattern, '<a href="$&">$&</a>');
+                element.html(html);
+            });
+        }
+    };
 });
 ;app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth) {
   $scope.editForm = {};

@@ -113,9 +113,6 @@ var start = function(){
 }
 
 
-
-
-
 var add = function(gid, user, req, callback){
   handlers.snippets.add({
     user : user,

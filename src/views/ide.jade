@@ -26,7 +26,7 @@ block append body
 				div#chatMessages
 					div.message(ng-repeat='message in messages')
 						img.icon(ng-src='{{message.user.icon}}')
-						div.content {{message.content}}
+						div.content(parse-url ng-model="message.content") {{message.content}}
 						
 				div#chatInput
 					form(ng-submit='chatSend();')
