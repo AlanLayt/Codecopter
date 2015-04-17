@@ -1,12 +1,12 @@
 var app,io,db,auth,handlers,
     Snippet = require('./snippet');
 
-var init = function(mapp,mio,mdb,session,mauth,mhandlers){
-  app = mapp,
-  io = mio,
-  db = mdb;
-  auth = mauth;
-  handlers = mhandlers;
+var init = function(options){
+  app = options.app,
+  io = options.io,
+  db = options.db;
+  auth = options.auth;
+  handlers = options.handlers;
 
   start();
   console.log('IDE: Initialized');
@@ -15,13 +15,45 @@ var init = function(mapp,mio,mdb,session,mauth,mhandlers){
 
 var start = function(){
 
+
+
   io.on('connection', function (socket) {
+    socket.on('disconnect', function () {
+      if(socket.user && socket.snippet){
+        socket.snippet.removeUser(socket.user);
+        socket.broadcast.to(socket.snippet.getID()).emit("IDE:userDisconnect",{
+          username : socket.user.getName()
+        });
+      }
+    });
     // Handles request for whole snippet and sends resulting snippet
     socket.on('IDE:RequestSnip', function (data) {
       handlers.snippets.get(data.snid,function(err,s){
         socket.emit("IDE:LoadSnip",{ content : s.getContent() });
+        socket.join(data.snid);
+        socket.snippet = s;
+        if(socket.user) {
+          var usrs = [];
+
+          s.addUser(socket.user);
+
+          Object.keys(s.getUsers()).forEach(function(key, index) {
+            usrs.push({
+              username : this[key].getName(),
+              icon : this[key].getIcon()
+            });
+          }, s.getUsers());
+
+          socket.broadcast.to(socket.snippet.getID()).emit("IDE:userConnect",{
+            user : {
+              username : socket.user.getName(),
+              icon : socket.user.getIcon()
+            }
+          });
+
+          socket.emit("IDE:userList",{ users : usrs });
+        }
       })
-      socket.join(data.snid);
     });
 
     // Handles remove request and brodcasts to other connected clients
@@ -54,7 +86,14 @@ var start = function(){
 
     socket.on('IDE:Cursor', function (data) {
       //console.log('Cursor Move: %s', data.snid);
-      socket.broadcast.to(data.snid).emit("IDE:Cursor",{socketid : socket.id, user : { username : socket.user.username, icon : socket.user.icon }, position : data });
+      if(socket.user)
+      socket.broadcast.to(data.snid).emit("IDE:Cursor",{
+        socketid : socket.id,
+        user : {
+          username : socket.user.getName(),
+          icon : socket.user.getIcon()
+        },
+        position : data });
       //console.log(socket.request.headers);
     });
 

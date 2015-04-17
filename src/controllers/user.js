@@ -4,4 +4,8 @@ module.exports = function(details){
   this.getName = function(){
     return details.username;
   }
+  this.getIcon = function(){
+    //console.log(details)
+    return details.icon;
+  }
 }

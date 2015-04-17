@@ -1,13 +1,12 @@
 var app,io,db,auth,
   User = require('./user'),
-  users = new Array(),
-  connectionCount=0;
+  users = new Array();
 
-var init = function(mapp,mio,mdb,msess,mauth){
-  app = mapp,
-  io = mio,
-  db = mdb;
-  auth = mauth;
+var init = function(options){
+  app = options.app,
+  io = options.io,
+  db = options.db;
+  auth = options.handlers.auth;
 
   start();
   console.log('USERS: Initialized');
@@ -17,19 +16,30 @@ var init = function(mapp,mio,mdb,msess,mauth){
 var start = function(){
 
   io.on('connection', function (socket) {
-    connectionCount++;
-    socket.user = {username : false};
+    socket.user = false;//{username : false};
 
     socket.on('disconnect', function () {
-      connectionCount--;
+      if(socket.user){
+        // Remove user if no clients remain for user
+      }
     });
 
     socket.on('AUTH:Key', function (data) {
       var details = auth.decodeKey(data.token);
+
       if(details.logged !== false){
-          socket.user = details.user;
+          if(details.user.username in users){
+            console.log('User active; %s', users[details.user.username].getName());
+          }
+          else {
+            users[details.user.username] = new User(details.user);
+          }
+
+          socket.user = users[details.user.username];
           console.log('%s[%s] connected.', details.user.username, socket.id);
+
           socket.emit("AUTH:Verified",{ user : details.user, logged : true });
+
       }
       else
         socket.emit("AUTH:Denied",{ logged : false });

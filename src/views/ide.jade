@@ -23,7 +23,7 @@ block append body
 	div
 		div(ng-controller='activeUsers')
 			div(id='activeUsers')
-				div(ng-repeat='user in users' rel='{{user.username}}')
+				div(ng-repeat='user in users' class='user' rel='{{user.username}}')
 					img.userIcon(ng-style='{borderColor: user.color}' ng-src='{{user.icon}}')
 			div#cursorHold()
 				div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')

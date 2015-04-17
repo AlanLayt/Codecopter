@@ -109,7 +109,7 @@ function route(app, db, handlers) {
 							title : snippet.getTitle(),
 							desc : snippet.getDesc(),
 							content : snippet.getContent(),
-							poster : snippet.getUser()
+							poster : snippet.getAuthor()
 						},
 						pretty : true
 					});

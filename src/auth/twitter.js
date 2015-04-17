@@ -6,10 +6,10 @@ var url = require('url');
 var loaded = Array();
 var clientNum = 0;
 
-var init = function(mapp,mio,mdb,sess){
-	app = mapp,
-	io = mio,
-	db = mdb;
+var init = function(options){
+	app = options.app,
+	io = options.io,
+	db = options.db;
 	start();
 	console.log('AUTH: Initialized');
 }

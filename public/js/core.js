@@ -34,7 +34,6 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
     var token,
         colors = ['587D59','F9D189','AF734C','88C843','FA347B'],
         snid = document.getElementById('editor').getAttribute('snid');
-
     $scope.cursors = [];
     $scope.users = [];
 
@@ -51,7 +50,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       console.debug("Incoming cursor: %s", data.user.username);
 
       var checkUser = userExists(data.user.username);
-      if(checkUser!==false){
+      if(checkUser.cursor!==false){
         console.log('User exists. Updating position.');
         checkUser.cursor.pos = {
           carat : data.position,
@@ -59,7 +58,7 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
         }
       }
       else {
-        var user = $scope.addUser(data.user);
+        var user = checkUser;//$scope.addUser(data.user);
         var cursor = $scope.addCursor({
           username : user.username,
           color : user.color,
@@ -70,6 +69,23 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
         });
         user.cursor = cursor;
       }
+    });
+    socket.on('IDE:userList', function (data) {
+      console.log('User List loaded;');
+      console.table(data.users);
+      data.users.forEach(function(u){
+        var user = $scope.addUser(u);
+      })
+    });
+    socket.on('IDE:userDisconnect', function (data) {
+      $scope.removeUser(data.username);
+        $scope.removeCursor(data.username);
+      console.log('%s disconnected', data.username);
+    });
+    socket.on('IDE:userConnect', function (data) {
+      console.log(data);
+      $scope.addUser(data.user);
+      console.log('%s connected.', data.user.username);
     });
 
 
@@ -83,12 +99,22 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
     }
 
 
+    $scope.removeUser = function(user) {
+      $scope.users.forEach(function(u,i){
+        if(u.username == user){
+          $scope.users.splice(i,1);
+        }
+      });
+    }
+
+
     $scope.addUser = function(user) {
       var userObj = {
         username : user.username,
         icon : user.icon,
         color : colors[Math.floor(Math.random()*colors.length)],
-        done:false
+        done:false,
+        cursor:false
       };
 
       $scope.users.push(userObj);
@@ -101,6 +127,13 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       $scope.cursors.push(cursorObj);
       return cursorObj;
     };
+    $scope.removeCursor = function(user) {
+      $scope.cursors.forEach(function(c,i){
+        if(c.username == user){
+          $scope.cursors.splice(i,1);
+        }
+      });
+    }
   }]
 );
 
@@ -123,7 +156,8 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
   console.log('Development environment online.');
   var cursors = Array();
   var lastUpdate;
-  var loaded = false;
+  var loaded = false,
+  snid = document.getElementById('editor').getAttribute('snid');
   //console.debug(socket);
   var preview = new Preview('display');
       preview.update(editor.getValue());
@@ -178,11 +212,12 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
           break;
       }
       prev();
+      console.debug(snid);
     }
   });
 
   var prev = function(){
-    preview.update(editor.getValue()).resetTicker();
+    preview.update(editor.getValue(),snid).resetTicker();
   }
 
 
@@ -462,13 +497,15 @@ var Preview = function(element){
   this.tickStep = 100;
   this.updateTimeout = 300;
   this.running = true;
+  this.liveView = true;
 
-  this.update = function(val){
+  this.update = function(val,snid){
     this.content = val;
     return this;
   }
   this.refresh = function(){
-    this.el.src = "data:text/html;charset=utf-8,"+escape(this.content);
+    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid:"data:text/html;charset=utf-8,"+escape(this.content);
+    this.el.src = src;
   }
   this.tick = function(preview,callback){
     if(preview.ut<preview.updateTimeout || !preview.running)

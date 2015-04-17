@@ -4,10 +4,10 @@ var loaded = Array(),
   Snippet = require('./snippet'),
   hashids = new Hashids("Twoflower");
 
-var init = function(mapp,mio,mdb){
-  app = mapp,
-  io = mio,
-  db = mdb;
+var init = function(options){
+  app = options.app,
+  io = options.io,
+  db = options.db;
 
   start();
   console.log('SNIPPETS: Initialized');
