@@ -22,7 +22,7 @@ module.exports = function(details){
   }
   this.addUser = function(u){
     if(u.getName() in users){
-      console.log('%s: %s already active.', this.getTitle(),u.getName())
+    //  console.log('%s: %s already active.', this.getTitle(),u.getName())
     }
     else {
       console.log('%s: %s now active.',this.getTitle(),u.getName())
@@ -36,8 +36,8 @@ module.exports = function(details){
     }
     else {
     }
-    console.log('user removed')
-    console.log(users)
+    //console.log('user removed')
+    //console.log(users)
   }
   this.getUsers = function(){
     //console.log(users)

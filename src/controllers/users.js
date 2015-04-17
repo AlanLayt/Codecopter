@@ -29,14 +29,14 @@ var start = function(){
 
       if(details.logged !== false){
           if(details.user.username in users){
-            console.log('User active; %s', users[details.user.username].getName());
+          //  console.log('User active; %s', users[details.user.username].getName());
           }
           else {
             users[details.user.username] = new User(details.user);
+            console.log('%s[%s] connected.', details.user.username, socket.id);
           }
 
           socket.user = users[details.user.username];
-          console.log('%s[%s] connected.', details.user.username, socket.id);
 
           socket.emit("AUTH:Verified",{ user : details.user, logged : true });
 

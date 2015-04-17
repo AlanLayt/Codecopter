@@ -20,37 +20,35 @@ module.exports = function(grunt) {
             'public/img/svg-defs.svg': ['dev/svgs/*.svg'],
           }
       }
-    }, 
+    },
     watch: {
       source: {
         files: ['dev/sass/**/*.scss','dev/**','views/*'],
-        tasks: ['sass','svgstore'],
+        tasks: ['sass','svgstore','concat'],
         options: {
           livereload: true, // needed to run LiveReload
         }
       }
     },
-    bower_concat: {
-      all: {
-        dest: 'dev/bower/js/bower.js',
-        cssDest: 'dev/bower/css/dep.css',
-        exclude: [
-        ],
-        dependencies: {
-        },
-        bowerOptions: {
-          relative: false
-        }
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['dev/js/core.js', 'dev/js/*.js'],
+        // the location of the resulting JS file
+        dest: 'public/js/core.js'
       }
     },
     uglify: {
-      bower: {
-        options: {
-          mangle: true,
-          compress: true
-        },
+      options: {
+        mangle: false,
+        compress: false,
+        beautify: true
+      },
+      build : {
         files: {
-          'public/js/dep.js': 'dev/bower/js/bower.js',
+          'public/js/core.js': ['dev/core.js','dev/js/*.js'],
         }
       }
     },
@@ -66,6 +64,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-svgstore');
   //grunt.registerTask('default', ['sass']);
 //  grunt.registerTask('watcher', ['watch']);

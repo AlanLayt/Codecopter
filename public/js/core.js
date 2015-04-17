@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", function() {
     snid = el.getAttribute('snid');
 
 
-  var search = document.getElementById('Search');
+  var search = document.getElementById('Search'); 
   if(search!==null){
     var es = document.getElementsByClassName("searchCodeDisplay");
     //  console.log(es[0])
@@ -23,19 +23,49 @@ window.addEventListener("DOMContentLoaded", function() {
 }, false);
 
 
+var Preview = function(element){
+  this.el = document.getElementById(element);
+  this.content = "";
+  this.ut = 0;
+  this.tickStep = 100;
+  this.updateTimeout = 300;
+  this.running = true;
+  this.liveView = true;
 
+  this.update = function(val,snid){
+    this.content = val;
+    return this;
+  }
+  this.refresh = function(){
+    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid:"data:text/html;charset=utf-8,"+escape(this.content);
+    this.el.src = src;
+  }
+  this.tick = function(preview,callback){
+    if(preview.ut<preview.updateTimeout || !preview.running)
+        preview.ut+=preview.tickStep;
+    else {
+      preview.running = false;
+      preview.ut=0;
+      callback();
+      preview.refresh();
+    }
+    var ticker = setTimeout(preview.tick,preview.tickStep,preview,callback);
+  }
 
+  this.resetTicker = function(){
+    this.ut=0;
+    this.running = true;
+  }
 
-
-
-
-
-app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', function($scope,$http,socket,editor,auth) {
+  this.tick(this,function(){});
+}
+;app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', function($scope,$http,socket,editor,auth) {
     var token,
         colors = ['587D59','F9D189','AF734C','88C843','FA347B'],
         snid = document.getElementById('editor').getAttribute('snid');
     $scope.cursors = [];
     $scope.users = [];
+    $scope.messages = [];
 
     auth.connect(function(){
       socket.emit('IDE:RequestSnip', {snid : snid});
@@ -74,17 +104,21 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       console.log('User List loaded;');
       console.table(data.users);
       data.users.forEach(function(u){
-        var user = $scope.addUser(u);
+        if(u.username != auth.getUser().username)
+          var user = $scope.addUser(u);
       })
     });
     socket.on('IDE:userDisconnect', function (data) {
       $scope.removeUser(data.username);
-        $scope.removeCursor(data.username);
+      $scope.removeCursor(data.username);
+
       console.log('%s disconnected', data.username);
     });
     socket.on('IDE:userConnect', function (data) {
-      console.log(data);
-      $scope.addUser(data.user);
+      //console.log(data);
+      if(data.user.username != auth.getUser().username)
+        $scope.addUser(data.user);
+
       console.log('%s connected.', data.user.username);
     });
 
@@ -96,6 +130,18 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
           found = user;
       });
       return found;
+    }
+
+    $scope.typing = function(){
+      //console.log($scope.message)
+    }
+    $scope.chatSend = function(){
+      console.log($scope.message);
+      $scope.messages.push({
+        content : $scope.message,
+        user : auth.getUser()
+      });
+      $scope.message = '';
     }
 
 
@@ -136,23 +182,99 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
     }
   }]
 );
+;app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
+  var user = null,
+      logged = null;
 
 
+  return {
+    connect : function(callback){
+      socket.on('AUTH:Connected', function () {
+        console.log('SOCKET: Connection Success.');
+
+        $http.get('http://'+window.location.hostname+':' + window.location.port + '/auth/key')
+        .success(function(data){
+          console.log('SOCKET: Token retrieved.');
+          socket.emit('AUTH:Key',{token:data.token});
+        });
+      });
+      socket.on('AUTH:Verified', function (data) {
+        console.log('SOCKET: Verified as %s.', data.user.username);
+        user = data.user;
+        logged = true;
+        callback(null,user);
+      }); 
+      socket.on('AUTH:Denied', function (data) {
+        console.log('SOCKET: Unverified.');
+        logged = false;
+        callback({logged:false},null)
+      });
+
+      socket.on('disconnect', function () {
+        //socket.close();
+        socket.disconnect();
+        console.debug("Connection Lost. Reloading.");
+        var test = window.setTimeout(function(){location.reload()},1000);
+      });
+    },
+    getUser : function(){
+      return user;
+    }
+  }
+}]);
+;
+app.directive("contenteditable", function() {
+  return {
+    require: "ngModel",
+    link: function(scope, element, attrs, ngModel) {
+
+      function read() {
+        ngModel.$setViewValue(element.html());
+      }
+
+      ngModel.$render = function() {
+        element.html(ngModel.$viewValue || "");
+      };
+
+      element.bind("blur keyup change", function() {
+        scope.$apply(read);
+      });
+    }
+  };
+});
+;app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth) {
+  $scope.editForm = {};
+
+  auth.connect(function(){
+    console.debug(auth.getUser());
+  });
+
+  var el = document.getElementById('Display');
+  if(el!==null)
+    snid = el.getAttribute('snid');
 
 
+  $scope.edit = function(){
+    console.log("Opening edit")
+    $scope.editing = true;
+  }
 
+  $scope.submit = function(form){
+    console.log('Modifying %s', snid);
+    $http.post('http://'+window.location.hostname+':' + window.location.port + '/snippet/update',{
+      snid : snid,
+      title : $scope.editForm.title,
+      desc : $scope.editForm.description
+    }).success(function(data){
+        console.log('Details updated');
+        $scope.editing = false;
+        var test = window.setTimeout(function(){location.reload()},1);
+      })
+  }
 
-
-
-
-
-
-
-
-
-
-
-app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
+  console.log('Displaying "%s".', snid);
+}]);
+;app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
   console.log('Development environment online.');
   var cursors = Array();
   var lastUpdate;
@@ -230,121 +352,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
   }, false);
 
 }]);
-
-
-
-
-
-
-
-
-
-
-
-
-app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth) {
-  $scope.editForm = {};
-
-  auth.connect(function(){
-    console.debug(auth.getUser());
-  });
-
-  var el = document.getElementById('Display');
-  if(el!==null)
-    snid = el.getAttribute('snid');
-
-
-  $scope.edit = function(){
-    console.log("Opening edit")
-    $scope.editing = true;
-  }
-
-  $scope.submit = function(form){
-    console.log('Modifying %s', snid);
-    $http.post('http://'+window.location.hostname+':' + window.location.port + '/snippet/update',{
-      snid : snid,
-      title : $scope.editForm.title,
-      desc : $scope.editForm.description
-    }).success(function(data){
-        console.log('Details updated');
-        $scope.editing = false;
-        var test = window.setTimeout(function(){location.reload()},1);
-      })
-  }
-
-  console.log('Displaying "%s".', snid);
-}]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
-  var user = null,
-      logged = null;
-
-
-  return {
-    connect : function(callback){
-      socket.on('AUTH:Connected', function () {
-        console.log('SOCKET: Connection Success.');
-
-        $http.get('http://'+window.location.hostname+':' + window.location.port + '/auth/key')
-        .success(function(data){
-          console.log('SOCKET: Token retrieved.');
-          socket.emit('AUTH:Key',{token:data.token});
-        });
-      });
-      socket.on('AUTH:Verified', function (data) {
-        console.log('SOCKET: Verified as %s.', data.user.username);
-        user = data.user;
-        logged = true;
-        callback(null,user);
-      });
-      socket.on('AUTH:Denied', function (data) {
-        console.log('SOCKET: Unverified.');
-        logged = false;
-        callback({logged:false},null)
-      });
-
-      socket.on('disconnect', function () {
-        //socket.close();
-        socket.disconnect();
-        console.debug("Connection Lost. Reloading.");
-        var test = window.setTimeout(function(){location.reload()},1000);
-      });
-    },
-    getUser : function(){
-      return user;
-    }
-  }
-}]);
-
-app.factory('socket', function ($rootScope) {
+;app.factory('socket', function ($rootScope) {
     var socket = io(window.location.host,{ reconnection : false });
     window.socket = socket; //needs removed
     console.log('Initializing socket for angular');
@@ -379,14 +387,6 @@ app.factory('socket', function ($rootScope) {
       }
     };
 });
-
-
-
-
-
-
-
-
 
 app.factory('editor', function ($rootScope) {
     var caretBlink = false;
@@ -457,72 +457,3 @@ app.factory('editor', function ($rootScope) {
       }
     };
 });
-
-
-
-
-
-
-
-
-
-
-
-app.directive("contenteditable", function() {
-  return {
-    require: "ngModel",
-    link: function(scope, element, attrs, ngModel) {
-
-      function read() {
-        ngModel.$setViewValue(element.html());
-      }
-
-      ngModel.$render = function() {
-        element.html(ngModel.$viewValue || "");
-      };
-
-      element.bind("blur keyup change", function() {
-        scope.$apply(read);
-      });
-    }
-  };
-});
-
-
-
-var Preview = function(element){
-  this.el = document.getElementById(element);
-  this.content = "";
-  this.ut = 0;
-  this.tickStep = 100;
-  this.updateTimeout = 300;
-  this.running = true;
-  this.liveView = true;
-
-  this.update = function(val,snid){
-    this.content = val;
-    return this;
-  }
-  this.refresh = function(){
-    var src = this.liveView?'http://'+window.location.hostname+':' + window.location.port + '/s/' + snid:"data:text/html;charset=utf-8,"+escape(this.content);
-    this.el.src = src;
-  }
-  this.tick = function(preview,callback){
-    if(preview.ut<preview.updateTimeout || !preview.running)
-        preview.ut+=preview.tickStep;
-    else {
-      preview.running = false;
-      preview.ut=0;
-      callback();
-      preview.refresh();
-    }
-    var ticker = setTimeout(preview.tick,preview.tickStep,preview,callback);
-  }
-
-  this.resetTicker = function(){
-    this.ut=0;
-    this.running = true;
-  }
-
-  this.tick(this,function(){});
-}

@@ -47,6 +47,24 @@
   position: absolute;
   bottom: 0px;
   right: 0px; }
+  #activeUsers #chatMessages .message {
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 5px; }
+    #activeUsers #chatMessages .message .content {
+      padding: 5px; }
+    #activeUsers #chatMessages .message .icon {
+      float: right; }
+  #activeUsers #chatInput {
+    float: right; }
+    #activeUsers #chatInput form {
+      margin: 0;
+      float: left; }
+    #activeUsers #chatInput .userIcon {
+      float: left;
+      border-radius: 0%;
+      width: 33px;
+      height: 33px; }
   #activeUsers .user {
     float: right;
     margin: 2px; }

@@ -5,7 +5,6 @@ module.exports = function(details){
     return details.username;
   }
   this.getIcon = function(){
-    //console.log(details)
     return details.icon;
   }
 }

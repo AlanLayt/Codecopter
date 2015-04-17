@@ -74,6 +74,34 @@
   position: absolute;
   bottom:0px;
   right:0px;
+  #chatMessages {
+    .message {
+      overflow:auto;
+      background: rgba(0,0,0,0.1);
+      margin: 5px;
+
+      .content {
+        padding: 5px;
+
+      }
+      .icon {
+        float:right;
+      }
+    }
+  }
+  #chatInput {
+    float:right;
+    form {
+      margin:0;
+      float:left;
+    }
+    .userIcon {
+      float:left;
+      border-radius: 0%;
+      width:33px;
+      height:33px;
+    }
+  }
   .user {
     float:right;
     margin: 2px;
@@ -83,7 +111,7 @@
       border-left: 4px solid #333;
       width:30px;
       height:30px;
-}
+    }
   }
 }
 
