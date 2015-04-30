@@ -21,20 +21,21 @@ block append body
 	
 	
 	div
-		div(ng-controller='activeUsers')
-			div(id='activeUsers')
-				div#chatMessages
-					div.message(ng-repeat='message in messages')
-						img.icon(ng-src='{{message.user.icon}}')
-						div.content(parse-url ng-model="message.content") {{message.content}}
+		if auth.logged
+			div(ng-controller='activeUsers')
+				div(id='activeUsers')
+					div#chatMessages
+						div.message(ng-repeat='message in messages')
+							img.icon(ng-src='{{message.user.icon}}')
+							div.content(parse-url ng-model="message.content") {{message.content}}
+							
+					div#chatInput
+						form(ng-submit='chatSend();')
+							input(placeholder='Chat message' type='text' ng-model='message' ng-change='typing();')
+						img.userIcon(ng-style='{borderColor: user.color}' ng-src='#{auth.user.icon}')
+							
+					div.user(ng-repeat='user in users' rel='{{user.username}}')
+						img.userIcon(ng-style='{borderColor: user.color}' ng-src='{{user.icon}}')
 						
-				div#chatInput
-					form(ng-submit='chatSend();')
-						input(placeholder='Chat message' type='text' ng-model='message' ng-change='typing();')
-					img.userIcon(ng-style='{borderColor: user.color}' ng-src='#{auth.user.icon}')
-						
-				div.user(ng-repeat='user in users' rel='{{user.username}}')
-					img.userIcon(ng-style='{borderColor: user.color}' ng-src='{{user.icon}}')
-					
-			div#cursorHold()
-				div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')
+				div#cursorHold()
+					div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')

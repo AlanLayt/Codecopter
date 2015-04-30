@@ -73,32 +73,31 @@ var Preview = function(element){
 
     editor.selection.on('changeCursor',function(){
       var pos = editor.selection.getCursor();
+    //  console.log(editor.selection.getSelectionAnchor())
+      //console.log(editor.selection.getSelectionLead())
+      //console.log(editor.selection.getCursor())
       pos.snid = snid;
+      pos.select = editor.selection.getSelectionAnchor();
       socket.emit('IDE:Cursor',pos);
     });
+    editor.scroll.on('changeScrollTop',function(){
+      console.log('aksjgnajksgn')
+      $scope.renderCursors($scope.cursors);
+    });
+
+
     socket.on('IDE:Cursor', function (data) {
       console.debug("Incoming cursor: %s", data.user.username);
-
-      var checkUser = userExists(data.user.username);
-      if(checkUser.cursor!==false){
-        console.log('User exists. Updating position.');
-        checkUser.cursor.pos = {
-          carat : data.position,
-          display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
-        }
-      }
-      else {
-        var user = checkUser;//$scope.addUser(data.user);
-        var cursor = $scope.addCursor({
-          username : user.username,
-          color : user.color,
-          pos : {
-            carat : data.position,
-            display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
-          }
-        });
-        user.cursor = cursor;
-      }
+      $scope.proccessCursor(data);
+    });
+    socket.on('IDE:cursorList', function (data) {
+      console.log('Cursor List loaded;');
+      console.table(data.cursors);
+      data.cursors.forEach(function(c){
+      //  if(c.user.username != auth.getUser().username)
+        //var cursor = $scope.addUser(c);
+        $scope.proccessCursor(c);
+      })
     });
     socket.on('IDE:userList', function (data) {
       console.log('User List loaded;');
@@ -179,6 +178,47 @@ var Preview = function(element){
       $scope.users.push(userObj);
       return userObj;
     };
+    $scope.renderCursors = function(crsrs){
+      crsrs.forEach(function(c){
+        console.log(c);
+        c.pos.display = editor.renderer.textToScreenCoordinates(c.pos.carat.row,c.pos.carat.column);
+      });
+    }
+
+    $scope.proccessCursor = function(crsr){
+      var checkUser = userExists(crsr.user.username);
+      if(checkUser.cursor!==false){
+        console.log('User exists. Updating position.');
+        checkUser.cursor = {
+          pos : {
+            carat : crsr.position,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+          },
+          select : {
+            select : crsrs.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+          }
+        }
+      }
+      else {
+        var user = checkUser;//$scope.addUser(data.user);
+        var cursor = $scope.addCursor({
+          username : user.username,
+          color : user.color,
+          pos : {
+            pos : {
+              carat : crsr.position,
+              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            },
+            select : {
+              select : crsrs.select,
+              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+            }
+          }
+        });
+        user.cursor = cursor;
+      }
+    }
 
     $scope.addCursor = function(cursor) {
       var cursorObj = cursor;
@@ -216,7 +256,7 @@ var Preview = function(element){
         user = data.user;
         logged = true;
         callback(null,user);
-      }); 
+      });
       socket.on('AUTH:Denied', function (data) {
         console.log('SOCKET: Unverified.');
         logged = false;
@@ -232,6 +272,9 @@ var Preview = function(element){
     },
     getUser : function(){
       return user;
+    },
+    isLogged : function(){
+      return logged;
     }
   }
 }]);
@@ -277,6 +320,10 @@ app.directive('parseUrl', function () {
 });
 ;app.controller('display', ['$scope', '$http', 'auth', function($scope,$http,auth) {
   $scope.editForm = {};
+  $scope.commentForm = {
+    content : 'Leave a comment...',
+    active : false
+  };
 
   auth.connect(function(){
     console.debug(auth.getUser());
@@ -288,11 +335,25 @@ app.directive('parseUrl', function () {
 
 
   $scope.edit = function(){
-    console.log("Opening edit")
-    $scope.editing = true;
+    if(auth.isLogged())
+      $scope.editing = true;
   }
 
-  $scope.submit = function(form){
+
+  $scope.activateComments = function(){
+    if(!$scope.commentForm.active){
+      $scope.commentForm.content = '';
+      $scope.commentForm.active = true;
+    }
+  }
+  $scope.unactComments = function(){
+    if($scope.commentForm.active){
+      $scope.commentForm.content = 'Leave a comment...';
+      $scope.commentForm.active = false;
+    }
+  }
+
+  $scope.updateDetails = function(form){
     console.log('Modifying %s', snid);
     $http.post('http://'+window.location.hostname+':' + window.location.port + '/snippet/update',{
       snid : snid,
@@ -301,6 +362,18 @@ app.directive('parseUrl', function () {
     }).success(function(data){
         console.log('Details updated');
         $scope.editing = false;
+        var test = window.setTimeout(function(){location.reload()},1);
+      })
+  }
+
+  $scope.addComment = function(form){
+    console.log('Adding to %s comment: %s', snid, $scope.commentForm.content);
+
+    $http.post('http://'+window.location.hostname+':' + window.location.port + '/comment/post',{
+      snid : snid,
+      comment : $scope.commentForm.content
+    }).success(function(data){
+        console.log('Comment Posted');
         var test = window.setTimeout(function(){location.reload()},1);
       })
   }
@@ -338,6 +411,7 @@ app.directive('parseUrl', function () {
     console.debug('Loaded snippet.')
     loaded = true;
   });
+  
 
   editor.on("change", function(e){
     var content = editor.getValue();
@@ -457,6 +531,19 @@ app.factory('editor', function ($rootScope) {
         });
         //editor.on(evt,callback);
       },
+      scroll : {
+        on : function(evt,callback){
+          console.log(editor.getSession())
+          editor.getSession().on(evt,function () {
+            var args = arguments;
+            $rootScope.$apply(function () {
+              if (callback) {
+                callback.apply(socket, args);
+              }
+            });
+          });
+        },
+      },
       session : {
         insert : function(start,text){
           editor.session.insert(start,text);
@@ -481,6 +568,12 @@ app.factory('editor', function ($rootScope) {
         },
         getCursor : function(){
           return editor.selection.getCursor();
+        },
+        getSelectionAnchor : function(){
+          return editor.selection.getSelectionAnchor();
+        },
+        getSelectionLead : function(){
+          return editor.selection.getSelectionLead();
         }
       },
       renderer : {

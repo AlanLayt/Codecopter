@@ -21,6 +21,7 @@ var start = function(){
     socket.on('disconnect', function () {
       if(socket.user && socket.snippet){
         socket.snippet.removeUser(socket.user);
+        socket.snippet.removeCursor(socket.user);
         socket.broadcast.to(socket.snippet.getID()).emit("IDE:userDisconnect",{
           username : socket.user.getName()
         });
@@ -34,6 +35,7 @@ var start = function(){
         socket.snippet = s;
         if(socket.user) {
           var usrs = [];
+          var crsrs = [];
 
           s.addUser(socket.user);
 
@@ -44,6 +46,17 @@ var start = function(){
             });
           }, s.getUsers());
 
+          // Compile list of cursors for client
+          Object.keys(s.getCursors()).forEach(function(key, index) {
+            crsrs.push({
+              user : {
+                username : this[key].user.getName(),
+                icon : this[key].user.getIcon()
+              },
+              position : this[key].position
+            });
+          }, s.getCursors());
+
           socket.broadcast.to(socket.snippet.getID()).emit("IDE:userConnect",{
             user : {
               username : socket.user.getName(),
@@ -52,6 +65,7 @@ var start = function(){
           });
 
           socket.emit("IDE:userList",{ users : usrs });
+          socket.emit("IDE:cursorList",{ cursors : crsrs });
         }
       })
     });
@@ -94,7 +108,11 @@ var start = function(){
           icon : socket.user.getIcon()
         },
         position : data });
-      //console.log(socket.request.headers);
+
+        socket.snippet.addCursor({
+          user : socket.user,
+          position : data
+        })
     });
 
 

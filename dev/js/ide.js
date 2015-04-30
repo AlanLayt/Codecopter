@@ -29,6 +29,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
     console.debug('Loaded snippet.')
     loaded = true;
   });
+  
 
   editor.on("change", function(e){
     var content = editor.getValue();

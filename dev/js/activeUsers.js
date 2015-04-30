@@ -12,32 +12,31 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
 
     editor.selection.on('changeCursor',function(){
       var pos = editor.selection.getCursor();
+    //  console.log(editor.selection.getSelectionAnchor())
+      //console.log(editor.selection.getSelectionLead())
+      //console.log(editor.selection.getCursor())
       pos.snid = snid;
+      pos.select = editor.selection.getSelectionAnchor();
       socket.emit('IDE:Cursor',pos);
     });
+    editor.scroll.on('changeScrollTop',function(){
+      console.log('aksjgnajksgn')
+      $scope.renderCursors($scope.cursors);
+    });
+
+
     socket.on('IDE:Cursor', function (data) {
       console.debug("Incoming cursor: %s", data.user.username);
-
-      var checkUser = userExists(data.user.username);
-      if(checkUser.cursor!==false){
-        console.log('User exists. Updating position.');
-        checkUser.cursor.pos = {
-          carat : data.position,
-          display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
-        }
-      }
-      else {
-        var user = checkUser;//$scope.addUser(data.user);
-        var cursor = $scope.addCursor({
-          username : user.username,
-          color : user.color,
-          pos : {
-            carat : data.position,
-            display : editor.renderer.textToScreenCoordinates(data.position.row,data.position.column)
-          }
-        });
-        user.cursor = cursor;
-      }
+      $scope.proccessCursor(data);
+    });
+    socket.on('IDE:cursorList', function (data) {
+      console.log('Cursor List loaded;');
+      console.table(data.cursors);
+      data.cursors.forEach(function(c){
+      //  if(c.user.username != auth.getUser().username)
+        //var cursor = $scope.addUser(c);
+        $scope.proccessCursor(c);
+      })
     });
     socket.on('IDE:userList', function (data) {
       console.log('User List loaded;');
@@ -118,6 +117,47 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       $scope.users.push(userObj);
       return userObj;
     };
+    $scope.renderCursors = function(crsrs){
+      crsrs.forEach(function(c){
+        console.log(c);
+        c.pos.display = editor.renderer.textToScreenCoordinates(c.pos.carat.row,c.pos.carat.column);
+      });
+    }
+
+    $scope.proccessCursor = function(crsr){
+      var checkUser = userExists(crsr.user.username);
+      if(checkUser.cursor!==false){
+        console.log('User exists. Updating position.');
+        checkUser.cursor = {
+          pos : {
+            carat : crsr.position,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+          },
+          select : {
+            select : crsrs.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+          }
+        }
+      }
+      else {
+        var user = checkUser;//$scope.addUser(data.user);
+        var cursor = $scope.addCursor({
+          username : user.username,
+          color : user.color,
+          pos : {
+            pos : {
+              carat : crsr.position,
+              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            },
+            select : {
+              select : crsrs.select,
+              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+            }
+          }
+        });
+        user.cursor = cursor;
+      }
+    }
 
     $scope.addCursor = function(cursor) {
       var cursorObj = cursor;

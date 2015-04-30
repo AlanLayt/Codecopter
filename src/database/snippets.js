@@ -11,6 +11,7 @@ var formatSnippet = function(snip){
 		desc : snip.description==null?'':snip.description,
 		content : snip.content,
 		user : snip.userinfo,
+		comments : snip.comments,
 		gid : snip.gid
 	};
 };
@@ -55,13 +56,14 @@ module.exports = {
 
 	listByGroup : function(gid, callback) {
 		col.find({gid : gid}).sort({updated: -1}).toArray(function(err, snippets) {
-			return callback(err, formatSnippet(snippets));
+		//	console.log(formatSnippets(snippets))
+			return callback(err, formatSnippets(snippets));
 		});
 	},
 
 	listByGroups : function(ids, callback) {
 		col.find({gid : {$in : ids}}).sort({updated: -1}).toArray(function(err, snippets) {
-			return callback(err, formatSnippet(snippets));
+			return callback(err, formatSnippets(snippets));
 		});
 	},
 
@@ -131,6 +133,36 @@ module.exports = {
 	        'content' : content,
 	        'updated' : new Date()
 	      }
+	    },
+	    {},
+			function(err){
+	  		return callback(err,id);
+	  	}
+	  );
+	},
+
+	commentAdd : function(id, comment, callback) {
+		col.update(
+	    { 'snid' : id },
+	    {
+   			$push: {
+					comments: {
+						$each : [ comment ],
+						$sort : { posted : -1}
+					}
+				}
+	    },
+	    {},
+			function(err){
+	  		return callback(err,id);
+	  	}
+	  );
+	},
+	commentsClear : function(id, callback) {
+		col.update(
+	    { 'snid' : id },
+	    {
+   			$unset: { comments: []	}
 	    },
 	    {},
 			function(err){

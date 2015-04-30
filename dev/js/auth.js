@@ -19,7 +19,7 @@ app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
         user = data.user;
         logged = true;
         callback(null,user);
-      }); 
+      });
       socket.on('AUTH:Denied', function (data) {
         console.log('SOCKET: Unverified.');
         logged = false;
@@ -35,6 +35,9 @@ app.factory('auth', ['$http', 'socket', function authFactory($http, socket) {
     },
     getUser : function(){
       return user;
+    },
+    isLogged : function(){
+      return logged;
     }
   }
 }]);

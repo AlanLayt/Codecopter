@@ -191,7 +191,8 @@ function route(app, db, handlers) {
 
 		db.groups.get(gid,function(g){
 			if(g!==false)
-				handlers.ide.newSnippet(gid, user, req, function(id){
+				handlers.ide.add(gid, user, req, function(err, id){
+				//handlers.ide.newSnippet(gid, user, req, function(id){
 					res.redirect('/c/' + id);
 				});
 		});
@@ -201,17 +202,22 @@ function route(app, db, handlers) {
 		var gid = req.params["gid"];
 		var authDetails = handlers.auth.get(req, res);
 
-		handlers.groups.get(gid,function(g,snippets){
-			console.log(g.title);
-			res.render('group', {
-				loc: req.headers.host,
-				group : g,
-				items : snippets,
-				pretty : false,
-				auth : handlers.auth.getUser(req,res),
-			});
+		handlers.groups.get(gid,function(err,g,snippets){
+		//	console.log(g.title);
+		//	console.log(snippets)
+			if(g)
+				res.render('group', {
+					loc: req.headers.host,
+					group : g,
+					items : snippets,
+					pretty : false,
+					auth : handlers.auth.getUser(req,res),
+				});
+			else
+				notFound(req,res,'Group not found');
 		});
 	});
+
 	app.get('/groups', function(req, res){
 		var user = req.params["gid"];
 		var authDetails = handlers.auth.get(req, res);
@@ -243,18 +249,25 @@ function route(app, db, handlers) {
 		var authDetails = handlers.auth.getUser(req, res);
 
 		db.snippets.get(snid,function(err, snippet){
-			if(authDetails.logged)
-				console.log('%s viewing "%s"',authDetails.user.username,snippet.title);
-			res.render('display', {
-				loc : req.headers.host,
-				auth : handlers.auth.getUser(req,res),
-				snippet : {
-					snid : snid,
-					user : snippet.user,
-					title : snippet.title,
-					desc : snippet.desc,
-				}
-			});
+
+			if(snippet){
+				if(authDetails.logged)
+		 			console.log('%s viewing "%s"',authDetails.user.username,snippet.title);
+				res.render('display', {
+					loc : req.headers.host,
+					auth : handlers.auth.getUser(req,res),
+					snippet : {
+						snid : snid,
+						user : snippet.user,
+						title : snippet.title,
+						desc : snippet.desc,
+						comments : snippet.comments
+					}
+				});
+			}
+			else {
+				notFound(req,res,'');
+			}
 		});
 	});
 	app.get('/:uname', function(req, res){
@@ -271,6 +284,27 @@ function route(app, db, handlers) {
 			});
 		});
 	});
+
+	app.post('/comment/post/', function(req, res){
+//		console.log(req.body);
+//		db.snippets.commentsClear(req.body.snid,function(id){console.log('clearing %s', id)});
+		var auth = handlers.auth.getUser(req,res);
+		if(auth.logged)
+			db.snippets.commentAdd(
+				req.body.snid,
+				{
+					content : req.body.comment,
+					poster : auth.user,
+					posted : new Date()
+				},
+				function(err,id){
+					console.log(err);
+					console.log('Posting comment to: %s.', id);
+					res.json({ ok : true });
+			});
+		});
+
+
 
 
 	app.get('*', function(req, res){

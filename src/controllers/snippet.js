@@ -1,6 +1,7 @@
 module.exports = function(details){
   var details = details;
   var users = new Array();
+  var cursors = new Array();
 
   this.getTitle = function(){
     return details.title;
@@ -36,12 +37,30 @@ module.exports = function(details){
     }
     else {
     }
-    //console.log('user removed')
-    //console.log(users)
   }
   this.getUsers = function(){
-    //console.log(users)
     return users;
+  }
+
+  this.addCursor = function(cursor){
+    if(cursor.user.getName() in cursors){
+    //  console.log('%s: %s already active.', this.getTitle(),u.getName())
+    }
+    else {
+      //console.log('%s: %s now active.',this.getTitle(),u.getName())
+      cursors[cursor.user.getName()] = cursor;
+    }
+  }
+  this.removeCursor = function(user){
+    if(user.getName() in cursors){
+      delete cursors[user.getName()];
+      //console.log('%s: %s has disconnected.', this.getTitle(),u.getName())
+    }
+    else {
+    }
+  }
+  this.getCursors = function(){
+    return cursors;
   }
 
   this.setContent = function(content){

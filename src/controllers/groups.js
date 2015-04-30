@@ -31,11 +31,12 @@ var listAll = function(callback){
       //  console.log(snippets);
         groups.forEach(function(g){
           g.snippets = [];
+          //  console.log(snippets)
           snippets.forEach(function(s){
           //  console.log(s)
             if(g.id == s.gid){
               g.snippets.push(s);
-              }
+            }
           });
         });
       //  console.log(groups)
@@ -47,11 +48,10 @@ var listAll = function(callback){
 }
 
 var get = function(gid,callback){
-	db.groups.get(gid,function(g){
+	db.groups.get(gid,function(err,g){
     if(g!==false){
-    	db.snippets.listByGroup(gid,function(snippets){
-        console.log(snippets)
-        callback(g,snippets);
+    	db.snippets.listByGroup(gid,function(err,snippets){
+        callback(err,g,snippets);
       });
     }
   });

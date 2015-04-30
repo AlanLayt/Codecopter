@@ -8,7 +8,7 @@ var handlers = {
 		snippets : require('./controllers/snippets'),
 		gallery : require('./controllers/galleries'),
 		groups : require('./controllers/groups'),
-		groups : require('./controllers/users'),
+		users : require('./controllers/users'),
 		auth : require('./auth/twitter')
 	};
 

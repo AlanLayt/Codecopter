@@ -2,17 +2,21 @@ var db = null;
 var collectionName = "groups";
 var col, hashid;
 
-var format = function(groups){
-	var s = [];
-	groups.forEach(function(group){
-		s.push({
+var format = function(group){
+	if(group==null) return group;
+	return {
 			id : group.gid,
 			title : group.title,
 			desc : group.description
-		});
+		}
+};
+var formatGroups = function(groups){
+	var s = [];
+	groups.forEach(function(group){
+		s.push(format(group));
 	});
 	return s;
-};
+}
 
 module.exports = {
 	init : function(database,hashid){
@@ -31,15 +35,16 @@ module.exports = {
 
 	listAll : function(callback) {
 		col.find().sort({updated: -1}).toArray(function(err, groups) {
-			return callback(err, format(groups));
+			return callback(err, formatGroups(groups));
 		});
 	},
 
 
 	get : function(id, callback) {
-	  col.findOne({ "gid" : id }).toArray(function(err, g) {
+	  col.findOne({ "gid" : id },function(err, g) {
+			//console.log(format(g))
 			//	var group = g.length>0 ? g[0] : false;
-	    	return callback(err, g);
+	    	return callback(err, format(g));
 	  });
 	},
 

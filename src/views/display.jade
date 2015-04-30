@@ -9,30 +9,80 @@ block append body
 		div.preview
 			iframe(src='http://#{loc}/s/#{snippet.snid}' scrolling='no' tabindex='-1')
 			
-			div.info
-				div.editMenu
-					a(href="http://#{loc}/c/#{snippet.snid}")
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-edit")
-					a(href="http://#{loc}/s/#{snippet.snid}")
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-view")
-					a(href='http://#{loc}/delete/#{snippet.snid}')
-						svg.icon
-							use(xlink:href="http://#{loc}/icons.svg#shape-delete")
+			div.details
+				div#comments
+					if auth.logged
+						div.addComment
+							//form#commentPost(name='commentsForm' ng-submit='addComment(commentsForm)')
+								//textarea(name='content' ng-model='commentForm.content' ng-focus='console.log("alert")')
+							div.commentInput(ng-class="{'active' : commentForm.active}" contenteditable='true' ng-model='commentForm.content' ng-focus='activateComments()') Leave a comment...
+							input.button.submit(type='submit' value='Comment' ng-click='addComment(commentsForm)' ng-class="{'show' : commentForm.active , 'hidden' : !commentForm.active, 'active' : commentForm.content.length>0, 'inactive' : !commentForm.content.length>0}")
+							input.button.cancel(type='button' value='Cancel' ng-click='unactComments()' ng-class="{true:'show', false:'hidden'}[commentForm.active]")
 							
-				div(ng-if='!editing')
-					h2.title(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
-					p.description= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
-					
-				div(ng-if='editing')
-					form#detailsform(name='detailsForm' ng-submit='submit(detailsForm)')
-						div 
-							input.title(type='text' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title) placeholder='Title' name='editTitle' ng-model='editForm.title')
-						div 	
-							textarea.description(placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
-						input(type='submit')
+					div.posted
+						if snippet.comments
+							-each comment in snippet.comments
+								div.comment
+									div.user
+										img.userIcon(src="#{comment.poster.icon}")
+										
+									div.commentBody
+										div.userName= comment.poster.username
+										div.content= comment.content
+										
+									if auth.logged	
+										div.options
+											svg.icon
+												use(xlink:href="http://#{loc}/icons.svg#shape-delete")
+											
 				
-				div.userCard
-					img.userIcon(src="#{snippet.user.icon}")
-					div.userName #{snippet.user.username}
+				div.infoCard
+					div.editMenu
+						a(href="http://#{loc}/c/#{snippet.snid}")
+							svg.icon
+								use(xlink:href="http://#{loc}/icons.svg#shape-edit")
+						a(href="http://#{loc}/s/#{snippet.snid}")
+							svg.icon
+								use(xlink:href="http://#{loc}/icons.svg#shape-view")
+						a(href='http://#{loc}/delete/#{snippet.snid}')
+							svg.icon
+								use(xlink:href="http://#{loc}/icons.svg#shape-delete")
+								
+					div.header
+						div.userImage
+							img.userIcon(src="#{snippet.user.icon}")
+							
+						div.info
+							div.title(ng-if='!editing')
+								div(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
+							div.title(ng-if='editing')
+								input.title(type='text' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title) placeholder='Title' name='editTitle' ng-model='editForm.title')
+							
+							div.userName #{snippet.user.username}
+							
+					div.description
+						div(ng-if='!editing')
+							div= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
+						div(ng-if='editing')
+							textarea.description(placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
+					div(ng-if='editing')
+						input.button.submit.active(type='submit' ng-click='updateDetails()' value='Save Details')
+						
+						
+				//-
+					div(ng-if='!editing')
+						h2.title(ng-click='edit()')= (snippet.title.length<=0 ? 'Untitled' : snippet.title)
+						p.description= (snippet.desc.length<=0 ? 'No description' : snippet.desc)
+						
+					div(ng-if='editing')
+						form#detailsform(name='detailsForm' ng-submit='submit(detailsForm)')
+							div  
+								input.title(type='text' value=(snippet.title.length<=0 ? 'Untitled' : snippet.title) placeholder='Title' name='editTitle' ng-model='editForm.title')
+							div 	
+								textarea.description(placeholder='Description' name='editDescription' ng-model='editForm.description' value=(snippet.desc.length<=0 ? 'No description' : snippet.desc))
+							input(type='submit')
+					
+					div.userCard
+						img.userIcon(src="#{snippet.user.icon}")
+						div.userName #{snippet.user.username}
+		

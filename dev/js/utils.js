@@ -70,6 +70,19 @@ app.factory('editor', function ($rootScope) {
         });
         //editor.on(evt,callback);
       },
+      scroll : {
+        on : function(evt,callback){
+          console.log(editor.getSession())
+          editor.getSession().on(evt,function () {
+            var args = arguments;
+            $rootScope.$apply(function () {
+              if (callback) {
+                callback.apply(socket, args);
+              }
+            });
+          });
+        },
+      },
       session : {
         insert : function(start,text){
           editor.session.insert(start,text);
@@ -94,6 +107,12 @@ app.factory('editor', function ($rootScope) {
         },
         getCursor : function(){
           return editor.selection.getCursor();
+        },
+        getSelectionAnchor : function(){
+          return editor.selection.getSelectionAnchor();
+        },
+        getSelectionLead : function(){
+          return editor.selection.getSelectionLead();
         }
       },
       renderer : {
