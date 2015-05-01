@@ -86,7 +86,7 @@ var start = function(){
     });
     socket.on('IDE:InsertLines', function (data) {
       socket.broadcast.to(data.snid).emit("IDE:InsertLines",data);
-      console.log(data.lines)
+    //  console.log(data.lines)
       handlers.snippets.get(data.snid,function(err,s){
         s.setContent(data.full);
       });

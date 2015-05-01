@@ -10,14 +10,23 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
       socket.emit('IDE:RequestSnip', {snid : snid});
     });
 
+    editor.on("change", function(e){
+      $scope.renderCursors($scope.cursors);
+    });
     editor.selection.on('changeCursor',function(){
+      sendCursor();
+    });
+    editor.selection.on('changeSelection',function(){
+      sendCursor();
+    });
+    var sendCursor = function(){
       var pos = {
         snid : snid,
         carat : editor.selection.getCursor(),
         select : editor.selection.getSelectionAnchor()
       };
       socket.emit('IDE:Cursor',pos);
-    });
+    }
     editor.scroll.on('changeScrollTop',function(){
       $scope.renderCursors($scope.cursors);
     });
@@ -140,8 +149,8 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
           start = c.carat;
           end = c.select;
         }
-
-        console.log(selection)
+      //  console.log(c);
+      //  console.log(selection)
 
         rows = end.position.row - start.position.row;
 
@@ -199,6 +208,8 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
           boxes : []
         }
       }
+
+      console.log(cursor)
 
       user.cursor = cursor;
 

@@ -71,14 +71,23 @@ var Preview = function(element){
       socket.emit('IDE:RequestSnip', {snid : snid});
     });
 
+    editor.on("change", function(e){
+      $scope.renderCursors($scope.cursors);
+    });
     editor.selection.on('changeCursor',function(){
+      sendCursor();
+    });
+    editor.selection.on('changeSelection',function(){
+      sendCursor();
+    });
+    var sendCursor = function(){
       var pos = {
         snid : snid,
         carat : editor.selection.getCursor(),
         select : editor.selection.getSelectionAnchor()
       };
       socket.emit('IDE:Cursor',pos);
-    });
+    }
     editor.scroll.on('changeScrollTop',function(){
       $scope.renderCursors($scope.cursors);
     });
@@ -201,8 +210,8 @@ var Preview = function(element){
           start = c.carat;
           end = c.select;
         }
-
-        console.log(selection)
+      //  console.log(c);
+      //  console.log(selection)
 
         rows = end.position.row - start.position.row;
 
@@ -260,6 +269,8 @@ var Preview = function(element){
           boxes : []
         }
       }
+
+      console.log(cursor)
 
       user.cursor = cursor;
 
@@ -517,7 +528,7 @@ app.directive('parseUrl', function () {
     console.debug('Loaded snippet.')
     loaded = true;
   });
-  
+
 
   editor.on("change", function(e){
     var content = editor.getValue();
@@ -531,7 +542,7 @@ app.directive('parseUrl', function () {
       data.full = editor.getValue();
       data.snid = snid;
 
-      console.log(e);
+    //  console.log(e);
       switch(e.data.action){
         case 'insertText':
           socket.emit('IDE:Insert', data);
@@ -547,7 +558,7 @@ app.directive('parseUrl', function () {
           break;
       }
       prev();
-      console.debug(snid);
+  //    console.debug(snid);
     }
   });
 

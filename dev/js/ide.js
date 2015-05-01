@@ -29,7 +29,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
     console.debug('Loaded snippet.')
     loaded = true;
   });
-  
+
 
   editor.on("change", function(e){
     var content = editor.getValue();
@@ -43,7 +43,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
       data.full = editor.getValue();
       data.snid = snid;
 
-      console.log(e);
+    //  console.log(e);
       switch(e.data.action){
         case 'insertText':
           socket.emit('IDE:Insert', data);
@@ -59,7 +59,7 @@ app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$h
           break;
       }
       prev();
-      console.debug(snid);
+  //    console.debug(snid);
     }
   });
 
