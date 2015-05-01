@@ -89,18 +89,50 @@ form input[type="text"] {
   flex: 3 0px;
   flex-direction: row;
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  align-content: space-around;
+  align-content: space-between;
   max-width: 950px;
   margin: 0 auto 50px auto;
   -webkit-font-smoothing: antialiased; }
   #Gallery a {
     flex: 1;
     min-width: 300px;
-    max-width: 700px;
     text-decoration: none;
     color: #333; }
+  #Gallery .container {
+    padding: 0; }
+    #Gallery .container iframe {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      right: 0;
+      bottom: 0;
+      width: 120%;
+      height: 120%;
+      pointer-events: none;
+      border: none;
+      padding: 0; }
+    #Gallery .container .info {
+      padding: 5px 10px 5px 10px; }
+      #Gallery .container .info .user {
+        float: left;
+        padding: 5px 0 5px 0; }
+        #Gallery .container .info .user .userIcon {
+          border-radius: 15%;
+          border: 1px solid #333;
+          width: 1.1em; }
+      #Gallery .container .info .title {
+        float: left;
+        padding: 5px 10px 5px 10px;
+        color: #000;
+        font-weight: 100; }
+      #Gallery .container .info .caption {
+        clear: both;
+        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: #666; }
 
 .infopane {
   height: 250px;
@@ -110,40 +142,9 @@ form input[type="text"] {
   overflow: hidden;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 100; }
-
-.container {
-  padding: 15px; }
-  .container iframe {
-    position: absolute;
-    top: -10%;
-    left: -10%;
-    right: 0;
-    bottom: 0;
-    width: 120%;
-    height: 120%;
-    pointer-events: none;
-    border: none;
-    padding: 0; }
-  .container .info {
-    padding: 5px 10px 5px 10px; }
-    .container .info .user {
-      float: left;
-      padding: 5px 0 5px 0; }
-      .container .info .user .userIcon {
-        border-radius: 15%;
-        border: 1px solid #333;
-        width: 1.1em; }
-    .container .info .title {
-      float: left;
-      padding: 5px 10px 5px 10px;
-      color: #000;
-      font-weight: 100; }
-    .container .info .caption {
-      clear: both;
-      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-      text-transform: uppercase;
-      font-size: 11px;
-      color: #666; }
+  .infopane #newGroup .field {
+    width: 100%;
+    margin: 0 0 5px 0; }
 
 .IDESTRUCT, .ide {
   width: 100%;

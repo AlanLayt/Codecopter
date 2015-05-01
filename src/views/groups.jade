@@ -6,18 +6,18 @@ block headerAddition
 	+title("Development Environment")
 	
 block append body
-	div#Gallery
+	div#Gallery(ng-controller='groups' ng-init='')
 		div.container
 			div.infopane
 				h2 Groups
 				div Create a new group
-				form(method="post" action='http://#{loc}/group/new')
+				form#newGroup(method="post" action='http://#{loc}/group/new')
 					div
-						input(type="text" placeholder="Group Title" name="group[title]")
+						input.field(type="text" ng-change='update()' ng-model='newGroup.title' placeholder="Group Title" name="group[title]")
 					div
-						input(type="text" placeholder="Description" name="group[desc]")
+						input.field(type="text" ng-change='update()' ng-model='newGroup.description' placeholder="Description" name="group[desc]")
 					div
-						input(type="submit" value="Create")
+						input.button.submit(type="submit" value="Create Group" ng-class="{true:'active', false:'inactive'}[newGroup.active]")
 		-each group in groups
 			a(href='http://#{loc}/group/#{group.id}')
 				div.container

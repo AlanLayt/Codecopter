@@ -119,12 +119,21 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
     };
     $scope.renderCursors = function(crsrs){
       crsrs.forEach(function(c){
-        console.log(c);
+      //  console.log(c);
         c.pos.display = editor.renderer.textToScreenCoordinates(c.pos.carat.row,c.pos.carat.column);
+        c.select.display = editor.renderer.textToScreenCoordinates(c.select.select.row,c.select.select.column);
+
+        var lineheight = 10;
+        console.log(c)
+        for(var i=0; i<1;i++){
+          console.log(c.select.display.pageY-c.pos.display.pageY)
+        }
+
       });
     }
 
     $scope.proccessCursor = function(crsr){
+      console.log(crsr)
       var checkUser = userExists(crsr.user.username);
       if(checkUser.cursor!==false){
         console.log('User exists. Updating position.');
@@ -134,8 +143,9 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
             display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
           },
           select : {
-            select : crsrs.select,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+            select : crsr.position.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            boxes : []
           }
         }
       }
@@ -145,14 +155,13 @@ app.controller('activeUsers', ['$scope', '$http', 'socket', 'editor', 'auth', fu
           username : user.username,
           color : user.color,
           pos : {
-            pos : {
-              carat : crsr.position,
-              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-            },
-            select : {
-              select : crsrs.select,
-              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
-            }
+            carat : crsr.position,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+          },
+          select : {
+            select : crsr.position.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            boxes : []
           }
         });
         user.cursor = cursor;

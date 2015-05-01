@@ -180,12 +180,21 @@ var Preview = function(element){
     };
     $scope.renderCursors = function(crsrs){
       crsrs.forEach(function(c){
-        console.log(c);
+      //  console.log(c);
         c.pos.display = editor.renderer.textToScreenCoordinates(c.pos.carat.row,c.pos.carat.column);
+        c.select.display = editor.renderer.textToScreenCoordinates(c.select.select.row,c.select.select.column);
+
+        var lineheight = 10;
+        console.log(c)
+        for(var i=0; i<1;i++){
+          console.log(c.select.display.pageY-c.pos.display.pageY)
+        }
+
       });
     }
 
     $scope.proccessCursor = function(crsr){
+      console.log(crsr)
       var checkUser = userExists(crsr.user.username);
       if(checkUser.cursor!==false){
         console.log('User exists. Updating position.');
@@ -195,8 +204,9 @@ var Preview = function(element){
             display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
           },
           select : {
-            select : crsrs.select,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
+            select : crsr.position.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            boxes : []
           }
         }
       }
@@ -206,14 +216,13 @@ var Preview = function(element){
           username : user.username,
           color : user.color,
           pos : {
-            pos : {
-              carat : crsr.position,
-              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-            },
-            select : {
-              select : crsrs.select,
-              display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column)
-            }
+            carat : crsr.position,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+          },
+          select : {
+            select : crsr.position.select,
+            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
+            boxes : []
           }
         });
         user.cursor = cursor;
@@ -379,6 +388,41 @@ app.directive('parseUrl', function () {
   }
 
   console.log('Displaying "%s".', snid);
+}]);
+;app.controller('groups', ['$scope', '$http', 'auth', function($scope,$http,auth) {
+  $scope.editForm = {};
+  $scope.newGroup = {
+    title : '',
+    description : '',
+    active : false
+  };
+
+  auth.connect(function(){
+    console.debug(auth.getUser());
+  });
+
+  $scope.update = function(){
+    if($scope.newGroup.title.length>0 && $scope.newGroup.description.length>0)
+      $scope.newGroup.active = true;
+    else
+      $scope.newGroup.active = false;
+
+    console.log
+  }
+
+  $scope.activateNewGroup = function(){
+    if(!$scope.newGroup.active){
+      $scope.newGroup.content = '';
+      $scope.newGroup.active = true;
+    }
+  }
+  $scope.unactNewGroup = function(){
+    if($scope.newGroup.active){
+      $scope.newGroup.content = 'Leave a comment...';
+      $scope.newGroup.active = false;
+    }
+  }
+  console.log('Groups loaded');
 }]);
 ;app.controller('ide', ['$scope', '$http', 'socket', 'editor', function($scope,$http,socket,editor) {
   console.log('Development environment online.');

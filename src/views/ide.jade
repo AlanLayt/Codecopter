@@ -39,3 +39,6 @@ block append body
 						
 				div#cursorHold()
 					div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')
+					div.selection(ng-repeat='cursor in cursors')
+						div.selectSect(ng-repeat='box in cursor.select.boxes' ng-style='{ left : box.display.pageX, top : box.display.pageY, display : block, borderLeftColor : cursor.color }')
+						
