@@ -72,23 +72,25 @@ var Preview = function(element){
     });
 
     editor.selection.on('changeCursor',function(){
-      var pos = editor.selection.getCursor();
-    //  console.log(editor.selection.getSelectionAnchor())
-      //console.log(editor.selection.getSelectionLead())
-      //console.log(editor.selection.getCursor())
-      pos.snid = snid;
-      pos.select = editor.selection.getSelectionAnchor();
+      var pos = {
+        snid : snid,
+        carat : editor.selection.getCursor(),
+        select : editor.selection.getSelectionAnchor()
+      };
       socket.emit('IDE:Cursor',pos);
     });
     editor.scroll.on('changeScrollTop',function(){
-      console.log('aksjgnajksgn')
+      $scope.renderCursors($scope.cursors);
+    });
+    editor.scroll.on('changeScrollLeft',function(){
       $scope.renderCursors($scope.cursors);
     });
 
 
     socket.on('IDE:Cursor', function (data) {
-      console.debug("Incoming cursor: %s", data.user.username);
+    //  console.debug("Incoming cursor: %s", data.user.username);
       $scope.proccessCursor(data);
+      $scope.renderCursors($scope.cursors);
     });
     socket.on('IDE:cursorList', function (data) {
       console.log('Cursor List loaded;');
@@ -98,6 +100,7 @@ var Preview = function(element){
         //var cursor = $scope.addUser(c);
         $scope.proccessCursor(c);
       })
+      $scope.renderCursors($scope.cursors);
     });
     socket.on('IDE:userList', function (data) {
       console.log('User List loaded;');
@@ -165,7 +168,6 @@ var Preview = function(element){
       });
     }
 
-
     $scope.addUser = function(user) {
       var userObj = {
         username : user.username,
@@ -179,68 +181,128 @@ var Preview = function(element){
       return userObj;
     };
     $scope.renderCursors = function(crsrs){
+    //console.log(crsrs)
       crsrs.forEach(function(c){
-      //  console.log(c);
-        c.pos.display = editor.renderer.textToScreenCoordinates(c.pos.carat.row,c.pos.carat.column);
-        c.select.display = editor.renderer.textToScreenCoordinates(c.select.select.row,c.select.select.column);
+        var rows, start;
 
-        var lineheight = 10;
-        console.log(c)
-        for(var i=0; i<1;i++){
-          console.log(c.select.display.pageY-c.pos.display.pageY)
+        var selection = !(c.select.position.column == c.carat.position.column && c.select.position.row == c.carat.position.row);
+
+        c.carat.display = editor.renderer.textToScreenCoordinates(c.carat.position.row,c.carat.position.column);
+        c.select.display = editor.renderer.textToScreenCoordinates(c.select.position.row,c.select.position.column);
+
+        c.select.boxes = [];
+
+
+        if(c.carat.position.row > c.select.position.row){
+          start = c.select;
+          end = c.carat;
+        }
+        else {
+          start = c.carat;
+          end = c.select;
+        }
+
+        console.log(selection)
+
+        rows = end.position.row - start.position.row;
+
+        if(selection){
+          if(rows>0){
+            c.select.boxes.push({
+              left : start.display.pageX,
+              top : start.display.pageY,
+              width : editor.renderer.getSize().width - start.display.pageX,
+            });
+            for(var i=1; i<rows;i++){
+              c.select.boxes.push({
+                left : editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageX,
+                top : editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageY,
+                width : editor.renderer.getSize().width - editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageX,
+              });
+            }
+            c.select.boxes.push({
+              left : editor.renderer.textToScreenCoordinates(end.position.row,0).pageX,
+              top : end.display.pageY,
+              width : end.display.pageX - editor.renderer.textToScreenCoordinates(end.position.row,0).pageX,
+            });
+          }
+          else {
+            if(c.carat.position.column > c.select.position.column){
+              start = c.select;
+              end = c.carat;
+            }
+            else {
+              start = c.carat;
+              end = c.select;
+            }
+            c.select.boxes.push({
+              left : start.display.pageX,
+              top : start.display.pageY,
+              width : end.display.pageX - start.display.pageX,
+            });
+          }
         }
 
       });
     }
 
     $scope.proccessCursor = function(crsr){
-      console.log(crsr)
-      var checkUser = userExists(crsr.user.username);
-      if(checkUser.cursor!==false){
-        console.log('User exists. Updating position.');
-        checkUser.cursor = {
-          pos : {
-            carat : crsr.position,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-          },
-          select : {
-            select : crsr.position.select,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-            boxes : []
-          }
+      var user = userExists(crsr.user.username);
+      var cursor = {
+        user : user,
+        carat : {
+          position : crsr.carat,
+          display : editor.renderer.textToScreenCoordinates(crsr.carat.row,crsr.carat.column),
+        },
+        select : {
+          position : crsr.select,
+          display : editor.renderer.textToScreenCoordinates(crsr.select.row,crsr.select.column),
+          boxes : []
         }
       }
-      else {
-        var user = checkUser;//$scope.addUser(data.user);
-        var cursor = $scope.addCursor({
-          username : user.username,
-          color : user.color,
-          pos : {
-            carat : crsr.position,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-          },
-          select : {
-            select : crsr.position.select,
-            display : editor.renderer.textToScreenCoordinates(crsr.position.row,crsr.position.column),
-            boxes : []
-          }
-        });
-        user.cursor = cursor;
+
+      user.cursor = cursor;
+
+    //  console.log(user.cursor)
+      if($scope.cursorExists(user.username)===false){
+        console.log('New cursor. Adding to array');
+        var cr = $scope.addCursor(user.cursor);
       }
+      else {
+      var cr = $scope.updateCursor(user.cursor);
+      }
+
     }
 
     $scope.addCursor = function(cursor) {
       var cursorObj = cursor;
 
+      //console.log(cursorObj)
       $scope.cursors.push(cursorObj);
       return cursorObj;
     };
     $scope.removeCursor = function(user) {
       $scope.cursors.forEach(function(c,i){
-        if(c.username == user){
+        if(c.user.username == user){
           $scope.cursors.splice(i,1);
         }
       });
+    }
+    $scope.updateCursor = function(cursor) {
+      $scope.cursors.forEach(function(c,i){
+        if(c.user.username == cursor.user.username){
+          $scope.cursors[i] = cursor
+        }
+      });
+    }
+    $scope.cursorExists = function(user) {
+      var result = false;
+      $scope.cursors.forEach(function(c,i){
+        if(c.user.username == user){
+          result = true;
+        }
+      });
+      return result;
     }
   }]
 );
@@ -597,6 +659,9 @@ app.factory('editor', function ($rootScope) {
         },
         remove : function(range){
           editor.session.getDocument().remove(range);
+        },
+        getScreenLastRowColumn: function(r){
+          return editor.session.getScreenLastRowColumn(r);
         }
       },
       selection : {
@@ -618,11 +683,20 @@ app.factory('editor', function ($rootScope) {
         },
         getSelectionLead : function(){
           return editor.selection.getSelectionLead();
+        },
+        getAllRanges : function(){
+          return editor.selection.getAllRanges();
         }
       },
       renderer : {
         textToScreenCoordinates : function(row,col){
-        return editor.renderer.textToScreenCoordinates(row,col);
+          return editor.renderer.textToScreenCoordinates(row,col);
+        },
+        getContainerElement : function(){
+          return editor.renderer.getContainerElement();
+        },
+        getSize : function(){
+          return editor.renderer.$size;
         }
       }
     };

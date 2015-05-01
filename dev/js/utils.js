@@ -92,6 +92,9 @@ app.factory('editor', function ($rootScope) {
         },
         remove : function(range){
           editor.session.getDocument().remove(range);
+        },
+        getScreenLastRowColumn: function(r){
+          return editor.session.getScreenLastRowColumn(r);
         }
       },
       selection : {
@@ -113,11 +116,20 @@ app.factory('editor', function ($rootScope) {
         },
         getSelectionLead : function(){
           return editor.selection.getSelectionLead();
+        },
+        getAllRanges : function(){
+          return editor.selection.getAllRanges();
         }
       },
       renderer : {
         textToScreenCoordinates : function(row,col){
-        return editor.renderer.textToScreenCoordinates(row,col);
+          return editor.renderer.textToScreenCoordinates(row,col);
+        },
+        getContainerElement : function(){
+          return editor.renderer.getContainerElement();
+        },
+        getSize : function(){
+          return editor.renderer.$size;
         }
       }
     };

@@ -53,7 +53,8 @@ var start = function(){
                 username : this[key].user.getName(),
                 icon : this[key].user.getIcon()
               },
-              position : this[key].position
+              carat : this[key].carat,
+              select : this[key].select
             });
           }, s.getCursors());
 
@@ -107,12 +108,14 @@ var start = function(){
           username : socket.user.getName(),
           icon : socket.user.getIcon()
         },
-        position : data });
+        carat : data.carat,
+        select : data.select
+      });
 
-        socket.snippet.addCursor({
-          user : socket.user,
-          position : data
-        })
+      socket.snippet.addCursor({
+        user : socket.user,
+        position : data
+      });
     });
 
 

@@ -16,6 +16,7 @@ block headerAddition
 block append body
 	div#IDE.ide(ng-controller='ide')
 		pre#editor(snid='#{snippet.snid}' ng-data='#{snippet.snid}' editor) #{snippet.content} 
+			test= test
 		iframe#display(frameborder=0 scrolling='no')
 		
 	
@@ -38,7 +39,7 @@ block append body
 						img.userIcon(ng-style='{borderColor: user.color}' ng-src='{{user.icon}}')
 						
 				div#cursorHold()
-					div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.pos.display.pageX, top : cursor.pos.display.pageY, display : block, borderLeftColor : cursor.color }')
+					div.cursor(ng-repeat='cursor in cursors' ng-style='{ left : cursor.carat.display.pageX, top : cursor.carat.display.pageY, display : block, borderLeftColor : cursor.user.color }')
 					div.selection(ng-repeat='cursor in cursors')
-						div.selectSect(ng-repeat='box in cursor.select.boxes' ng-style='{ left : box.display.pageX, top : box.display.pageY, display : block, borderLeftColor : cursor.color }')
+						div.selectSect(ng-repeat='box in cursor.select.boxes' ng-style='{ left : box.left, top : box.top, width : box.width, display : block, "background-color" : cursor.user.color }')
 						

@@ -45,6 +45,7 @@ module.exports = function(details){
   this.addCursor = function(cursor){
     if(cursor.user.getName() in cursors){
     //  console.log('%s: %s already active.', this.getTitle(),u.getName())
+      cursors[cursor.user.getName()] = cursor;
     }
     else {
       //console.log('%s: %s now active.',this.getTitle(),u.getName())
