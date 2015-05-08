@@ -192,7 +192,8 @@ var Preview = function(element){
     $scope.renderCursors = function(crsrs){
     //console.log(crsrs)
       crsrs.forEach(function(c){
-        var rows, start;
+        var rows, start,
+          adjpx = 7;
 
         var selection = !(c.select.position.column == c.carat.position.column && c.select.position.row == c.carat.position.row);
 
@@ -220,19 +221,19 @@ var Preview = function(element){
             c.select.boxes.push({
               left : start.display.pageX,
               top : start.display.pageY,
-              width : editor.renderer.getSize().width - start.display.pageX,
+              width : editor.renderer.getSize().width - start.display.pageX - adjpx,
             });
             for(var i=1; i<rows;i++){
               c.select.boxes.push({
-                left : editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageX,
+                left : editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageX - adjpx,
                 top : editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageY,
                 width : editor.renderer.getSize().width - editor.renderer.textToScreenCoordinates(start.position.row+i,0).pageX,
               });
             }
             c.select.boxes.push({
-              left : editor.renderer.textToScreenCoordinates(end.position.row,0).pageX,
+              left : editor.renderer.textToScreenCoordinates(end.position.row,0).pageX - adjpx,
               top : end.display.pageY,
-              width : end.display.pageX - editor.renderer.textToScreenCoordinates(end.position.row,0).pageX,
+              width : end.display.pageX - editor.renderer.textToScreenCoordinates(end.position.row,0).pageX + adjpx,
             });
           }
           else {

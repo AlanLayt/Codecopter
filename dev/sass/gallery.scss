@@ -4,8 +4,8 @@
   flex-direction: row;
   flex-flow: row wrap;
   justify-content: space-between;
-  align-items: center;
-  align-content: space-between;
+  //align-items: center;
+  //align-content: space-between;
   max-width: 950px;
   margin: 0 auto 50px auto;
 
@@ -70,6 +70,7 @@
   height: 250px;
   width: 250px;
   position:relative;
+  padding-right: 15px;
 
   overflow:hidden;
   font-family: 'Source Sans Pro', sans-serif;
