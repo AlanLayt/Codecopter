@@ -22,7 +22,7 @@ var listAll = function(callback){
 	db.groups.listAll(function(err, groups){
     var ids = [];
   //  console.log(groups)
-    groups.forEach(function(g){
+    groups.forEach(function(g){ 
       if(g!==false)
         ids.push(g.id);
     })
@@ -57,12 +57,14 @@ var get = function(gid,callback){
   });
 }
 
-var add = function(group){
-	db.groups.count(function(count){
+var add = function(group,callback){
+	db.groups.count(function(err,count){
 	  var id = hashids.encode(count,Date.now());
+    //console.log('%s - %s', count,Date.now())
 
-    db.groups.add(id, group.title, group.desc, group.user, function(groupid){
-      console.log(groupid)
+    db.groups.add(id, group.title, group.desc, group.user, function(err, groupid){
+      //console.log('%s group as %s',id,groupid);
+      callback(err,groupid)
     });
   })
   console.log("Creating group %s", group.title);

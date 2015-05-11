@@ -24,7 +24,8 @@
       margin: 25px 0 15px 15px; }
       #Display .details .infoCard .header {
         display: flex;
-        flex-direction: row; }
+        flex-direction: row;
+        position: relative; }
         #Display .details .infoCard .header .userImage {
           flex: 1;
           max-width: 48px; }
@@ -57,9 +58,9 @@
           margin: 0; }
       #Display .details .infoCard .editMenu {
         position: absolute;
-        top: 0;
+        bottom: 0;
         right: 0;
-        padding: 10px 5px 0 0; }
+        padding: 0; }
       #Display .details .infoCard .userCard {
         font-size: 1em; }
         #Display .details .infoCard .userCard > * {
@@ -147,23 +148,23 @@
     overflow-x: hidden;
     position: relative; }
 
-input.button {
+.button {
   border: none;
   padding: 5px 10px 5px 10px;
   margin: 0 5px 0 5px;
   border-radius: 2px; }
 
-input.active {
+.active {
   background: #82CA98;
   color: #fff; }
 
-input.inactive {
+.inactive {
   background: #9CD5AD;
   color: #fff; }
 
-input.submit {
+.submit {
   color: #fff; }
 
-input.cancel {
+.cancel {
   background: #999;
   color: #fff; }

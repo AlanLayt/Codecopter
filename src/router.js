@@ -68,7 +68,7 @@ function route(app, db, handlers) {
 
 		// ========== Administration Routes ===========
 		app.get('/admin/purge', function(req, res){
-			db.snippets.purge();
+			db.groups.purge();
 			res.redirect('/');
 		});
 
@@ -173,15 +173,18 @@ function route(app, db, handlers) {
 		});
 	});
 	app.post('/group/new', function(req, res) {
-		var user = handlers.auth.getUser(req, res);
-    var title = req.body.group.title;
-    var desc = req.body.group.desc;
+		var user = handlers.auth.getUser(req, res).user;
+		console.log(req.body)
+    var title = req.body.title;
+    var desc = req.body.desc;
 
 		console.log(title)
 		handlers.groups.add({
 			title : title,
 			desc : desc,
-			user : user.username
+			user : user
+		}, function(err,id){
+			res.redirect('/group/' + id);
 		});
 	});
 
@@ -204,7 +207,7 @@ function route(app, db, handlers) {
 
 		handlers.groups.get(gid,function(err,g,snippets){
 		//	console.log(g.title);
-		//	console.log(snippets)
+			console.log(snippets)
 			if(g)
 				res.render('group', {
 					loc: req.headers.host,

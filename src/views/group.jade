@@ -9,9 +9,17 @@ block append body
 		div#Gallery
 			div.container
 				div.infopane
-					h2= group.title
-					div= group.description
-					div= group.user
+					h2.groupName= group.title
+					div.description= group.desc
+					a(href='http://#{loc}/group/#{group.id}/new')
+						div.button.active(type='button' value='New Snippet') New Snippet
+					div.author Admin
+						div.userCard
+							div.userImage
+								img.userIcon(src="#{group.user.icon}")
+							div.userName #{group.user.username}
+			
+			
 			if items!=null
 				-each item in items
 					a(href='http://#{loc}/#{item.user.username}/#{item.id}')
@@ -19,7 +27,8 @@ block append body
 							div.thumb
 								iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
 							div.info
+								div.user
+									img.userIcon(src='#{item.user.icon}')
 								div.title= item.title
-								div.username 
 								div.caption= item.desc
 							

@@ -13,7 +13,7 @@
     text-decoration: none;
     color: #333; }
   #Gallery .container {
-    padding: 0; }
+    padding: 10px; }
     #Gallery .container iframe {
       position: absolute;
       top: -10%;
@@ -54,6 +54,23 @@
   overflow: hidden;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 100; }
+  .infopane h2 {
+    margin: 10px 0 0px 0;
+    font-weight: 300; }
   .infopane #newGroup .field {
     width: 100%;
     margin: 0 0 5px 0; }
+  .infopane .description {
+    margin-bottom: 20px; }
+  .infopane .author {
+    margin-top: 10px; }
+
+.userCard {
+  font-size: 1em; }
+  .userCard > * {
+    vertical-align: middle;
+    display: inline-block; }
+  .userCard .userName {
+    margin-left: 10px; }
+  .userCard .userIcon {
+    width: 1.4em; }

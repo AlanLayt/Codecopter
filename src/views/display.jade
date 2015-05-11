@@ -37,18 +37,18 @@ block append body
 											
 				
 				div.infoCard
-					div.editMenu
-						a(href="http://#{loc}/c/#{snippet.snid}")
-							svg.icon
-								use(xlink:href="http://#{loc}/icons.svg#shape-edit")
-						a(href="http://#{loc}/s/#{snippet.snid}")
-							svg.icon
-								use(xlink:href="http://#{loc}/icons.svg#shape-view")
-						a(href='http://#{loc}/delete/#{snippet.snid}')
-							svg.icon
-								use(xlink:href="http://#{loc}/icons.svg#shape-delete")
 								
 					div.header
+						div.editMenu
+							a(href="http://#{loc}/c/#{snippet.snid}")
+								svg.icon
+									use(xlink:href="http://#{loc}/icons.svg#shape-edit")
+							a(href="http://#{loc}/s/#{snippet.snid}")
+								svg.icon
+									use(xlink:href="http://#{loc}/icons.svg#shape-view")
+							a(href='http://#{loc}/delete/#{snippet.snid}')
+								svg.icon
+									use(xlink:href="http://#{loc}/icons.svg#shape-delete")
 						div.userImage
 							img.userIcon(src="#{snippet.user.icon}")
 							

@@ -7,7 +7,8 @@ var format = function(group){
 	return {
 			id : group.gid,
 			title : group.title,
-			desc : group.description
+			desc : group.description,
+			user : group.user
 		}
 };
 var formatGroups = function(groups){
@@ -65,6 +66,7 @@ module.exports = {
 				'user' : user,
 		    'created' : new Date()
 		  }], function(err, result) {
+				console.log(user)
 		    return callback(err, id);
 		  });
 	},

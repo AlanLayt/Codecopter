@@ -28,6 +28,7 @@
       .header {
         display: flex;
         flex-direction:row;
+        position:relative;
 
         .userImage {
           flex:1;
@@ -71,9 +72,9 @@
       }
       .editMenu {
         position:absolute;
-        top:0;
+        bottom:0;
         right:0;
-        padding: 10px 5px 0 0;
+        padding: 0;
       }
       .userCard {
         font-size: 1em;
@@ -211,24 +212,24 @@
 
 
 
-input.button {
+.button {
   border: none;
   padding: 5px 10px 5px 10px;
   margin: 0 5px 0 5px;
   border-radius: 2px;
 }
-input.active {
+.active {
   background: #82CA98;
   color:#fff;
 }
-input.inactive {
+.inactive {
   background: #9CD5AD;
   color:#fff;
 }
-input.submit {
+.submit {
   color:#fff;
 }
-input.cancel {
+.cancel {
   background: #999;
   color:#fff;
 }

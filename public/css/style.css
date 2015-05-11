@@ -99,7 +99,7 @@ form input[type="text"] {
     text-decoration: none;
     color: #333; }
   #Gallery .container {
-    padding: 0; }
+    padding: 10px; }
     #Gallery .container iframe {
       position: absolute;
       top: -10%;
@@ -140,9 +140,26 @@ form input[type="text"] {
   overflow: hidden;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 100; }
+  .infopane h2 {
+    margin: 10px 0 0px 0;
+    font-weight: 300; }
   .infopane #newGroup .field {
     width: 100%;
     margin: 0 0 5px 0; }
+  .infopane .description {
+    margin-bottom: 20px; }
+  .infopane .author {
+    margin-top: 10px; }
+
+.userCard {
+  font-size: 1em; }
+  .userCard > * {
+    vertical-align: middle;
+    display: inline-block; }
+  .userCard .userName {
+    margin-left: 10px; }
+  .userCard .userIcon {
+    width: 1.4em; }
 
 .IDESTRUCT, .ide {
   width: 100%;
@@ -255,10 +272,11 @@ form input[type="text"] {
     display: flex;
     flex-direction: row;
     flex: 3 0px;
-    flex-flow: row; }
+    flex-flow: row;
+    margin-bottom: 10px; }
     #Search .searchItem .codePrevHold {
       flex: 1;
-      margin: 15px 15px 0 15px;
+      margin: 0;
       min-width: 400px; }
     #Search .searchItem .searchCodeDisplay {
       height: 210px;
@@ -266,7 +284,41 @@ form input[type="text"] {
     #Search .searchItem a {
       min-width: 200px;
       max-width: 400px;
-      flex: 1; }
+      flex: 1;
+      text-decoration: none; }
+  #Search .container {
+    padding: 0; }
+    #Search .container iframe {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      right: 0;
+      bottom: 0;
+      width: 120%;
+      height: 120%;
+      pointer-events: none;
+      border: none;
+      padding: 0; }
+  #Search .info {
+    padding: 5px 10px 5px 10px; }
+    #Search .info .user {
+      float: left;
+      padding: 5px 0 5px 0; }
+      #Search .info .user .userIcon {
+        border-radius: 15%;
+        border: 1px solid #333;
+        width: 1.1em; }
+    #Search .info .title {
+      float: left;
+      padding: 5px 10px 5px 10px;
+      color: #000;
+      font-weight: 100; }
+    #Search .info .caption {
+      clear: both;
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: #666; }
 
 #Display {
   display: flex;
@@ -294,7 +346,8 @@ form input[type="text"] {
       margin: 25px 0 15px 15px; }
       #Display .details .infoCard .header {
         display: flex;
-        flex-direction: row; }
+        flex-direction: row;
+        position: relative; }
         #Display .details .infoCard .header .userImage {
           flex: 1;
           max-width: 48px; }
@@ -327,9 +380,9 @@ form input[type="text"] {
           margin: 0; }
       #Display .details .infoCard .editMenu {
         position: absolute;
-        top: 0;
+        bottom: 0;
         right: 0;
-        padding: 10px 5px 0 0; }
+        padding: 0; }
       #Display .details .infoCard .userCard {
         font-size: 1em; }
         #Display .details .infoCard .userCard > * {
@@ -417,23 +470,23 @@ form input[type="text"] {
     overflow-x: hidden;
     position: relative; }
 
-input.button {
+.button {
   border: none;
   padding: 5px 10px 5px 10px;
   margin: 0 5px 0 5px;
   border-radius: 2px; }
 
-input.active {
+.active {
   background: #82CA98;
   color: #fff; }
 
-input.inactive {
+.inactive {
   background: #9CD5AD;
   color: #fff; }
 
-input.submit {
+.submit {
   color: #fff; }
 
-input.cancel {
+.cancel {
   background: #999;
   color: #fff; }

@@ -5,10 +5,11 @@
     display: flex;
     flex-direction: row;
     flex: 3 0px;
-    flex-flow: row; }
+    flex-flow: row;
+    margin-bottom: 10px; }
     #Search .searchItem .codePrevHold {
       flex: 1;
-      margin: 15px 15px 0 15px;
+      margin: 0;
       min-width: 400px; }
     #Search .searchItem .searchCodeDisplay {
       height: 210px;
@@ -16,4 +17,38 @@
     #Search .searchItem a {
       min-width: 200px;
       max-width: 400px;
-      flex: 1; }
+      flex: 1;
+      text-decoration: none; }
+  #Search .container {
+    padding: 0; }
+    #Search .container iframe {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      right: 0;
+      bottom: 0;
+      width: 120%;
+      height: 120%;
+      pointer-events: none;
+      border: none;
+      padding: 0; }
+  #Search .info {
+    padding: 5px 10px 5px 10px; }
+    #Search .info .user {
+      float: left;
+      padding: 5px 0 5px 0; }
+      #Search .info .user .userIcon {
+        border-radius: 15%;
+        border: 1px solid #333;
+        width: 1.1em; }
+    #Search .info .title {
+      float: left;
+      padding: 5px 10px 5px 10px;
+      color: #000;
+      font-weight: 100; }
+    #Search .info .caption {
+      clear: both;
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: #666; }

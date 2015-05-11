@@ -21,7 +21,7 @@
   }
 
   .container {
-    padding: 0;
+    padding: 10px;
     iframe {
       position:absolute;
       top:-10%;
@@ -75,10 +75,41 @@
   overflow:hidden;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 100;
+
+  h2 {
+    margin:10px 0 0px 0;
+    font-weight:300;
+  }
+
   #newGroup {
     .field {
       width:100%;
       margin: 0 0 5px 0;
     }
+  }
+
+  .description{
+    margin-bottom: 20px;
+  }
+
+  .author {
+    margin-top: 10px;
+  }
+}
+
+
+
+.userCard {
+  font-size: 1em;
+
+  > * {
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .userName {
+    margin-left: 10px;
+  }
+  .userIcon {
+    width: 1.4em;
   }
 }

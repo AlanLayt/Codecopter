@@ -14,12 +14,12 @@ block append body
 				div.searchItem
 					div.codePrevHold
 						pre.searchCodeDisplay #{item.search.result}
+						div.info
+							div.user
+								img.userIcon(src='#{item.user.icon}')
+							div.title= item.title
+							div.caption= item.desc
 					a(href='http://#{loc}/#{item.user.username}/#{item.id}')
 						div.container
 							div.thumb
 								iframe(src='http://#{loc}/s/#{item.id}' tabindex='-1')
-							div.info
-								div.user
-									img.userIcon(src='#{item.user.icon}')
-								div.title= item.title
-								div.caption= item.desc

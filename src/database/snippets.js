@@ -84,9 +84,9 @@ module.exports = {
 
 
 	search : function(search, callback) {
-	  col.find({ "content" : new RegExp(search) }).toArray(function(err, snippet) {
-			var s = snippet.length>0 ? formatSnippet(snippet) : false;
-	    return callback(err, s);
+	  col.find({ "content" : new RegExp(search) }).toArray(function(err, snippets) {
+		//	var s = snippet.length>0 ? formatSnippet(snippet) : false;
+	    return callback(err, formatSnippets(snippets));
 	  });
 	},
 
